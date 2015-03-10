@@ -34,8 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.*;
@@ -65,7 +63,7 @@ import org.asteriskjava.manager.action.UserEventAction;
  * Internal implemention of the ManagerConnection interface.
  *
  * @author srt
- * @version $Id$
+ * @version $Id: ManagerConnectionImpl.java 1401 2010-05-07 23:46:06Z srt $
  * @see org.asteriskjava.manager.ManagerConnectionFactory
  */
 public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
@@ -76,12 +74,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int DEFAULT_PORT = 5038;
     private static final int RECONNECTION_VERSION_INTERVAL = 500;
     private static final int MAX_VERSION_ATTEMPTS = 4;
-    private static final Pattern SHOW_VERSION_PATTERN = Pattern.compile("^(core )?show version.*");
-
-    private static final Pattern VERSION_PATTERN_1_6 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.6[-. ].*");
-    private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk (SVN-branch-)?1\\.8[-. ].*");
-    private static final Pattern VERSION_PATTERN_10  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?10[-. ].*");
-    private static final Pattern VERSION_PATTERN_11  = Pattern.compile("^\\s*Asterisk (SVN-branch-)?11[-. ].*");
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -608,10 +600,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         int attempts = 0;
 
-//        if ("Asterisk Call Manager/1.1".equals(protocolIdentifier.value))
-//        {
-//            return AsteriskVersion.ASTERISK_1_6;
-//        }
+        if ("Asterisk Call Manager/1.1".equals(protocolIdentifier.value))
+        {
+            return AsteriskVersion.ASTERISK_1_6;
+        }
 
         while (attempts++ < MAX_VERSION_ATTEMPTS)
         {
@@ -632,9 +624,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             showVersionFilesResult = ((CommandResponse) showVersionFilesResponse).getResult();
             if (showVersionFilesResult != null && showVersionFilesResult.size() > 0)
             {
-                final String line1 = showVersionFilesResult.get(0);
+                final String line1;
 
-                if (line1.startsWith("File"))
+                line1 = showVersionFilesResult.get(0);
+                if (line1 != null && line1.startsWith("File"))
                 {
                     final String rawVersion;
 
@@ -643,39 +636,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     {
                         return AsteriskVersion.ASTERISK_1_4;
                     }
+
                     return AsteriskVersion.ASTERISK_1_2;
                 }
-                else if (line1.contains("No such command"))
+                else if (line1 != null && line1.contains("No such command"))
                 {
-                    final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"), defaultResponseTimeout * 2);
-
-                    if (coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse)
-                    {
-                        final List<String> coreShowVersionResult = ((CommandResponse) coreShowVersionResponse).getResult();
-
-                        if (coreShowVersionResult != null && coreShowVersionResult.size() > 0)
-                        {
-                            final String coreLine = coreShowVersionResult.get(0);
-
-                            if (VERSION_PATTERN_1_6.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_1_6;
-                            }
-                            else if (VERSION_PATTERN_1_8.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_1_8;
-                            }
-                            else if (VERSION_PATTERN_10.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_10;
-                            }
-                            else if (VERSION_PATTERN_11.matcher(coreLine).matches())
-                            {
-                                return AsteriskVersion.ASTERISK_11;
-                            }
-                        }
-                    }
-
                     try
                     {
                         Thread.sleep(RECONNECTION_VERSION_INTERVAL);
@@ -762,7 +727,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected SocketConnectionFacade createSocket() throws IOException
     {
-        return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout);
+        return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout, "cp1252");
     }
 
     public synchronized void logoff() throws IllegalStateException
@@ -918,13 +883,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         writer.sendAction(action, internalActionId);
     }
 
-    boolean isShowVersionCommandAction(ManagerAction action)
+    private boolean isShowVersionCommandAction(ManagerAction action)
     {
-        if (! (action instanceof CommandAction)) {
-            return false;
-        }
-        final Matcher showVersionMatcher = SHOW_VERSION_PATTERN.matcher(((CommandAction)action).getCommand());
-        return showVersionMatcher.matches();
+        return action instanceof CommandAction && ((CommandAction)action).getCommand().startsWith("show version");
     }
 
     private Class<? extends ManagerResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass)
@@ -1064,6 +1025,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             if (!this.eventListeners.contains(listener))
             {
                 this.eventListeners.add(listener);
+                System.out.println("Neuer Listener "+listener+". insgesamt "+eventListeners.size());
             }
         }
     }
@@ -1309,9 +1271,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         logger.info("Connected via " + identifier);
 
         if (!"Asterisk Call Manager/1.0".equals(identifier)
-                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6
+                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6 
                 && !"Asterisk Call Manager/1.2".equals(identifier) // bri stuffed
-                && !"Asterisk Call Manager/1.3".equals(identifier) // Asterisk 11
                 && !"OpenPBX Call Manager/1.0".equals(identifier)
                 && !"CallWeaver Call Manager/1.0".equals(identifier)
                 && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
@@ -1492,10 +1453,11 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * A combinded event and response handler that adds received events and the
      * response to a ResponseEvents object.
      */
+    @SuppressWarnings("unchecked")
     private static class ResponseEventHandler implements ManagerEventListener, SendActionCallback
     {
         private final ResponseEventsImpl events;
-        private final Class<?> actionCompleteEventClass;
+        private final Class actionCompleteEventClass;
 
         /**
          * Creates a new instance.
@@ -1504,7 +1466,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
          * @param actionCompleteEventClass the type of event that indicates that
          *                                 all events have been received
          */
-        public ResponseEventHandler(ResponseEventsImpl events, Class<?> actionCompleteEventClass)
+        public ResponseEventHandler(ResponseEventsImpl events, Class actionCompleteEventClass)
         {
             this.events = events;
             this.actionCompleteEventClass = actionCompleteEventClass;

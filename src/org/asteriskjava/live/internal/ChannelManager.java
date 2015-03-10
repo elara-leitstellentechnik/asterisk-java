@@ -30,7 +30,7 @@ import java.util.*;
  * Manages channel events on behalf of an AsteriskServer.
  *
  * @author srt
- * @version $Id$
+ * @version $Id: ChannelManager.java 1381 2009-10-19 19:48:15Z srt $
  */
 class ChannelManager
 {
@@ -160,18 +160,36 @@ class ChannelManager
         channel.stateChanged(dateOfCreation, state);
         logger.info("Adding channel " + channel.getName() + "(" + channel.getId() + ")");
 
-        if (SLEEP_TIME_BEFORE_GET_VAR > 0)
-        {
-            try
-            {
-                Thread.sleep(SLEEP_TIME_BEFORE_GET_VAR);
-            }
-            catch (InterruptedException e)
-            {
-                Thread.currentThread().interrupt();
-            }
-        }
+        //orig
+//        if (SLEEP_TIME_BEFORE_GET_VAR > 0)
+//        {
+//            try
+//            {
+//                Thread.sleep(SLEEP_TIME_BEFORE_GET_VAR);
+//            }
+//            catch (InterruptedException e)
+//            {
+//                Thread.currentThread().interrupt();
+//            }
+//        }
 
+      if (SLEEP_TIME_BEFORE_GET_VAR > 0){
+    	  long start = System.currentTimeMillis();
+    	  long end = start + SLEEP_TIME_BEFORE_GET_VAR;
+    	  while(System.currentTimeMillis() < end){
+	    	  try{
+	    		  channel.getVariable(Constants.VARIABLE_TRACE_ID);
+	          }catch(NoSuchChannelException e){
+	        	  try{
+	        		  Thread.sleep(1l);
+	        	  }
+	              catch (InterruptedException intEx){
+	            	  Thread.currentThread().interrupt();
+	              }
+	          }
+    	  }
+      }
+        
         traceId = getTraceId(channel);
         channel.setTraceId(traceId);
 

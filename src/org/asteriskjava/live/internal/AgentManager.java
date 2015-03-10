@@ -45,7 +45,7 @@ import org.asteriskjava.util.LogFactory;
  *
  * @author <a href="mailto:patrick.breucking{@nospam}gonicus.de">Patrick
  *         Breucking</a>
- * @version $Id$
+ * @version $Id: AgentManager.java 1184 2008-10-24 00:13:47Z srt $
  * @since 0.3.1
  */
 public class AgentManager
@@ -90,7 +90,7 @@ public class AgentManager
         {
             if (event instanceof AgentsEvent)
             {
-                System.out.println(event);
+//                System.out.println(event);
                 handleAgentsEvent((AgentsEvent) event);
             }
         }

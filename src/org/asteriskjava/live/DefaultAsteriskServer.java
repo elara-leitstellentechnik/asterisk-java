@@ -30,7 +30,7 @@ import org.asteriskjava.config.ConfigFile;
  * Default implementation of the AsteriskServer interface.
  *
  * @author srt
- * @version $Id$
+ * @version $Id: DefaultAsteriskServer.java 1137 2008-08-18 14:05:05Z srt $
  * @see org.asteriskjava.live.AsteriskServer
  */
 public class DefaultAsteriskServer implements AsteriskServer
@@ -303,7 +303,11 @@ public class DefaultAsteriskServer implements AsteriskServer
     {
         impl.removeAsteriskServerListener(listener);
     }
-
+    
+    public boolean isAsteriskServerListening(AsteriskServerListener listener){
+    	return impl.isAsteriskServerListening(listener);
+    }
+    
     public void shutdown()
     {
         impl.shutdown();
