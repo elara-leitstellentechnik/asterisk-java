@@ -74,6 +74,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int DEFAULT_PORT = 5038;
     private static final int RECONNECTION_VERSION_INTERVAL = 500;
     private static final int MAX_VERSION_ATTEMPTS = 4;
+    private static final String[] SHOW_FILES_VERSION_COMMANDS = {"show version files pbx.c", "core show file version pbx.c"};
+    private static final String[] SHOW_VERSION_COMMANDS = {"show version", "core show version"};
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -437,6 +439,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         {
             doLogin(defaultResponseTimeout, eventMask);
         }
+        catch (Exception e){
+        	// ?!?
+        }
         finally
         {
             if (state != CONNECTED)
@@ -605,13 +610,14 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             return AsteriskVersion.ASTERISK_1_6;
         }
 
-        while (attempts++ < MAX_VERSION_ATTEMPTS)
+        int currentFilesVersionCommandIndex = 0;
+        while (attempts++ < MAX_VERSION_ATTEMPTS * (1+SHOW_FILES_VERSION_COMMANDS.length))
         {
             final ManagerResponse showVersionFilesResponse;
             final List<String> showVersionFilesResult;
 
             // increase timeout as output is quite large
-            showVersionFilesResponse = sendAction(new CommandAction("show version files pbx.c"), defaultResponseTimeout * 2);
+            showVersionFilesResponse = sendAction(new CommandAction(SHOW_FILES_VERSION_COMMANDS[currentFilesVersionCommandIndex]), defaultResponseTimeout * 2);
             if (!(showVersionFilesResponse instanceof CommandResponse))
             {
                 // return early in case of permission problems
@@ -632,23 +638,58 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                     final String rawVersion;
 
                     rawVersion = getRawVersion();
-                    if (rawVersion != null && rawVersion.startsWith("Asterisk 1.4"))
+                    if (rawVersion == null ) 
+                    {
+                    	return AsteriskVersion.ASTERISK_1_2;
+                    }
+                    if (rawVersion.startsWith("Asterisk 1.4"))
                     {
                         return AsteriskVersion.ASTERISK_1_4;
                     }
-
-                    return AsteriskVersion.ASTERISK_1_2;
+                    if (rawVersion.startsWith("Asterisk 1.6"))
+                    {
+                    	return AsteriskVersion.ASTERISK_1_6;
+                    }
+                    if (rawVersion.startsWith("Asterisk 1.8"))
+                    {
+                    	return AsteriskVersion.ASTERISK_1_8;
+                    }
+                    if (rawVersion.startsWith("Asterisk 10"))
+                    {
+                    	return AsteriskVersion.ASTERISK_10;
+                    }
+                    if (rawVersion.startsWith("Asterisk 11"))
+                    {
+                    	return AsteriskVersion.ASTERISK_11;
+                    }
+                    if (rawVersion.startsWith("Asterisk 12"))
+                    {
+                    	return AsteriskVersion.ASTERISK_12;
+                    }
+                    if (rawVersion.startsWith("Asterisk 13"))
+                    {
+                    	return AsteriskVersion.ASTERISK_13;
+                    }
+                    
                 }
                 else if (line1 != null && line1.contains("No such command"))
                 {
-                    try
-                    {
-                        Thread.sleep(RECONNECTION_VERSION_INTERVAL);
-                    }
-                    catch (Exception ex)
-                    {
-                        // ingnore
-                    } // NOPMD
+                	if(currentFilesVersionCommandIndex < SHOW_FILES_VERSION_COMMANDS.length-1)
+                	{
+                		currentFilesVersionCommandIndex++;
+                	}
+                	else 
+                	{
+                		currentFilesVersionCommandIndex = 0;
+                	}
+                	try
+                	{
+                		Thread.sleep(RECONNECTION_VERSION_INTERVAL);
+                	}
+                	catch (Exception ex)
+                	{
+                		// ingnore
+                	} // NOPMD
                 }
                 else
                 {
@@ -664,27 +705,30 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     protected String getRawVersion()
     {
-        final ManagerResponse showVersionResponse;
-
-        try
-        {
-            showVersionResponse = sendAction(new CommandAction("show version"), defaultResponseTimeout * 2);
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
-
-        if (showVersionResponse instanceof CommandResponse)
-        {
-            final List<String> showVersionResult;
-
-            showVersionResult = ((CommandResponse) showVersionResponse).getResult();
-            if (showVersionResult != null && showVersionResult.size() > 0)
-            {
-                return showVersionResult.get(0);
-            }
-        }
+    	String result = null;
+    	for(int commandIndex = 0; commandIndex < SHOW_VERSION_COMMANDS.length; commandIndex++)
+		{
+    		final ManagerResponse showVersionResponse;
+    		try
+    		{
+    			showVersionResponse = sendAction(new CommandAction(SHOW_VERSION_COMMANDS[commandIndex]), defaultResponseTimeout * 2);
+    		}
+    		catch (Exception e)
+    		{
+    			continue;
+    		}
+    		
+    		if (showVersionResponse instanceof CommandResponse)
+    		{
+    			final List<String> showVersionResult;
+    			
+    			showVersionResult = ((CommandResponse) showVersionResponse).getResult();
+    			if (showVersionResult != null && showVersionResult.size() > 0 && showVersionResult.get(0) != null && !showVersionResult.get(0).startsWith("No such command"))
+    			{
+    				return showVersionResult.get(0);
+    			}
+    		}
+		}
 
         return null;
     }
@@ -885,7 +929,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     private boolean isShowVersionCommandAction(ManagerAction action)
     {
-        return action instanceof CommandAction && ((CommandAction)action).getCommand().startsWith("show version");
+    	if (! (action instanceof CommandAction) )
+    	{
+    		return false;
+    	}
+    	String command = ((CommandAction)action).getCommand();
+    	return command.startsWith("show version") || command.startsWith("core show version") || command.startsWith("core show file version");
     }
 
     private Class<? extends ManagerResponse> getExpectedResponseClass(Class<? extends ManagerAction> actionClass)
