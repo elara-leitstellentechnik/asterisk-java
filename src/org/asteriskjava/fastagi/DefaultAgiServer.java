@@ -24,6 +24,7 @@ import org.asteriskjava.util.*;
 import org.asteriskjava.util.internal.ServerSocketFacadeImpl;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.RejectedExecutionException;
@@ -52,6 +53,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     private String configResourceBundleName = DEFAULT_CONFIG_RESOURCE_BUNDLE_NAME;
     private int port = DEFAULT_BIND_PORT;
+    private InetAddress address = null;
 
     /**
      * Creates a new DefaultAgiServer.
@@ -168,11 +170,11 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     /**
      * Sets the TCP port to listen on for new connections.
-     * <p/>
+     * <br>
      * The default port is 4573.
      *
      * @param bindPort the port to bind to.
-     * @deprecated use {@see #setPort(int)} instead
+     * @deprecated use {@link #setPort(int)} instead
      */
     @Deprecated
     public void setBindPort(int bindPort)
@@ -182,7 +184,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     /**
      * Sets the TCP port to listen on for new connections.
-     * <p/>
+     * <br>
      * The default port is 4573.
      *
      * @param port the port to bind to.
@@ -202,6 +204,22 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
     public int getPort()
     {
         return port;
+    }
+
+    /**
+     * Returns the address this server is configured to bind to.
+     * @return the address this server is configured to bind to.
+     */
+    public InetAddress getAddress() {
+        return address;
+    }
+
+    /**
+     * Sets the address to bind server.
+     * @param address the address to bind to.
+     */
+    public void setAddress(InetAddress address) {
+        this.address = address;
     }
 
     private void loadConfig()
@@ -258,7 +276,7 @@ public class DefaultAgiServer extends AbstractAgiServer implements AgiServer
 
     protected ServerSocketFacade createServerSocket() throws IOException
     {
-        return new ServerSocketFacadeImpl(port, 0, null);
+        return new ServerSocketFacadeImpl(port, 0, address);
     }
 
     public void startup() throws IOException, IllegalStateException

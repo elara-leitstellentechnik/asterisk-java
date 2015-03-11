@@ -63,6 +63,7 @@ public interface AsteriskChannel extends LiveObject
     String PROPERTY_PARKED_AT = "parkedAt";
     String PROPERTY_DTMF_RECEIVED = "dtmfReceived";
     String PROPERTY_DTMF_SENT = "dtmfSent";
+    String PROPERTY_MONITORED = "monitored";
 
     String VARIABLE_MONITOR_EXEC = "MONITOR_EXEC";
     String VARIABLE_MONITOR_EXEC_ARGS = "MONITOR_EXEC_ARGS";
@@ -300,6 +301,14 @@ public interface AsteriskChannel extends LiveObject
      * @since 1.0.0
      */
     Character getDtmfSent();
+
+    /**
+     * Return the actual MONITOR state.
+     *
+     * @return the actual Monitor state of this channel.
+     * @since 1.0.1
+     */
+    boolean isMonitored();
 
     /* Actions */
     
@@ -609,7 +618,7 @@ public interface AsteriskChannel extends LiveObject
      *             be sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             temporarily stopping monitoring.
-     * @see #unPauseMixMonitor()()
+     * @see #unPauseMixMonitor(org.asteriskjava.util.MixMonitorDirection)
      * @since 1.0.0
      */
     void pauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
@@ -617,7 +626,8 @@ public interface AsteriskChannel extends LiveObject
     
     /**
      * Re-enables monitoring this channel after calling
-     * {@link #pauseMixMonitor()} if this is monitored with MixMonitor
+     * {@link #pauseMixMonitor(org.asteriskjava.util.MixMonitorDirection)} ()}
+     * if this is monitored with MixMonitor
      * <p>
      * If the channel exists but monitoring has not been paused your request is
      * ignored.
@@ -627,7 +637,7 @@ public interface AsteriskChannel extends LiveObject
      *             cannot be sent to Asterisk.
      * @throws NoSuchChannelException if this channel had been hung up before
      *             re-enabling monitoring.
-     * @see #pauseMixMonitor()
+     * @see #pauseMixMonitor(org.asteriskjava.util.MixMonitorDirection)
      * @since 1.0.0
      */
     void unPauseMixMonitor(MixMonitorDirection direction) throws ManagerCommunicationException, NoSuchChannelException;
