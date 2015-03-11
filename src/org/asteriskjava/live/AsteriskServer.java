@@ -34,7 +34,7 @@ import org.asteriskjava.config.ConfigFile;
  * when using AsteriskServer be aware that it might change in the future.
  * 
  * @author srt
- * @version $Id$
+ * @version $Id: AsteriskServer.java 1371 2009-10-13 04:17:42Z srt $
  */
 public interface AsteriskServer
 {
@@ -477,6 +477,15 @@ public interface AsteriskServer
      */
     void removeAsteriskServerListener(AsteriskServerListener listener);
 
+    /**
+     * <b>DHP</b>
+     * Prüft, ob der listener schon eingetragen ist.
+     *
+     * @param listener listener.
+     * @return listener ist in der Liste.
+     */
+    boolean isAsteriskServerListening(AsteriskServerListener listener);
+    
     /**
      * Closes the connection to this server.
      */

@@ -36,11 +36,11 @@ import org.asteriskjava.util.internal.Slf4JLogger;
  * and falls back to java.util.logging otherwise.
  *
  * @author srt
- * @version $Id$
+ * @version $Id: LogFactory.java 1376 2009-10-17 00:18:50Z srt $
  */
 public final class LogFactory
 {
-    private static Boolean slf4jLoggingAvailable = null;
+    private static Boolean slf4jLoggingAvailable = Boolean.FALSE;
 
     /**
      * Indicates if log4j is available on the classpath or not. If the
@@ -67,32 +67,32 @@ public final class LogFactory
      * @param clazz the class to create the logger for.
      * @return the created logger.
      */
-    public static Log getLog(Class<?> clazz)
+    public static Log getLog(Class clazz)
     {
-        if (slf4jLoggingAvailable == null)
-        {
-            try
-            {
-                classLoader.loadClass("org.slf4j.Logger");
-                slf4jLoggingAvailable = Boolean.TRUE;
-            }
-            catch (Exception e)
-            {
-                slf4jLoggingAvailable = Boolean.FALSE;
-            }
-        }
-
-        if (slf4jLoggingAvailable)
-        {
-            try
-            {
-                return new Slf4JLogger(clazz);
-            }
-            catch (Throwable e)
-            {
-                slf4jLoggingAvailable = Boolean.FALSE;
-            }
-        }
+//        if (slf4jLoggingAvailable == null)
+//        {
+//            try
+//            {
+//                classLoader.loadClass("org.slf4j.Logger");
+//                slf4jLoggingAvailable = Boolean.TRUE;
+//            }
+//            catch (Exception e)
+//            {
+//                slf4jLoggingAvailable = Boolean.FALSE;
+//            }
+//        }
+//
+//        if (slf4jLoggingAvailable)
+//        {
+//            try
+//            {
+//                return new Slf4JLogger(clazz);
+//            }
+//            catch (Throwable e)
+//            {
+//                slf4jLoggingAvailable = Boolean.FALSE;
+//            }
+//        }
 
         if (log4jLoggingAvailable == null)
         {

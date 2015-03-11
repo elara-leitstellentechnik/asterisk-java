@@ -40,7 +40,7 @@ import org.asteriskjava.util.SocketConnectionFacade;
  * Default implementation of the SocketConnectionFacade interface using java.io.
  *
  * @author srt
- * @version $Id$
+ * @version $Id: SocketConnectionFacadeImpl.java 1398 2010-01-31 17:57:34Z srt $
  */
 public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 {
@@ -51,6 +51,11 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     private BufferedWriter writer;
     private Trace trace;
 
+    
+    //DHP
+    private String charsetName = null; 
+    
+    
     /**
      * Creates a new instance for use with the Manager API that uses CRNL ("\r\n") as line delimiter.
      *
@@ -63,9 +68,24 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      */
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout) throws IOException
     {
-        this(host, port, ssl, timeout, readTimeout, CRNL_PATTERN);
+        this(host, port, ssl, timeout, readTimeout, CRNL_PATTERN, null);
     }
-
+    
+    /**
+     * DHP
+     * @param host
+     * @param port
+     * @param ssl
+     * @param timeout
+     * @param readTimeout
+     * @param charsetName muss fuer Windows cp1252 wegen Umlaute
+     * @throws IOException
+     */
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, String charsetName) throws IOException
+    {
+        this(host, port, ssl, timeout, readTimeout, CRNL_PATTERN, charsetName);
+    }
+    
     /**
      * Creates a new instance for use with the Manager API that uses the given line delimiter.
      *
@@ -77,8 +97,9 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      * @param lineDelimiter a {@link Pattern} for matching the line delimiter for the socket
      * @throws IOException if the connection cannot be established.
      */
-    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Pattern lineDelimiter) throws IOException
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Pattern lineDelimiter, String charsetName) throws IOException
     {
+    	this.charsetName = charsetName;
         Socket socket;
 
         if (ssl)
@@ -107,20 +128,42 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      */
     SocketConnectionFacadeImpl(Socket socket) throws IOException
     {
-        initialize(socket, NL_PATTERN);
+        
     }
 
+    SocketConnectionFacadeImpl(Socket socket, String charsetName) throws IOException
+    {
+    	this.charsetName = charsetName;
+    	initialize(socket, NL_PATTERN);
+    }
+    
+    
     private void initialize(Socket socket, Pattern pattern) throws IOException
     {
         this.socket = socket;
 
+        
         InputStream inputStream = socket.getInputStream();
         OutputStream outputStream = socket.getOutputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
+//      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"cp1252"));
+        //DHP
+        BufferedReader reader = null;
+        if(charsetName != null){
+        	reader = new BufferedReader(new InputStreamReader(inputStream, this.charsetName));
+        }else{
+        	reader = new BufferedReader(new InputStreamReader(inputStream));
+        }
+        
         this.scanner = new Scanner(reader);
         this.scanner.useDelimiter(pattern);
-        this.writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+//      this.writer = new BufferedWriter(new OutputStreamWriter(outputStream);
+        //DHP
+        if(charsetName != null){
+        	this.writer = new BufferedWriter(new OutputStreamWriter(outputStream, charsetName));
+        }else{
+        	this.writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+        }        
+        
     }
 
     public String readLine() throws IOException
@@ -180,9 +223,6 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     {
         socket.close();
         scanner.close();
-        if (trace != null) {
-            trace.close();
-        }
     }
 
     public boolean isConnected()

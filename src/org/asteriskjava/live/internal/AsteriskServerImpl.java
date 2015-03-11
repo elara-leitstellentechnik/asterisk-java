@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
  * Default implementation of the {@link AsteriskServer} interface.
  *
  * @author srt
- * @version $Id$
+ * @version $Id: AsteriskServerImpl.java 1391 2009-12-10 23:39:58Z srt $
  */
 public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 {
@@ -50,6 +50,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
     private static final String SHOW_VOICEMAIL_USERS_1_6_COMMAND = "voicemail show users";
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
+    //.DHP.
+    //Alles ausser UserEvents : ..,user,..
+    private static final String EVENT_FLAGS = "system,call,log,verbose,command,agent,config"; 
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -61,6 +64,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private ManagerEventListenerProxy managerEventListenerProxy = null;
 
     private boolean initialized = false;
+    private boolean initializing = false;
 
     /**
      * A pool of manager connections to use for sending actions to Asterisk.
@@ -180,17 +184,22 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     private synchronized void initializeIfNeeded() throws ManagerCommunicationException
     {
-        if (initialized)
+        if (initialized 
+        		|| initializing) //.DHP.
         {
             return;
         }
-
+        
+        initializing = true; //.DHP.
+        
         if (eventConnection.getState() == ManagerConnectionState.INITIAL
                 || eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
         {
             try
             {
-                eventConnection.login();
+                //eventConnection.login();
+            	//.DHP.
+            	eventConnection.login(EVENT_FLAGS);
             }
             catch (Exception e)
             {
@@ -217,6 +226,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             eventConnection.addEventListener(eventListener);
         }
         logger.info("Initializing done");
+        initializing = false; //.DHP.
         initialized = true;
     }
 
@@ -469,7 +479,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             response = sendAction(new CommandAction(command));
             if (response instanceof CommandResponse)
             {
-                final List<?> result;
+                final List result;
 
                 result = ((CommandResponse) response).getResult();
                 if (result.size() > 0)
@@ -782,7 +792,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         initializeIfNeeded();
         synchronized (listeners)
         {
-            listeners.add(listener);
+        	if(!listeners.contains(listener)){ //dhp: Sorgt dafür, dass ein listener nicht mehrmals in der Liste ist
+        		listeners.add(listener);
+        	}else{
+        		logger.debug(".DHP. Hinzufügen von Listener nicht nötig, da schon in der Liste");
+        	}
         }
     }
 
@@ -794,6 +808,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
+    public boolean isAsteriskServerListening(AsteriskServerListener listener){
+    	return listeners.contains(listener);
+    }
+    
     void fireNewAsteriskChannel(AsteriskChannel channel)
     {
         synchronized (listeners)
@@ -900,6 +918,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     public void onManagerEvent(ManagerEvent event)
     {
+    	
+    	System.err.println("handleEvent: "+event);
+    	
         // Handle Channel related events
         if (event instanceof ConnectEvent)
         {
@@ -1136,6 +1157,12 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 return;
             }
 
+            if (channel.wasInState(ChannelState.UP))
+            {
+                cb.onSuccess(channel);
+                return;
+            }
+
             if (channel.wasBusy())
             {
                 cb.onBusy(channel);
@@ -1171,15 +1198,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                     return;
                 }
             }
-            
-            if (channel.wasInState(ChannelState.DOWN))
-            {
-                cb.onNoAnswer(channel);
-                return;
-            }
 
-            // if nothing else matched we asume success
-            cb.onSuccess(channel);
+            // if nothing else matched we asume no answer
+            cb.onNoAnswer(channel);
         }
         catch (Throwable t)
         {
