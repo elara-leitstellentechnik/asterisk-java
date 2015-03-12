@@ -58,6 +58,11 @@ public abstract class ManagerEvent extends EventObject
      */
     private String server;
 
+    /**
+     * Enro 2015-03: Since Asterisk 12 all AMI events now contain a SystemName field, if available.
+     */
+    private String systemName;
+    
     // AJ-213 only used when debugging is turned on
     private String file;
     private Integer line;
@@ -170,6 +175,14 @@ public abstract class ManagerEvent extends EventObject
     {
         this.server = server;
     }
+    
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
 
     /**
      * Returns the name of the file in Asterisk's source code that triggered this event. For example

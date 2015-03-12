@@ -53,7 +53,6 @@ public class DialBeginEvent extends ManagerEvent
     private String channelStateDesc;
     private Integer destChannelState;
     private String destChannelStateDesc;
-    private String systemName;
     private String language;
     private String accountCode; 
     private String exten;
@@ -472,14 +471,6 @@ public class DialBeginEvent extends ManagerEvent
 
 	public void setChannelStateDesc(String channelStateDesc) {
 		this.channelStateDesc = channelStateDesc;
-	}
-
-	public String getSystemName() {
-		return systemName;
-	}
-
-	public void setSystemName(String systemName) {
-		this.systemName = systemName;
 	}
 
 	public String getLanguage() {
