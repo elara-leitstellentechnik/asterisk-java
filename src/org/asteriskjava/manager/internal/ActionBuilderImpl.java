@@ -188,7 +188,7 @@ class ActionBuilderImpl implements ActionBuilder
 
             if (entryIterator.hasNext())
             {
-                sb.append("|");
+                sb.append("|");		// Enro: This method is only used for Asterisk Versions < 1.2. No need to change anything here for newer Asterisks!
             }
         }
         sb.append(LINE_SEPARATOR);
