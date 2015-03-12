@@ -17,23 +17,19 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A dial event is triggered whenever a phone attempts to dial someone.<p>
- * This event is implemented in <code>apps/app_dial.c</code>.<p>
- * Available since Asterisk 1.2.
+ * A dial begin event is triggered whenever a phone attempts to dial someone.<p>
+ * Available since Asterisk 13.
  *
  * @author Asteria Solutions Group, Inc. http://www.asteriasgi.com/
  * @version $Id$
- * @since 0.2
+ * @since 1.0.0 - 10 (Elara)
  */
-public class DialEvent extends ManagerEvent
+public class DialBeginEvent extends ManagerEvent
 {
     /**
      * Serializable version identifier.
      */
     private static final long serialVersionUID = 1L;
-
-    public static final String SUBEVENT_BEGIN = "Begin";
-    public static final String SUBEVENT_END = "End";
 
     public static final String DIALSTATUS_CHANUNAVAIL = "CHANUNAVAIL";
     public static final String DIALSTATUS_CONGESTION = "CONGESTION";
@@ -45,11 +41,27 @@ public class DialEvent extends ManagerEvent
     public static final String DIALSTATUS_TORTURE = "TORTURE";
     public static final String DIALSTATUS_INVALIDARGS = "INVALIDARGS";
 
-    private String subEvent = SUBEVENT_BEGIN;
-
     private String connectedlinename;
     private String connectedlinenum;
-
+    private String context;
+    private String destContext;
+    private Integer priority;
+    private Integer destPriority;
+    private String destCallerIdNum;
+    private String destCallerIdName;
+    private Integer channelState;
+    private String channelStateDesc;
+    private Integer destChannelState;
+    private String destChannelStateDesc;
+    private String systemName;
+    private String language;
+    private String accountCode; 
+    private String exten;
+    private String destLanguage;
+    private String destAccountCode; 
+    private String destExten;
+    
+    
     /**
      * The name of the source channel.
      */
@@ -83,48 +95,9 @@ public class DialEvent extends ManagerEvent
     private String dialString;
     private String dialStatus;
 
-    public DialEvent(Object source)
+    public DialBeginEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * Enro 2015-03
-     * Workaround to build legacy DialEvent (unsupported in Asterisk 13) from new DialBeginEvent Asterisk 13.
-     */
-    public DialEvent(DialBeginEvent dialBeginEvent){
-    	this(dialBeginEvent.getSource());
-    	setDateReceived(dialBeginEvent.getDateReceived());
-    	setTimestamp(dialBeginEvent.getTimestamp());
-    	setPrivilege(dialBeginEvent.getPrivilege());
-    	setCallerId(dialBeginEvent.getCallerIdNum());
-    	setCallerIdName(dialBeginEvent.getCallerIdName());
-    	setSrc(dialBeginEvent.getChannel());
-    	setUniqueId(dialBeginEvent.getSrcUniqueId());
-    	setDestUniqueId(dialBeginEvent.getDestUniqueId());
-    	setDestination(dialBeginEvent.getDestChannel());
-    	setDialStatus(dialBeginEvent.getDialStatus());
-    }
-    
-    /**
-     * Since Asterisk 1.6 the begin and the end of a dial command generate a Dial event. The
-     * subEvent property returns whether the dial started execution ("Begin") or completed ("End").
-     * As Asterisk prior to 1.6 only sends one event per Dial command this always returns "Begin"
-     * for Asterisk prior to 1.6.<br>
-     * For an "End" sub event only the properies channel, unqiue id and dial status are available,
-     * for a "Begin" sub event all properties are available except for the dial status.
-     *
-     * @return "Begin" or "End" for Asterisk since 1.6, "Begin" for Asterisk prior to 1.6.
-     * @since 1.0.0
-     */
-    public String getSubEvent()
-    {
-        return subEvent;
-    }
-
-    public void setSubEvent(String subEvent)
-    {
-        this.subEvent = subEvent;
     }
 
     /**
@@ -396,4 +369,165 @@ public class DialEvent extends ManagerEvent
     {
         this.connectedlinenum = connectedlinenum;
     }
+    
+    public String getContext() {
+		return context;
+	}
+    
+    public void setContext(String context) {
+		this.context = context;
+	}
+    
+    public String getDestContext() {
+		return destContext;
+	}
+    
+    public void setDestContext(String destContext) {
+		this.destContext = destContext;
+	}
+    
+    public Integer getPriority() {
+		return priority;
+	}
+    
+    public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
+    
+    public Integer getDestPriority() {
+		return destPriority;
+	}
+    
+    public void setDestPriority(Integer destPriority) {
+		this.destPriority = destPriority;
+	}
+    
+    public String getDestConnectedLineName(){
+    	return getCallerIdName();
+    }
+    
+    public void setDestConnectedLineName(String destConnectedLineName){
+    	setCallerIdName(destConnectedLineName);
+    }
+    
+    public String getDestConnectedLineNum(){
+    	return getCallerId();
+    }
+    
+    public void setDestConnectedLineNum(String destConnectedLineNum){
+    	setCallerId(destConnectedLineNum);
+    }
+    
+    public String getDestCallerIdName() {
+		return destCallerIdName;
+	}
+    
+    public void setDestCallerIdName(String destCallerIdName) {
+		this.destCallerIdName = destCallerIdName;
+	}
+    
+    public String getDestCallerIdNum() {
+		return destCallerIdNum;
+	}
+    
+    public void setDestCallerIdNum(String destCallerIdNum) {
+		this.destCallerIdNum = destCallerIdNum;
+	}
+
+	public Integer getDestChannelState() {
+		return destChannelState;
+	}
+
+	public void setDestChannelState(Integer destChannelState) {
+		this.destChannelState = destChannelState;
+	}
+
+	public String getDestChannelStateDesc() {
+		return destChannelStateDesc;
+	}
+
+	public void setDestChannelStateDesc(String destChannelStateDesc) {
+		this.destChannelStateDesc = destChannelStateDesc;
+	}
+	
+	public String getDestChannel(){
+		return getDestination();
+	}
+	
+	public void setDestChannel(String destChannel){
+		setDestination(destChannel);
+	}
+
+	public Integer getChannelState() {
+		return channelState;
+	}
+
+	public void setChannelState(Integer channelState) {
+		this.channelState = channelState;
+	}
+
+	public String getChannelStateDesc() {
+		return channelStateDesc;
+	}
+
+	public void setChannelStateDesc(String channelStateDesc) {
+		this.channelStateDesc = channelStateDesc;
+	}
+
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getAccountCode() {
+		return accountCode;
+	}
+
+	public void setAccountCode(String accountCode) {
+		this.accountCode = accountCode;
+	}
+
+	public String getExten() {
+		return exten;
+	}
+
+	public void setExten(String exten) {
+		this.exten = exten;
+	}
+
+	public String getDestLanguage() {
+		return destLanguage;
+	}
+
+	public void setDestLanguage(String destLanguage) {
+		this.destLanguage = destLanguage;
+	}
+
+	public String getDestAccountCode() {
+		return destAccountCode;
+	}
+
+	public void setDestAccountCode(String destAccountCode) {
+		this.destAccountCode = destAccountCode;
+	}
+
+	public String getDestExten() {
+		return destExten;
+	}
+
+	public void setDestExten(String destExten) {
+		this.destExten = destExten;
+	}
 }
+
