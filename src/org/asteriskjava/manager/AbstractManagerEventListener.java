@@ -136,6 +136,10 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
     {
     }
 
+    protected void handleEvent(UnholdEvent event)
+    {
+    }
+
     protected void handleEvent(LogChannelEvent event)
     {
     }
@@ -454,6 +458,10 @@ public abstract class AbstractManagerEventListener implements ManagerEventListen
         else if (event instanceof HoldEvent)
         {
             handleEvent((HoldEvent) event);
+        }
+        else if (event instanceof UnholdEvent)
+        {
+        	handleEvent((UnholdEvent) event);
         }
         else if (event instanceof LogChannelEvent)
         {
