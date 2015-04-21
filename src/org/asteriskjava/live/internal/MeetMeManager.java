@@ -225,7 +225,11 @@ class MeetMeManager
             }
 
             userNumber = Integer.valueOf(matcher.group(1));
-            channel = channelManager.getChannelImplByName(matcher.group(2));
+			channel = channelManager.getChannelImplByName(matcher.group(2));
+			if(channel == null)	// User has left the room already in the meanwhile
+			{
+				continue;
+			}
 
             userNumbers.add(userNumber);
 
@@ -239,7 +243,7 @@ class MeetMeManager
                 talking = true;
             }
 
-            channelUser = channel.getMeetMeUser();
+			channelUser = channel.getMeetMeUser();
             if (channelUser != null && channelUser.getRoom() != room)
             {
                 channelUser.left(DateUtil.getDate());
