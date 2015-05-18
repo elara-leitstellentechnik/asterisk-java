@@ -133,6 +133,9 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final String SHOW_VOICEMAIL_USERS_COMMAND = "show voicemail users";
     private static final String SHOW_VOICEMAIL_USERS_1_6_COMMAND = "voicemail show users";
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
+    //.DHP.
+    //Alles ausser UserEvents : ..,user,..
+    private static final String EVENT_FLAGS = "system,call,log,verbose,command,agent,config"; 
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -141,9 +144,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
      */
     private ManagerConnection eventConnection;
     private ManagerEventListener eventListener = null;
-    ManagerEventListenerProxy managerEventListenerProxy;
+    private ManagerEventListenerProxy managerEventListenerProxy;
 
-    boolean initialized = false;
+    private boolean initialized = false;
+    private boolean initializing = false;
 
     final Set<AsteriskServerListener> listeners;
 
@@ -273,7 +277,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
     private synchronized void initializeIfNeeded() throws ManagerCommunicationException
     {
-        if (initialized)
+        if (initialized || initializing)
         {
             return;
         }
@@ -287,19 +291,21 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             eventListener = this;
             eventConnection.addEventListener(eventListener);
         }
+
+        initializing = true;
+        
         if (eventConnection.getState() == ManagerConnectionState.INITIAL
                 || eventConnection.getState() == ManagerConnectionState.DISCONNECTED)
         {
             try
             {
-                eventConnection.login();
+            	eventConnection.login(EVENT_FLAGS);
             }
             catch (Exception e)
             {
                 throw new ManagerCommunicationException("Unable to login: " + e.getMessage(), e);
             }
         }
-
     }
 
     /* Implementation of the AsteriskServer interface */
@@ -876,7 +882,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         initializeIfNeeded();
         synchronized (listeners)
         {
-            listeners.add(listener);
+        	if(!listeners.contains(listener))
+        	{
+        		listeners.add(listener);
+        	}
         }
     }
 
@@ -888,6 +897,11 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
+    public boolean isAsteriskServerListening(AsteriskServerListener listener)
+    {
+    	return listeners.contains(listener);
+    }
+    
 	public void addChainListener(ManagerEventListener chainListener)
 	{
 		synchronized (this.chainListeners)
@@ -1198,6 +1212,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         meetMeManager.disconnected();
         queueManager.disconnected();
         initialized = false;
+        initializing = false;
     }
 
     /*
@@ -1221,6 +1236,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
 
             logger.info("Initializing done");
             initialized = true;
+            initializing = false;
         }
         catch (Exception e)
         {
@@ -1315,14 +1331,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
                 }
             }
 
-            if (channel.wasInState(ChannelState.DOWN))
-            {
-                cb.onNoAnswer(channel);
-                return;
-            }
-
-            // if nothing else matched we asume success
-            cb.onSuccess(channel);
+            // if nothing else matched we asume no answer
+            cb.onNoAnswer(channel);
         }
         catch (Throwable t)
         {
@@ -1344,16 +1354,16 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             managerEventListenerProxy.shutdown();
         }
 
-		    if (eventConnection != null && eventListener != null) {
-			    eventConnection.removeEventListener(eventListener);
-	      }
+		if (eventConnection != null && eventListener != null) {
+		    	eventConnection.removeEventListener(eventListener);
+	    }
 
-		    managerEventListenerProxy = null;
+		managerEventListenerProxy = null;
         eventListener = null;
 
-	      if (initialized) {//incredible, but it happened
-		      handleDisconnectEvent(null);
-	      }//i
+	    if (initialized) {//incredible, but it happened
+	    	handleDisconnectEvent(null);
+	    }//i
     }//shutdown
 
     public List<PeerEntryEvent> getPeerEntries() throws ManagerCommunicationException
