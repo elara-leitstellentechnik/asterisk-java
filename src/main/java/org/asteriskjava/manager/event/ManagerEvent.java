@@ -147,9 +147,6 @@ public abstract class ManagerEvent extends EventObject
      */
     private String server;
 
-    /**
-     * Enro 2015-03: Since Asterisk 12 all AMI events now contain a SystemName field, if available.
-     */
     private String systemName;
     
     // AJ-213 only used when debugging is turned on
