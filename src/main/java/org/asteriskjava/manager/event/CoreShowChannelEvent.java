@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A CoreShowChannelEvent is triggered for each active channel in response to a CoreShowChannelsAction.
+ * A CoreShowChannelEvent is triggered for each active channel in response to a
+ * CoreShowChannelsAction.
  *
  * @author sebastian gutierrez
  * @version $Id$
@@ -33,12 +34,9 @@ public class CoreShowChannelEvent extends ResponseEvent
 
     private String uniqueid;
     private String channel;
-    private String context;
     private String extension;
-    private String channelstatedesc;
     private String application;
     private String applicationdata;
-    private String calleridnum;
     private String duration;
     private String accountcode;
     private String bridgedChannel;
@@ -54,7 +52,6 @@ public class CoreShowChannelEvent extends ResponseEvent
      *
      * @return channel state
      */
-
 
     /**
      * Returns the Account code
@@ -87,8 +84,8 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the Aplication Data is runnning that channel at that time
-     * this is the parameters passed to that dialplan application
+     * Returns the Aplication Data is runnning that channel at that time this is
+     * the parameters passed to that dialplan application
      *
      * @return aplication data
      */
@@ -133,21 +130,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     }
 
     /**
-     * Returns the CallerID
-     *
-     * @return callerid
-     */
-    public String getCalleridnum()
-    {
-        return calleridnum;
-    }
-
-    public void setCalleridnum(String calleridnum)
-    {
-        this.calleridnum = calleridnum;
-    }
-
-    /**
      * Returns the Originate Channel name
      *
      * @return Channel name
@@ -160,36 +142,6 @@ public class CoreShowChannelEvent extends ResponseEvent
     public void setChannel(String channel)
     {
         this.channel = channel;
-    }
-
-    /**
-     * Returns the Channel state description (RING,...)
-     *
-     * @return description
-     */
-    public String getChannelstatedesc()
-    {
-        return channelstatedesc;
-    }
-
-    public void setChannelstatedesc(String channelstatedesc)
-    {
-        this.channelstatedesc = channelstatedesc;
-    }
-
-    /**
-     * Returns the Context the channel is
-     *
-     * @return context
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
     }
 
     /**

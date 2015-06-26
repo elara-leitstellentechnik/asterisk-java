@@ -148,8 +148,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	private int socketTimeout = 0;
 
 	/**
-     * Closes the connection (and reconnects) if no input has been read for the given amount
-     * of milliseconds. A timeout of zero is interpreted as an infinite timeout.
+     * Closes the connection (and reconnects) if no input has been read for the
+     * given amount of milliseconds. A timeout of zero is interpreted as an
+     * infinite timeout.
 	 * 
 	 * @see Socket#setSoTimeout(int)
 	 */
@@ -278,8 +279,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	}
 
 	/**
-	 * Sets whether to use SSL.
-     * <br>
+     * Sets whether to use SSL. <br>
 	 * Default is false.
 	 * 
      * @param ssl <code>true</code> to use SSL for the connection,
@@ -316,8 +316,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	/**
 	 * Sets the time in milliseconds the synchronous method
 	 * {@link #sendAction(ManagerAction)} will wait for a response before
-	 * throwing a TimeoutException.
-     * <br>
+     * throwing a TimeoutException. <br>
 	 * Default is 2000.
 	 * 
      * @param defaultResponseTimeout default response timeout in milliseconds
@@ -331,8 +330,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	/**
 	 * Sets the time in milliseconds the synchronous method
 	 * {@link #sendEventGeneratingAction(EventGeneratingAction)} will wait for a
-	 * response and the last response event before throwing a TimeoutException.
-     * <br>
+     * response and the last response event before throwing a TimeoutException. <br>
 	 * Default is 5000.
 	 * 
      * @param defaultEventTimeout default event timeout in milliseconds
@@ -344,14 +342,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	}
 
 	/**
-     * Set to <code>true</code> to try reconnecting to ther asterisk serve
-     * even if the reconnection attempt threw an AuthenticationFailedException.
-     * <br>
+     * Set to <code>true</code> to try reconnecting to ther asterisk serve even
+     * if the reconnection attempt threw an AuthenticationFailedException. <br>
 	 * Default is <code>true</code>.
 	 * 
-	 * @param keepAliveAfterAuthenticationFailure
-	 *            <code>true</code> to try reconnecting to ther asterisk serve
-     *         even if the reconnection attempt threw an AuthenticationFailedException,
+     * @param keepAliveAfterAuthenticationFailure <code>true</code> to try
+     *            reconnecting to ther asterisk serve even if the reconnection
+     *            attempt threw an AuthenticationFailedException,
      *         <code>false</code> otherwise.
 	 */
 	public void setKeepAliveAfterAuthenticationFailure(boolean keepAliveAfterAuthenticationFailure)
@@ -460,8 +457,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	}
 
 	/**
-	 * Does the real login, following the steps outlined below.
-     * <br>
+     * Does the real login, following the steps outlined below. <br>
 	 * <ol>
 	 * <li>Connects to the asterisk server by calling {@link #connect()} if not
 	 * already connected
@@ -473,8 +469,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	 * is sent using the calculated key (MD5 hash of the password appended to
 	 * the received challenge).
 	 * </ol>
-	 * 
-
      * @param timeout   the maximum time to wait for the protocol identifier (in
      *                  ms)
      * @param eventMask the event mask. Set to "on" if all events should be
@@ -630,7 +624,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 			{
 				// return early in case of permission problems
 				// org.asteriskjava.manager.response.ManagerError:
-                // actionId='null'; message='Permission denied'; response='Error';
+                // actionId='null'; message='Permission denied';
+                // response='Error';
 				// uniqueId='null'; systemHashcode=15231583
 				break;
 			}
@@ -654,7 +649,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 				else if (line1 != null && line1.contains("No such command"))
 				{
 
-                    final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"), defaultResponseTimeout * 2);
+                    final ManagerResponse coreShowVersionResponse = sendAction(new CommandAction("core show version"),
+                            defaultResponseTimeout * 2);
 
 					if (coreShowVersionResponse != null && coreShowVersionResponse instanceof CommandResponse)
 					{
@@ -702,7 +698,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 }
                 else
                 {
-                    // if it isn't the "no such command", break and return the lowest version immediately
+                    // if it isn't the "no such command", break and return the
+                    // lowest version immediately
 					break;
 				}
 			}
@@ -935,7 +932,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
 	boolean isShowVersionCommandAction(ManagerAction action)
 	{
-        if (! (action instanceof CommandAction)) {
+        if (!(action instanceof CommandAction))
+        {
 			return false;
 		}
 		final Matcher showVersionMatcher = SHOW_VERSION_PATTERN.matcher(((CommandAction) action).getCommand());
@@ -1031,10 +1029,8 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 			// still no response or not all events received and timed out?
 			if ((responseEvents.getResponse() == null || !responseEvents.isComplete()))
 			{
-				throw new EventTimeoutException("Timeout waiting for response or response events to "
-						+ action.getAction()
-						+ (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"),
-						responseEvents);
+                throw new EventTimeoutException("Timeout waiting for response or response events to " + action.getAction()
+                        + (action.getActionId() == null ? "" : " (actionId: " + action.getActionId() + ")"), responseEvents);
 			}
 
 		}
@@ -1300,11 +1296,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	}
 
 	/**
-     * Enro 2015-03
-     * Workaround to continue having Legacy Events from Asterisk 13.
+     * Enro 2015-03 Workaround to continue having Legacy Events from Asterisk
+     * 13.
      */
-    private void dispatchLegacyEventIfNeeded(ManagerEvent event) {
-		if (event instanceof DialBeginEvent){
+    private void dispatchLegacyEventIfNeeded(ManagerEvent event)
+    {
+        if (event instanceof DialBeginEvent)
+        {
         	DialEvent legacyEvent = (new DialEvent((DialBeginEvent) event));
         	dispatchEvent(legacyEvent);
 		}
@@ -1345,13 +1343,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 		logger.info("Connected via " + identifier);
 
 		if (!"Asterisk Call Manager/1.0".equals(identifier)
-                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk 1.6
-                && !"Asterisk Call Manager/1.2".equals(identifier) // bri stuffed
-                && !"Asterisk Call Manager/1.3".equals(identifier) // Asterisk 11
-                && !"Asterisk Call Manager/2.6.0".equals(identifier) // Asterisk 13
-                && !"Asterisk Call Manager/2.7.0".equals(identifier) // Asterisk 13.2
-                && !"OpenPBX Call Manager/1.0".equals(identifier)
-                && !"CallWeaver Call Manager/1.0".equals(identifier)
+                && !"Asterisk Call Manager/1.1".equals(identifier) // Asterisk
+                                                                   // 1.6
+                && !"Asterisk Call Manager/1.2".equals(identifier) // bri
+                                                                   // stuffed
+                && !"Asterisk Call Manager/1.3".equals(identifier) // Asterisk
+                                                                   // 11
+                && !"Asterisk Call Manager/2.6.0".equals(identifier) // Asterisk
+                                                                     // 13
+                && !"Asterisk Call Manager/2.7.0".equals(identifier) // Asterisk
+                                                                     // 13.2
+                && !"OpenPBX Call Manager/1.0".equals(identifier) && !"CallWeaver Call Manager/1.0".equals(identifier)
 				&& !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
 		{
 			logger.warn("Unsupported protocol version '" + identifier + "'. Use at your own risk.");
@@ -1365,15 +1367,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 	}
 
 	/**
-	 * Reconnects to the asterisk server when the connection is lost.
-     * <br>
+     * Reconnects to the asterisk server when the connection is lost. <br>
 	 * While keepAlive is <code>true</code> we will try to reconnect.
 	 * Reconnection attempts will be stopped when the {@link #logoff()} method
 	 * is called or when the login after a successful reconnect results in an
 	 * {@link AuthenticationFailedException} suggesting that the manager
 	 * credentials have changed and keepAliveAfterAuthenticationFailure is not
-	 * set.
-     * <br>
+     * set. <br>
 	 * This method is called when a {@link DisconnectEvent} is received from the
 	 * reader.
 	 */
