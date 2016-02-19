@@ -16,6 +16,7 @@
  */
 package org.asteriskjava.manager.internal;
 
+import org.apache.commons.lang3.StringUtils;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AsteriskMapping;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -67,22 +68,22 @@ class ActionBuilderImpl implements ActionBuilder
     @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId)
     {
-        StringBuffer sb = new StringBuffer();
+        CheckedStringBuffer sb = new CheckedStringBuffer();
 
         sb.append("action: ");
         sb.append(action.getAction());
-        sb.append(LINE_SEPARATOR);
+        sb.appendLineSeparator();
         if (internalActionId != null)
         {
             sb.append("actionid: ");
             sb.append(ManagerUtil.addInternalActionId(action.getActionId(), internalActionId));
-            sb.append(LINE_SEPARATOR);
+            sb.appendLineSeparator();
         }
         else if (action.getActionId() != null)
         {
             sb.append("actionid: ");
             sb.append(action.getActionId());
-            sb.append(LINE_SEPARATOR);
+            sb.appendLineSeparator();
         }
 
         /*
@@ -139,11 +140,11 @@ class ActionBuilderImpl implements ActionBuilder
             }
         }
         
-        sb.append(LINE_SEPARATOR);
+        sb.appendLineSeparator();
         return sb.toString();
     }
 
-    private void appendMap(StringBuffer sb, String key, Map<String, String> values)
+    private void appendMap(CheckedStringBuffer sb, String key, Map<String, String> values)
     {
         String singularKey;
 
@@ -167,7 +168,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private void appendMap10(StringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap10(CheckedStringBuffer sb, String singularKey, Map<String, String> values)
     {
         Iterator<Map.Entry<String, String>> entryIterator;
 
@@ -191,10 +192,10 @@ class ActionBuilderImpl implements ActionBuilder
                 sb.append("|");
             }
         }
-        sb.append(LINE_SEPARATOR);
+        sb.appendLineSeparator();
     }
 
-    private void appendMap12(StringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap12(CheckedStringBuffer sb, String singularKey, Map<String, String> values)
     {
         for (Map.Entry<String, String> entry : values.entrySet())
         {
@@ -207,19 +208,19 @@ class ActionBuilderImpl implements ActionBuilder
                 sb.append(entry.getValue());
             }
 
-            sb.append(LINE_SEPARATOR);
+            sb.appendLineSeparator();
         }
     }
 
-    private void appendString(StringBuffer sb, String key, String value)
+    private void appendString(CheckedStringBuffer sb, String key, String value)
     {
         sb.append(key);
         sb.append(": ");
         sb.append(value);
-        sb.append(LINE_SEPARATOR);
+        sb.appendLineSeparator();
     }
 
-    private void appendUserEvent(StringBuffer sb, UserEvent event)
+    private void appendUserEvent(CheckedStringBuffer sb, UserEvent event)
     {
         Class<?> clazz = event.getClass();
 
@@ -235,7 +236,7 @@ class ActionBuilderImpl implements ActionBuilder
     }
 
     @SuppressWarnings("unchecked")
-    private void appendGetters(StringBuffer sb, Object action, Set<String> membersToIgnore)
+    private void appendGetters(CheckedStringBuffer sb, Object action, Set<String> membersToIgnore)
     {
         Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())
@@ -377,5 +378,27 @@ class ActionBuilderImpl implements ActionBuilder
 
         char first = s.charAt(0);
         return Character.toLowerCase(first) + s.substring(1);
+    }
+
+    private static class CheckedStringBuffer {
+        private final StringBuffer sb = new StringBuffer();
+
+        private CheckedStringBuffer append(String string) {
+            if(StringUtils.containsAny(string, '\0', '\n')) {
+                throw new IllegalArgumentException("Forbidden character \\0 or \\n in Action");
+            }
+            sb.append(string);
+            return this;
+        }
+
+        @Override
+        public String toString() {
+            return sb.toString();
+        }
+
+        private CheckedStringBuffer appendLineSeparator() {
+            sb.append(LINE_SEPARATOR);
+            return this;
+        }
     }
 }
