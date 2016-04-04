@@ -40,7 +40,7 @@ import org.asteriskjava.util.internal.Slf4JLogger;
  */
 public final class LogFactory
 {
-    private static Boolean slf4jLoggingAvailable = Boolean.FALSE;
+    private static Boolean slf4jLoggingAvailable = null;
 
     /**
      * Indicates if log4j is available on the classpath or not. If the
@@ -69,30 +69,30 @@ public final class LogFactory
      */
     public static Log getLog(Class<?> clazz)
     {
-//        if (slf4jLoggingAvailable == null)
-//        {
-//            try
-//            {
-//                classLoader.loadClass("org.slf4j.Logger");
-//                slf4jLoggingAvailable = Boolean.TRUE;
-//            }
-//            catch (Exception e)
-//            {
-//                slf4jLoggingAvailable = Boolean.FALSE;
-//            }
-//        }
-//
-//        if (slf4jLoggingAvailable)
-//        {
-//            try
-//            {
-//                return new Slf4JLogger(clazz);
-//            }
-//            catch (Throwable e)
-//            {
-//                slf4jLoggingAvailable = Boolean.FALSE;
-//            }
-//        }
+        if (slf4jLoggingAvailable == null)
+        {
+            try
+            {
+                classLoader.loadClass("org.slf4j.Logger");
+                slf4jLoggingAvailable = Boolean.TRUE;
+            }
+            catch (Exception e)
+            {
+                slf4jLoggingAvailable = Boolean.FALSE;
+            }
+        }
+
+        if (slf4jLoggingAvailable)
+        {
+            try
+            {
+                return new Slf4JLogger(clazz);
+            }
+            catch (Throwable e)
+            {
+                slf4jLoggingAvailable = Boolean.FALSE;
+            }
+        }
 
         if (log4jLoggingAvailable == null)
         {
