@@ -65,6 +65,7 @@ import org.asteriskjava.manager.action.ModuleLoadAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.action.SipPeersAction;
+import org.asteriskjava.manager.event.AbstractBridgeEvent;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
 import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
@@ -1043,6 +1044,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         else if (event instanceof BridgeEvent)
         {
             channelManager.handleBridgeEvent((BridgeEvent) event);
+        }
+        else if (event instanceof AbstractBridgeEvent)
+        {
+            channelManager.handleAbstractBridgeEvent((AbstractBridgeEvent) event);
         }
         else if (event instanceof RenameEvent)
         {
