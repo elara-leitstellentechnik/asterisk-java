@@ -362,36 +362,6 @@ public class DialEvent extends ManagerEvent
         this.dialStatus = dialStatus;
     }
 
-    @Override
-    public String toString()
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append("DialEvent [subEvent=");
-        builder.append(subEvent);
-        builder.append(", channel=");
-        builder.append(channel);
-        builder.append(", destination=");
-        builder.append(destination);
-        builder.append(", callerIdNum=");
-        builder.append(callerIdNum);
-        builder.append(", callerIdName=");
-        builder.append(callerIdName);
-        builder.append(", uniqueId=");
-        builder.append(uniqueId);
-        builder.append(", destUniqueId=");
-        builder.append(destUniqueId);
-        builder.append(", dialString=");
-        builder.append(dialString);
-        builder.append(", dialStatus=");
-        builder.append(dialStatus);
-        builder.append(", connectedLineNum=");
-        builder.append(connectedLineNum);
-        builder.append(", connectedLineName=");
-        builder.append(connectedLineName);
-        builder.append("]");
-        return builder.toString();
-    }
-
     public Integer getDestChannelState()
     {
         return destChannelState;
