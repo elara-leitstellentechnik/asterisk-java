@@ -1304,29 +1304,37 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             // at that
             if (otherChannel != null)
             {
-                final AsteriskChannel dialedChannel;
-
-                dialedChannel = otherChannel.getDialedChannel();
+                if (otherChannel.wasInState(ChannelState.UP)) {
+                    cb.onSuccess(channel);
+                    return;
+                }
+                for (AsteriskChannel dialedChannel : otherChannel.getDialedChannels()) {
+                    if (dialedChannel.wasInState(ChannelState.UP)) {
+                        cb.onSuccess(channel);
+                        return;
+                    }
+                }
 
                 // on busy the other channel is in state busy when we receive
                 // the originate event
-                if (otherChannel.wasBusy())
-                {
+                if (otherChannel.wasBusy()) {
                     cb.onBusy(channel);
                     return;
                 }
 
-                // alternative:
-                // on busy the dialed channel is hung up when we receive the
-                // originate event having a look at the hangup cause reveals the
-                // information we are interested in
-                // this alternative has the drawback that there might by
-                // multiple channels that have been dialed by the local channel
-                // but we only look at the last one.
-                if (dialedChannel != null && dialedChannel.wasBusy())
-                {
-                    cb.onBusy(channel);
-                    return;
+                for (AsteriskChannel dialedChannel : otherChannel.getDialedChannels()) {
+                    // alternative:
+                    // on busy the dialed channel is hung up when we receive the
+                    // originate event having a look at the hangup cause reveals the
+                    // information we are interested in
+                    // this alternative has the drawback that there might by
+                    // multiple channels that have been dialed by the local channel
+                    // but we only look at the last one.
+                    if (dialedChannel != null && dialedChannel.wasBusy())
+                    {
+                        cb.onBusy(channel);
+                        return;
+                    }
                 }
             }
 
