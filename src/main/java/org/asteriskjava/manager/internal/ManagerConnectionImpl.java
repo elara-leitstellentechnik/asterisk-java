@@ -23,33 +23,24 @@ import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTING;
 import static org.asteriskjava.manager.ManagerConnectionState.INITIAL;
 import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.Socket;
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.*;
+import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.EventTimeoutException;
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionState;
+import org.asteriskjava.manager.ManagerEventListener;
+import org.asteriskjava.manager.ResponseEvents;
+import org.asteriskjava.manager.SendActionCallback;
+import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.DialBeginEvent;
-import org.asteriskjava.manager.event.DialEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
@@ -63,7 +54,22 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
-import org.asteriskjava.manager.action.UserEventAction;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Internal implemention of the ManagerConnection interface.
@@ -1215,7 +1221,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
             return;
         }
-        dispatchLegacyEventIfNeeded(event);
         logger.debug("Dispatching event:\n" + event.toString());
 
         // Some events need special treatment besides forwarding them to the
@@ -1311,19 +1316,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         fireEvent(event);
-    }
-
-    /**
-     * Enro 2015-03 Workaround to continue having Legacy Events from Asterisk
-     * 13.
-     */
-    private void dispatchLegacyEventIfNeeded(ManagerEvent event)
-    {
-        if (event instanceof DialBeginEvent)
-        {
-            DialEvent legacyEvent = (new DialEvent((DialBeginEvent) event));
-            dispatchEvent(legacyEvent);
-        }
     }
 
     /**
