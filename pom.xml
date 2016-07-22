@@ -3,7 +3,7 @@
     <groupId>de.elara.asgard.lib</groupId>
     <artifactId>asterisk-java</artifactId>
     <name>Asterisk-Java</name>
-    <version>v011</version>
+    <version>v012</version>
     <description>The free Java library for Asterisk PBX integration.</description>
     <inceptionYear>2004</inceptionYear>
     <developers>
@@ -139,7 +139,6 @@
                             <mainClass>org.asteriskjava.Cli</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>.</Class-Path>
                             <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
                             <Bundle-SymbolicName>org.asteriskjava</Bundle-SymbolicName>
                             <Bundle-Version>${project.version}</Bundle-Version>
