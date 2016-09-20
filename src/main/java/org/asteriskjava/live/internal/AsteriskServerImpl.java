@@ -136,7 +136,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
     //.DHP.
     //Alles ausser UserEvents : ..,user,..
-    private static final String EVENT_FLAGS = "system,call,log,verbose,command,agent,config"; 
+    private static final String EVENT_FLAGS = "system,call,log,verbose,command,agent,config";
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -297,7 +297,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             try
             {
-            	eventConnection.login(EVENT_FLAGS);
+           // 	eventConnection.login(EVENT_FLAGS);
+                eventConnection.login();
             }
             catch (Exception e)
             {
