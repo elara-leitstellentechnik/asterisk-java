@@ -96,25 +96,6 @@ public class DialEvent extends ManagerEvent
     }
 
     /**
-     * Enro 2015-03 Workaround to build legacy DialEvent (unsupported in
-     * Asterisk 13) from new DialBeginEvent Asterisk 13.
-     */
-    public DialEvent(DialBeginEvent dialBeginEvent)
-    {
-        this(dialBeginEvent.getSource());
-        setDateReceived(dialBeginEvent.getDateReceived());
-        setTimestamp(dialBeginEvent.getTimestamp());
-        setPrivilege(dialBeginEvent.getPrivilege());
-        setCallerId(dialBeginEvent.getCallerIdNum());
-        setCallerIdName(dialBeginEvent.getCallerIdName());
-        setSrc(dialBeginEvent.getChannel());
-        setUniqueId(dialBeginEvent.getSrcUniqueId());
-        setDestUniqueId(dialBeginEvent.getDestUniqueId());
-        setDestination(dialBeginEvent.getDestChannel());
-        setDialStatus(dialBeginEvent.getDialStatus());
-    }
-
-    /**
      * Since Asterisk 1.6 the begin and the end of a dial command generate a
      * Dial event. The subEvent property returns whether the dial started
      * execution ("Begin") or completed ("End"). As Asterisk prior to 1.6 only
@@ -360,36 +341,6 @@ public class DialEvent extends ManagerEvent
     public void setDialStatus(String dialStatus)
     {
         this.dialStatus = dialStatus;
-    }
-
-    @Override
-    public String toString()
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append("DialEvent [subEvent=");
-        builder.append(subEvent);
-        builder.append(", channel=");
-        builder.append(channel);
-        builder.append(", destination=");
-        builder.append(destination);
-        builder.append(", callerIdNum=");
-        builder.append(callerIdNum);
-        builder.append(", callerIdName=");
-        builder.append(callerIdName);
-        builder.append(", uniqueId=");
-        builder.append(uniqueId);
-        builder.append(", destUniqueId=");
-        builder.append(destUniqueId);
-        builder.append(", dialString=");
-        builder.append(dialString);
-        builder.append(", dialStatus=");
-        builder.append(dialStatus);
-        builder.append(", connectedLineNum=");
-        builder.append(connectedLineNum);
-        builder.append(", connectedLineName=");
-        builder.append(connectedLineName);
-        builder.append("]");
-        return builder.toString();
     }
 
     public Integer getDestChannelState()

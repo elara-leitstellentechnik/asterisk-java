@@ -930,4 +930,55 @@ class ChannelManager
         logger.info("Channel " + channel.getName() + " is not monitored");
     }
 
+    private Map<String, Set<String>> bridgedChannels = new LinkedHashMap<String, Set<String>>();
+
+    /**
+     * Sere 2016-05 Workaround to build legacy BridgeEvent (unsupported in
+     * Asterisk 13) from new AbstractBridgeEvent in Asterisk 13.
+     */
+    void handleAbstractBridgeEvent(AbstractBridgeEvent event) {
+        String bridgeUniqueId = event.getBridgeUniqueId();
+        if (event instanceof BridgeCreateEvent) {
+            Set<String> old = bridgedChannels.put(bridgeUniqueId, new LinkedHashSet<String>());
+            if (old != null) {
+                logger.info("Bridge " + bridgeUniqueId + " was already known");
+            }
+        } else if (event instanceof BridgeDestroyEvent) {
+            Set<String> removed = bridgedChannels.remove(bridgeUniqueId);
+            if (removed == null) {
+                logger.info("Unknown Bridge " + bridgeUniqueId);
+            }
+        } else {
+            Set<String> uniqueIds = bridgedChannels.get(bridgeUniqueId);
+            if (uniqueIds == null) {
+                logger.info("Unknown Bridge " + bridgeUniqueId);
+            } else if (event instanceof BridgeEnterEvent) {
+                String uniqueId1 = ((BridgeEnterEvent) event).getUniqueId();
+                for (String uniqueId2 : uniqueIds) {
+                    BridgeEvent bridgeEvent = new BridgeEvent(event.getSource());
+                    bridgeEvent.setDateReceived(event.getDateReceived());
+                    bridgeEvent.setBridgeState(BridgeEvent.BRIDGE_STATE_LINK);
+                    bridgeEvent.setUniqueId1(uniqueId1);
+                    bridgeEvent.setUniqueId2(uniqueId2);
+                    handleBridgeEvent(bridgeEvent);
+                }
+                uniqueIds.add(uniqueId1);
+            } else if (event instanceof BridgeLeaveEvent) {
+                String uniqueId2 = ((BridgeLeaveEvent) event).getUniqueId();
+                uniqueIds.remove(uniqueId2);
+                for (String uniqueId1 : uniqueIds) {
+                    BridgeEvent bridgeEvent = new BridgeEvent(event.getSource());
+                    bridgeEvent.setDateReceived(event.getDateReceived());
+                    bridgeEvent.setBridgeState(BridgeEvent.BRIDGE_STATE_UNLINK);
+                    bridgeEvent.setUniqueId1(uniqueId1);
+                    bridgeEvent.setUniqueId2(uniqueId2);
+                    handleBridgeEvent(bridgeEvent);
+                }
+            }
+            if (bridgedChannels.size() != event.getBridgeNumChannels()) {
+                logger.info("Bridge " + bridgeUniqueId + " NumChannels does not match: reported=" + event.getBridgeNumChannels() + " tracked=" + bridgedChannels.size());
+            }
+        }
+    }
+
 }

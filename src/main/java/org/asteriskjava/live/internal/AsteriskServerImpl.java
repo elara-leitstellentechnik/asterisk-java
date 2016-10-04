@@ -65,6 +65,7 @@ import org.asteriskjava.manager.action.ModuleLoadAction;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.action.SetVarAction;
 import org.asteriskjava.manager.action.SipPeersAction;
+import org.asteriskjava.manager.event.AbstractBridgeEvent;
 import org.asteriskjava.manager.event.AbstractMeetMeEvent;
 import org.asteriskjava.manager.event.AgentCallbackLoginEvent;
 import org.asteriskjava.manager.event.AgentCallbackLogoffEvent;
@@ -135,7 +136,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
     private static final Pattern SHOW_VOICEMAIL_USERS_PATTERN = Pattern.compile("^(\\S+)\\s+(\\S+)\\s+(.{25})");
     //.DHP.
     //Alles ausser UserEvents : ..,user,..
-    private static final String EVENT_FLAGS = "system,call,log,verbose,command,agent,config"; 
+    private static final String EVENT_FLAGS = "system,call,log,verbose,command,agent,config";
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -296,7 +297,8 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             try
             {
-            	eventConnection.login(EVENT_FLAGS);
+           // 	eventConnection.login(EVENT_FLAGS);
+                eventConnection.login();
             }
             catch (Exception e)
             {
@@ -1044,6 +1046,10 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         {
             channelManager.handleBridgeEvent((BridgeEvent) event);
         }
+        else if (event instanceof AbstractBridgeEvent)
+        {
+            channelManager.handleAbstractBridgeEvent((AbstractBridgeEvent) event);
+        }
         else if (event instanceof RenameEvent)
         {
             channelManager.handleRenameEvent((RenameEvent) event);
@@ -1299,29 +1305,37 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
             // at that
             if (otherChannel != null)
             {
-                final AsteriskChannel dialedChannel;
-
-                dialedChannel = otherChannel.getDialedChannel();
+                if (otherChannel.wasInState(ChannelState.UP)) {
+                    cb.onSuccess(channel);
+                    return;
+                }
+                for (AsteriskChannel dialedChannel : otherChannel.getDialedChannels()) {
+                    if (dialedChannel.wasInState(ChannelState.UP)) {
+                        cb.onSuccess(channel);
+                        return;
+                    }
+                }
 
                 // on busy the other channel is in state busy when we receive
                 // the originate event
-                if (otherChannel.wasBusy())
-                {
+                if (otherChannel.wasBusy()) {
                     cb.onBusy(channel);
                     return;
                 }
 
-                // alternative:
-                // on busy the dialed channel is hung up when we receive the
-                // originate event having a look at the hangup cause reveals the
-                // information we are interested in
-                // this alternative has the drawback that there might by
-                // multiple channels that have been dialed by the local channel
-                // but we only look at the last one.
-                if (dialedChannel != null && dialedChannel.wasBusy())
-                {
-                    cb.onBusy(channel);
-                    return;
+                for (AsteriskChannel dialedChannel : otherChannel.getDialedChannels()) {
+                    // alternative:
+                    // on busy the dialed channel is hung up when we receive the
+                    // originate event having a look at the hangup cause reveals the
+                    // information we are interested in
+                    // this alternative has the drawback that there might by
+                    // multiple channels that have been dialed by the local channel
+                    // but we only look at the last one.
+                    if (dialedChannel != null && dialedChannel.wasBusy())
+                    {
+                        cb.onBusy(channel);
+                        return;
+                    }
                 }
             }
 
