@@ -238,7 +238,7 @@ class ChannelManager
 
         synchronized (channel)
         {
-            channel.setCallerId(new CallerId(getCallerIdName(event), getCallerIdNum(event)));
+            channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
             channel.setAccount(event.getAccountCode());
             if (event.getChannelState() != null)
             {
@@ -408,7 +408,7 @@ class ChannelManager
             {
                 addNewChannel(
                         event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                        getCallerIdNum(event), getCallerIdName(event),
+                        event.getCallerIdNum(), event.getCallerIdName(),
                         ChannelState.valueOf(event.getChannelState()), event.getAccountCode());
             }
         }
@@ -418,7 +418,7 @@ class ChannelManager
             synchronized (channel)
             {
                 channel.nameChanged(event.getDateReceived(), event.getChannel());
-                channel.setCallerId(new CallerId(getCallerIdName(event), getCallerIdNum(event)));
+                channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
                 channel.stateChanged(event.getDateReceived(), ChannelState.valueOf(event.getChannelState()));
             }
         }
@@ -479,14 +479,14 @@ class ChannelManager
                 // NewStateEvent can occur instead of a NewChannelEvent
                 channel = addNewChannel(
                         event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                        getCallerIdNum(event), getCallerIdName(event),
+                        event.getCallerIdNum(), event.getCallerIdName(),
                         ChannelState.valueOf(event.getChannelState()), null /* account code not available */);
             }
         }
 
         // NewStateEvent can provide a new CallerIdNum or CallerIdName not previously received through a
         // NewCallerIdEvent. This happens at least on outgoing legs from the queue application to agents.
-        if (getCallerIdNum(event) != null || getCallerIdName(event) != null)
+        if (event.getCallerIdNum() != null || event.getCallerIdName() != null)
         {
             String cidnum = "";
             String cidname = "";
@@ -498,14 +498,14 @@ class ChannelManager
                 cidname = currentCallerId.getName();
             }
 
-            if (getCallerIdNum(event) != null)
+            if (event.getCallerIdNum() != null)
             {
-                cidnum = getCallerIdNum(event);
+                cidnum = event.getCallerIdNum();
             }
 
-            if (getCallerIdName(event) != null)
+            if (event.getCallerIdName() != null)
             {
-                cidname = getCallerIdName(event);
+                cidname = event.getCallerIdName();
             }
 
             CallerId newCallerId = new CallerId(cidname, cidnum);
@@ -549,14 +549,14 @@ class ChannelManager
                 // NewCallerIdEvent can occur before NewChannelEvent
                 channel = addNewChannel(
                         event.getUniqueId(), event.getChannel(), event.getDateReceived(),
-                        getCallerIdNum(event), getCallerIdName(event),
+                        event.getCallerIdNum(), event.getCallerIdName(),
                         ChannelState.DOWN, null /* account code not available */);
             }
         }
 
         synchronized (channel)
         {
-            channel.setCallerId(new CallerId(getCallerIdName(event), getCallerIdNum(event)));
+            channel.setCallerId(new CallerId(event.getCallerIdName(), event.getCallerIdNum()));
         }
     }
 
@@ -928,18 +928,6 @@ class ChannelManager
             channel.setMonitored(false);
         }
         logger.info("Channel " + channel.getName() + " is not monitored");
-    }
-
-    private String getCallerIdName(ManagerEvent event) {
-        return event.getConnectedLineName() == null || event.getConnectedLineName().isEmpty()
-                ? event.getCallerIdName()
-                : event.getConnectedLineName();
-    }
-
-    private String getCallerIdNum(ManagerEvent event) {
-        return event.getConnectedLineNum() == null || event.getConnectedLineNum().isEmpty()
-                ? event.getCallerIdNum()
-                : event.getConnectedLineNum();
     }
 
 }
