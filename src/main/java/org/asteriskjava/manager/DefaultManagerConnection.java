@@ -16,16 +16,16 @@
  */
 package org.asteriskjava.manager;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.internal.ManagerConnectionImpl;
 import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.manager.event.ManagerEvent;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.charset.Charset;
 
 /**
  * Default implemention of the

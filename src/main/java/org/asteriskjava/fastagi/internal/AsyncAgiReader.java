@@ -1,10 +1,11 @@
 package org.asteriskjava.fastagi.internal;
 
 import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
-import org.asteriskjava.manager.event.AsyncAgiEvent;
 import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.event.AsyncAgiEvent;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;

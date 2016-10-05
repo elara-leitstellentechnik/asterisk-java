@@ -17,6 +17,7 @@
 package org.asteriskjava.manager.internal;
 
 import org.asteriskjava.manager.event.UserEvent;
+
 import java.util.Map;
 
 public class MyUserEvent extends UserEvent
@@ -25,7 +26,7 @@ public class MyUserEvent extends UserEvent
 
     private String stringMember;
     private Map<String,String> mapMember;
-    
+
     public MyUserEvent(Object source)
     {
         super(source);

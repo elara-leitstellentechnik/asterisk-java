@@ -26,7 +26,7 @@ import java.beans.PropertyChangeSupport;
 
 /**
  * Abstract base class for all live objects.
- * 
+ *
  * @author srt
  * @since 0.3
  */

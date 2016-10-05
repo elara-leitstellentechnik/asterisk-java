@@ -24,14 +24,19 @@ import org.asteriskjava.util.LogFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * Default implementation of the AGIRequest interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -63,7 +68,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Creates a new AGIRequestImpl.
-     * 
+     *
      * @param environment the first lines as received from Asterisk containing
      *            the environment.
      */
@@ -75,7 +80,8 @@ public class AgiRequestImpl implements AgiRequest
     /**
      * Creates a new AgiRequestImpl based on a preparsed map of parameters.
      *
-     * @param request a map representing the AGI request. Keys must not contain the "agi_" or "ogi_" prefix.
+     * @param request a map representing the AGI request. Keys must not contain
+     *            the "agi_" or "ogi_" prefix.
      * @since 1.0.0
      */
     private AgiRequestImpl(final Map<String, String> request)
@@ -95,12 +101,14 @@ public class AgiRequestImpl implements AgiRequest
     }
 
     /**
-     * Builds a map containing variable names as key (with the "agi_" or "ogi_" prefix
-     * stripped) and the corresponding values.<p>
+     * Builds a map containing variable names as key (with the "agi_" or "ogi_"
+     * prefix stripped) and the corresponding values.
+     * <p>
      * Syntactically invalid and empty variables are skipped.
-     * 
+     *
      * @param lines the environment to transform.
-     * @return a map with the variables set corresponding to the given environment.
+     * @return a map with the variables set corresponding to the given
+     *         environment.
      * @throws IllegalArgumentException if lines is <code>null</code>
      */
     private static Map<String, String> buildMap(final Collection<String> lines) throws IllegalArgumentException
@@ -112,7 +120,7 @@ public class AgiRequestImpl implements AgiRequest
             throw new IllegalArgumentException("Environment must not be null.");
         }
 
-        map = new HashMap<String, String>();
+        map = new HashMap<>();
 
         for (String line : lines)
         {
@@ -159,7 +167,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the name of the script to execute.
-     * 
+     *
      * @return the name of the script to execute.
      */
     public synchronized String getScript()
@@ -170,7 +178,7 @@ public class AgiRequestImpl implements AgiRequest
     /**
      * Returns the full URL of the request in the form
      * agi://host[:port][/script].
-     * 
+     *
      * @return the full URL of the request in the form
      *         agi://host[:port][/script].
      */
@@ -181,7 +189,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the name of the channel.
-     * 
+     *
      * @return the name of the channel.
      */
     public String getChannel()
@@ -191,7 +199,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the unqiue id of the channel.
-     * 
+     *
      * @return the unqiue id of the channel.
      */
     public String getUniqueId()
@@ -209,7 +217,8 @@ public class AgiRequestImpl implements AgiRequest
         return request.get("language");
     }
 
-    @Deprecated public String getCallerId()
+    @Deprecated
+    public String getCallerId()
     {
         return getCallerIdNumber();
     }
@@ -231,11 +240,8 @@ public class AgiRequestImpl implements AgiRequest
 
             return callerId;
         }
-        else
-        {
-            // Asterisk 1.0
-            return getCallerId10();
-        }
+        // Asterisk 1.0
+        return getCallerId10();
     }
 
     public String getCallerIdName()
@@ -253,16 +259,13 @@ public class AgiRequestImpl implements AgiRequest
 
             return callerIdName;
         }
-        else
-        {
-            // Asterisk 1.0
-            return getCallerIdName10();
-        }
+        // Asterisk 1.0
+        return getCallerIdName10();
     }
 
     /**
      * Returns the Caller*ID number using Asterisk 1.0 logic.
-     * 
+     *
      * @return the Caller*ID number
      */
     private synchronized String getCallerId10()
@@ -280,15 +283,12 @@ public class AgiRequestImpl implements AgiRequest
         {
             return parsedCallerId[0];
         }
-        else
-        {
-            return parsedCallerId[1];
-        }
+        return parsedCallerId[1];
     }
 
     /**
      * Returns the Caller*ID name using Asterisk 1.0 logic.
-     * 
+     *
      * @return the Caller*ID name
      */
     private synchronized String getCallerIdName10()
@@ -305,29 +305,29 @@ public class AgiRequestImpl implements AgiRequest
     public String getDnid()
     {
         String dnid;
-        
+
         dnid = request.get("dnid");
-        
+
         if (dnid == null || "unknown".equals(dnid))
         {
             return null;
         }
-        
-        return dnid; 
+
+        return dnid;
     }
 
     public String getRdnis()
     {
         String rdnis;
-        
+
         rdnis = request.get("rdnis");
-        
+
         if (rdnis == null || "unknown".equals(rdnis))
         {
             return null;
         }
-        
-        return rdnis; 
+
+        return rdnis;
     }
 
     public String getContext()
@@ -357,10 +357,7 @@ public class AgiRequestImpl implements AgiRequest
             {
                 return Boolean.TRUE;
             }
-            else
-            {
-                return Boolean.FALSE;
-            }
+            return Boolean.FALSE;
         }
         return null;
     }
@@ -393,7 +390,7 @@ public class AgiRequestImpl implements AgiRequest
         {
             return null;
         }
-        
+
         try
         {
             return Integer.valueOf(request.get("callingpres"));
@@ -410,7 +407,7 @@ public class AgiRequestImpl implements AgiRequest
         {
             return null;
         }
-        
+
         try
         {
             return Integer.valueOf(request.get("callingtns"));
@@ -427,7 +424,7 @@ public class AgiRequestImpl implements AgiRequest
         {
             return null;
         }
-        
+
         try
         {
             return Integer.valueOf(request.get("callington"));
@@ -474,7 +471,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Parses the given parameter string and caches the result.
-     * 
+     *
      * @param s the parameter string to parse
      * @return a Map made up of parameter names their values
      */
@@ -484,8 +481,8 @@ public class AgiRequestImpl implements AgiRequest
         Map<String, String[]> result;
         StringTokenizer st;
 
-        parameterMap = new HashMap<String, List<String>>();
-        result = new HashMap<String, String[]>();
+        parameterMap = new HashMap<>();
+        result = new HashMap<>();
 
         if (s == null)
         {
@@ -532,7 +529,7 @@ public class AgiRequestImpl implements AgiRequest
 
             if (parameterMap.get(name) == null)
             {
-                values = new ArrayList<String>();
+                values = new ArrayList<>();
                 values.add(value);
                 parameterMap.put(name, values);
             }
@@ -561,16 +558,16 @@ public class AgiRequestImpl implements AgiRequest
             return arguments.clone();
         }
 
-        final Map<Integer, String> map = new HashMap<Integer, String>();
+        final Map<Integer, String> map = new HashMap<>();
         int maxIndex = 0;
         for (Map.Entry<String, String> entry : request.entrySet())
         {
-            if (! entry.getKey().startsWith("arg_"))
+            if (!entry.getKey().startsWith("arg_"))
             {
                 continue;
             }
 
-            int index = Integer.valueOf(entry.getKey().substring(4));
+            int index = Integer.parseInt(entry.getKey().substring(4));
             if (index > maxIndex)
             {
                 maxIndex = index;
@@ -583,7 +580,7 @@ public class AgiRequestImpl implements AgiRequest
         {
             arguments[i] = map.get(i + 1);
         }
-        
+
         return arguments.clone();
     }
 
@@ -628,11 +625,11 @@ public class AgiRequestImpl implements AgiRequest
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer("AgiRequest[");
+        sb = new StringBuilder("AgiRequest[");
         sb.append("script='").append(getScript()).append("',");
         sb.append("requestURL='").append(getRequestURL()).append("',");
         sb.append("channel='").append(getChannel()).append("',");

@@ -18,8 +18,8 @@ package org.asteriskjava.live.internal;
 
 import org.asteriskjava.config.ConfigFile;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ConfigFile implementation based on the config actions of the Manager API.

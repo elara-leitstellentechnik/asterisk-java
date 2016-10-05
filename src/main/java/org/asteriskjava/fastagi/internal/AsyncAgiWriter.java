@@ -1,12 +1,13 @@
 package org.asteriskjava.fastagi.internal;
 
-import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.fastagi.AgiException;
+import org.asteriskjava.fastagi.AgiWriter;
+import org.asteriskjava.fastagi.command.AgiCommand;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.action.AgiAction;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.io.IOException;
 
@@ -16,7 +17,7 @@ import java.io.IOException;
  *
  * @see org.asteriskjava.manager.ManagerConnection
  * @see org.asteriskjava.manager.action.AgiAction
- * @since 1.0.0 
+ * @since 1.0.0
  */
 public class AsyncAgiWriter implements AgiWriter
 {
