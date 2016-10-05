@@ -28,7 +28,11 @@ import org.asteriskjava.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Default implementation of the ActionBuilder interface.
@@ -68,7 +72,7 @@ class ActionBuilderImpl implements ActionBuilder
     @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId)
     {
-        CheckedStringBuffer sb = new CheckedStringBuffer();
+        CheckedStringBuilder sb = new CheckedStringBuilder();
 
         sb.append("action: ");
         sb.append(action.getAction());
@@ -144,7 +148,7 @@ class ActionBuilderImpl implements ActionBuilder
         return sb.toString();
     }
 
-    private void appendMap(CheckedStringBuffer sb, String key, Map<String, String> values)
+    private void appendMap(CheckedStringBuilder sb, String key, Map<String, String> values)
     {
         String singularKey;
 
@@ -168,7 +172,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private void appendMap10(CheckedStringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap10(CheckedStringBuilder sb, String singularKey, Map<String, String> values)
     {
         Iterator<Map.Entry<String, String>> entryIterator;
 
@@ -195,7 +199,7 @@ class ActionBuilderImpl implements ActionBuilder
         sb.appendLineSeparator();
     }
 
-    private void appendMap12(CheckedStringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap12(CheckedStringBuilder sb, String singularKey, Map<String, String> values)
     {
         for (Map.Entry<String, String> entry : values.entrySet())
         {
@@ -212,7 +216,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private void appendString(CheckedStringBuffer sb, String key, String value)
+    private void appendString(CheckedStringBuilder sb, String key, String value)
     {
         sb.append(key);
         sb.append(": ");
@@ -220,7 +224,7 @@ class ActionBuilderImpl implements ActionBuilder
         sb.appendLineSeparator();
     }
 
-    private void appendUserEvent(CheckedStringBuffer sb, UserEvent event)
+    private void appendUserEvent(CheckedStringBuilder sb, UserEvent event)
     {
         Class<?> clazz = event.getClass();
 
@@ -236,7 +240,7 @@ class ActionBuilderImpl implements ActionBuilder
     }
 
     @SuppressWarnings("unchecked")
-    private void appendGetters(CheckedStringBuffer sb, Object action, Set<String> membersToIgnore)
+    private void appendGetters(CheckedStringBuilder sb, Object action, Set<String> membersToIgnore)
     {
         Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())
@@ -380,10 +384,10 @@ class ActionBuilderImpl implements ActionBuilder
         return Character.toLowerCase(first) + s.substring(1);
     }
 
-    private static class CheckedStringBuffer {
-        private final StringBuffer sb = new StringBuffer();
+    private static class CheckedStringBuilder {
+        private final StringBuilder sb = new StringBuilder();
 
-        private CheckedStringBuffer append(String string) {
+        private CheckedStringBuilder append(String string) {
             if(StringUtils.containsAny(string, '\0', '\n')) {
                 throw new IllegalArgumentException("Forbidden character \\0 or \\n in Action");
             }
@@ -396,7 +400,7 @@ class ActionBuilderImpl implements ActionBuilder
             return sb.toString();
         }
 
-        private CheckedStringBuffer appendLineSeparator() {
+        private CheckedStringBuilder appendLineSeparator() {
             sb.append(LINE_SEPARATOR);
             return this;
         }
