@@ -95,8 +95,10 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ConfbridgeListCompleteEvent.class);
         registerEventClass(ConfbridgeListRoomsEvent.class);
         registerEventClass(ConfbridgeListRoomsCompleteEvent.class);
+        registerEventClass(ConfbridgeMuteEvent.class);
         registerEventClass(ConfbridgeStartEvent.class);
         registerEventClass(ConfbridgeTalkingEvent.class);
+        registerEventClass(ConfbridgeUnmuteEvent.class);
         registerEventClass(CoreShowChannelEvent.class);
         registerEventClass(CoreShowChannelsCompleteEvent.class);
         registerEventClass(DAHDIChannelEvent.class);
