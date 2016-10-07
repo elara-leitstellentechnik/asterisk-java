@@ -1174,7 +1174,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             response.setActionId(ManagerUtil.stripInternalActionId(actionId));
         }
 
-        logger.debug("Dispatching response with internalActionId '" + internalActionId + "':\n" + response);
+        if (logger.isDebugEnabled())
+        {
+            logger.debug("Dispatching response with internalActionId '" + internalActionId + "':\n" + response);
+        }
 
         if (internalActionId != null)
         {
@@ -1229,7 +1232,10 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             logger.error("Unable to dispatch null event. This should never happen. Please file a bug.");
             return;
         }
-        logger.debug("Dispatching event:\n" + event.toString());
+        if (logger.isDebugEnabled())
+        {
+            logger.debug("Dispatching event:\n" + event.toString());
+        }
 
         // Some events need special treatment besides forwarding them to the
         // registered eventListeners (clients)
@@ -1624,5 +1630,17 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static class ProtocolIdentifierWrapper
     {
         String value;
+    }
+
+    @Override
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
+    {
+        if (reader == null)
+        {
+            reader = createReader(this, this);
+        }
+
+        reader.deregisterEventClass(eventClass);
+
     }
 }
