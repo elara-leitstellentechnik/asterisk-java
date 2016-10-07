@@ -1,9 +1,9 @@
 package org.asteriskjava.live.internal;
 
-import java.util.Date;
-
 import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.QueueEntryState;
+
+import java.util.Date;
 
 /**
  * Default implementation of the AsteriskQueueEntry interface.
@@ -133,10 +133,10 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         int systemHashcode;
 
-        sb = new StringBuffer("AsteriskQueueEntry[");
+        sb = new StringBuilder("AsteriskQueueEntry[");
 
         synchronized (this)
         {

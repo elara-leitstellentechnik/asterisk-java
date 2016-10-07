@@ -16,15 +16,15 @@
  */
 package org.asteriskjava.manager;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.charset.Charset;
 
 /**
  * The main interface to talk to an Asterisk server via the Asterisk Manager
@@ -91,8 +91,22 @@ public interface ManagerConnection
      */
     AsteriskVersion getVersion();
 
+    /**
+     * Sets the encoding to use to connect to the Asterisk server (eg. important for manager/user events).
+     * All connections should use the same encoding.
+     * The default is UTF-8.
+     *
+     * @param encoding the encoding to use for manager/user events etc.
+     */
     void setEncoding(Charset encoding);
 
+    /**
+     * Returns the encoding to use to connect to the Asterisk server (eg. important for manager/user events).
+     * All connections should use the same encoding.
+     * The default is UTF-8.
+     *
+     * @return the encoding to use for manager/user events etc.
+     */
     Charset getEncoding();
 
     /**

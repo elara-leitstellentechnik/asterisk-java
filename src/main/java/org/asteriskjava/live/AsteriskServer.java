@@ -16,15 +16,15 @@
  */
 package org.asteriskjava.live;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-import java.util.List;
-
+import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.config.ConfigFile;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The AsteriskServer is built on top of the
@@ -35,7 +35,7 @@ import org.asteriskjava.config.ConfigFile;
  * open channels). <br>
  * AsteriskServer is still in an early state of development. So, when using
  * AsteriskServer be aware that it might change in the future.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -50,14 +50,14 @@ public interface AsteriskServer
      * ManagerEventListeners} before the connection to the Asterisk server is
      * established. If you want to ensure that the connection is established
      * call {@link #initialize()}.
-     * 
+     *
      * @return the underlying ManagerConnection.
      */
     ManagerConnection getManagerConnection();
 
     /**
      * Generates an outgoing channel.
-     * 
+     *
      * @param originateAction the action that contains parameters for the
      *            originate
      * @return the generated channel
@@ -69,12 +69,12 @@ public interface AsteriskServer
      * @throws ManagerCommunicationException if the originate action cannot be
      *             sent to Asterisk
      */
-    public AsteriskChannel originate(OriginateAction originateAction) throws ManagerCommunicationException,
-            NoSuchChannelException;
+    public AsteriskChannel originate(OriginateAction originateAction)
+            throws ManagerCommunicationException, NoSuchChannelException;
 
     /**
      * Asynchronously generates an outgoing channel.
-     * 
+     *
      * @param originateAction the action that contains parameters for the
      *            originate
      * @param cb callback to inform about the result
@@ -86,7 +86,7 @@ public interface AsteriskServer
     /**
      * Generates an outgoing channel to a dialplan entry (extension, context,
      * priority).
-     * 
+     *
      * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
@@ -108,7 +108,7 @@ public interface AsteriskServer
     /**
      * Generates an outgoing channel to a dialplan entry (extension, context,
      * priority) and sets an optional map of channel variables.
-     * 
+     *
      * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
@@ -132,7 +132,7 @@ public interface AsteriskServer
 
     /**
      * Generates an outgoing channel to an application.
-     * 
+     *
      * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
      * @param data data to pass to the application, for example "1000|d", may be
@@ -154,7 +154,7 @@ public interface AsteriskServer
     /**
      * Generates an outgoing channel to an application and sets an optional map
      * of channel variables.
-     * 
+     *
      * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
      * @param data data to pass to the application, for example "1000|d", may be
@@ -179,7 +179,7 @@ public interface AsteriskServer
     /**
      * Asynchronously generates an outgoing channel to a dialplan entry
      * (extension, context, priority).
-     * 
+     *
      * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
@@ -197,7 +197,7 @@ public interface AsteriskServer
      * Asynchronously generates an outgoing channel to a dialplan entry
      * (extension, context, priority) and sets an optional map of channel
      * variables.
-     * 
+     *
      * @param channel channel name to call, for example "SIP/1310".
      * @param context context to connect to
      * @param exten extension to connect to
@@ -213,11 +213,11 @@ public interface AsteriskServer
      */
     void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout,
             CallerId callerId, Map<String, String> variables, OriginateCallback callback)
-            throws ManagerCommunicationException;
+                    throws ManagerCommunicationException;
 
     /**
      * Asynchronously generates an outgoing channel to an application.
-     * 
+     *
      * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
      * @param data data to pass to the application, for example "1000|d", may be
@@ -234,7 +234,7 @@ public interface AsteriskServer
     /**
      * Asynchronously generates an outgoing channel to an application and sets
      * an optional map of channel variables.
-     * 
+     *
      * @param channel channel name to call, for example "SIP/1310".
      * @param application application to connect to, for example "MeetMe"
      * @param data data to pass to the application, for example "1000|d", may be
@@ -253,7 +253,7 @@ public interface AsteriskServer
 
     /**
      * Returns the active channels of the Asterisk server.
-     * 
+     *
      * @return a Collection of active channels.
      * @throws ManagerCommunicationException if there is a problem communication
      *             with Asterisk
@@ -262,7 +262,7 @@ public interface AsteriskServer
 
     /**
      * Returns a channel by its name.
-     * 
+     *
      * @param name name of the channel to return
      * @return the channel with the given name or <code>null</code> if there is
      *         no such channel.
@@ -273,7 +273,7 @@ public interface AsteriskServer
 
     /**
      * Returns a channel by its unique id.
-     * 
+     *
      * @param id the unique id of the channel to return
      * @return the channel with the given unique id or <code>null</code> if
      *         there is no such channel.
@@ -284,7 +284,7 @@ public interface AsteriskServer
 
     /**
      * Returns the acitve MeetMe rooms on the Asterisk server.
-     * 
+     *
      * @return a Collection of MeetMeRooms
      * @throws ManagerCommunicationException if there is a problem communication
      *             with Asterisk
@@ -294,7 +294,7 @@ public interface AsteriskServer
     /**
      * Returns the MeetMe room with the given number, if the room does not yet
      * exist a new {@link MeetMeRoom} object is created.
-     * 
+     *
      * @param roomNumber the number of the room to return
      * @return the MeetMe room with the given number.
      * @throws ManagerCommunicationException if there is a problem communication
@@ -304,7 +304,7 @@ public interface AsteriskServer
 
     /**
      * Returns the queues served by the Asterisk server.
-     * 
+     *
      * @return a Collection of queues.
      * @throws ManagerCommunicationException if there is a problem communication
      *             with Asterisk
@@ -314,7 +314,7 @@ public interface AsteriskServer
     /**
      * Return the agents, registered at Asterisk server. (Consider remarks for
      * {@link AsteriskAgent})
-     * 
+     *
      * @return a Collection of agents
      * @throws ManagerCommunicationException if there is a problem communication
      *             with Asterisk
@@ -325,7 +325,7 @@ public interface AsteriskServer
      * Returns the exact version string of this Asterisk server. <br>
      * This typically looks like "Asterisk 1.2.9.1-BRIstuffed-0.3.0-PRE-1q built
      * by root @ pbx0 on a i686 running Linux on 2006-06-20 20:21:30 UTC".
-     * 
+     *
      * @return the version of this Asterisk server
      * @throws ManagerCommunicationException if the version cannot be retrieved
      *             from Asterisk
@@ -334,14 +334,17 @@ public interface AsteriskServer
     String getVersion() throws ManagerCommunicationException;
 
     /**
-     * Returns the CVS revision of a given source file of this Asterisk server. <br>
-     * For example getVersion("app_meetme.c") may return {1, 102} for CVS
-     * revision "1.102". <br>
+     * <<<<<<< HEAD Returns the CVS revision of a given source file of this
+     * Asterisk server. <br>
+     * ======= Returns the CVS revision of a given source file of this Asterisk
+     * server. <br>
+     * >>>>>>> refs/heads/release-1.1 For example getVersion("app_meetme.c") may
+     * return {1, 102} for CVS revision "1.102". <br>
      * Note that this feature is not available with Asterisk 1.0.x. <br>
      * You can use this feature if you need to write applications that behave
      * different depending on specific modules being available in a specific
      * version or not.
-     * 
+     *
      * @param file the file for which to get the version like "app_meetme.c"
      * @return the CVS revision of the file, or <code>null</code> if that file
      *         is not part of the Asterisk instance you are connected to (maybe
@@ -355,7 +358,7 @@ public interface AsteriskServer
 
     /**
      * Returns the value of the given global variable.
-     * 
+     *
      * @param variable the name of the global variable to return.
      * @return the value of the global variable or <code>null</code> if it is
      *         not set.
@@ -367,7 +370,7 @@ public interface AsteriskServer
 
     /**
      * Sets the value of the given global variable.
-     * 
+     *
      * @param variable the name of the global variable to set.
      * @param value the value of the global variable to set.
      * @throws ManagerCommunicationException if the set variable action cannot
@@ -379,7 +382,7 @@ public interface AsteriskServer
     /**
      * Returns a collection of all voicemailboxes configured for this Asterisk
      * server with the number of new and old messages they contain.
-     * 
+     *
      * @return a collection of all voicemailboxes configured for this Asterisk
      *         server
      * @throws ManagerCommunicationException if the voicemailboxes can't be
@@ -390,7 +393,7 @@ public interface AsteriskServer
 
     /**
      * Executes a command line interface (CLI) command.
-     * 
+     *
      * @param command the command to execute, for example "sip show peers".
      * @return a List containing strings representing the lines returned by the
      *         CLI command.
@@ -471,7 +474,7 @@ public interface AsteriskServer
     /**
      * Adds a listener to this AsteriskServer.<br>
      * If this server is not yet connected it will be implicitly connected.
-     * 
+     *
      * @param listener the listener to add.
      * @throws ManagerCommunicationException if the server is not yet connected
      *             and the connection or initialization fails.
@@ -480,7 +483,7 @@ public interface AsteriskServer
 
     /**
      * Removes a listener from this Asterisk server.
-     * 
+     *
      * @param listener the listener to remove.
      */
     void removeAsteriskServerListener(AsteriskServerListener listener);
@@ -514,7 +517,7 @@ public interface AsteriskServer
 
     /**
      * remove the chain listener.
-     * 
+     *
      * @param chainListener
      */
     public void removeChainListener(ManagerEventListener chainListener);
@@ -526,14 +529,14 @@ public interface AsteriskServer
 
     /**
      * Opens the connection to this server.
-     * 
+     *
      * @throws ManagerCommunicationException if login fails
      */
     void initialize() throws ManagerCommunicationException;
 
     /**
      * get Asterisk Queue by name
-     * 
+     *
      * @author itaqua
      * @param queueName Name of the queue to retrieve
      * @return
@@ -542,7 +545,7 @@ public interface AsteriskServer
 
     /**
      * List of Queues Objects updated after certain date
-     * 
+     *
      * @author itaqua
      * @param date
      * @return
@@ -552,14 +555,14 @@ public interface AsteriskServer
     /**
      * every time we get an event of a queue we reload the information about it
      * from the Asterisk Server
-     * 
+     *
      * @author itaqua
      */
     public void forceQueuesMonitor(boolean force);
 
     /**
      * Check if the Queue Information is forced
-     * 
+     *
      * @author itaqua
      * @return
      */

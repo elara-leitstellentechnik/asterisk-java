@@ -16,12 +16,12 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.Date;
-
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.MeetMeUserState;
 import org.asteriskjava.manager.action.CommandAction;
+
+import java.util.Date;
 
 class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 {
@@ -78,7 +78,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
     /**
      * Sets the status to {@link MeetMeUserState#LEFT} and dateLeft to the given date.
-     * 
+     *
      * @param dateLeft the date this user left the room.
      */
     void left(Date dateLeft)
@@ -141,7 +141,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
     private void sendMeetMeUserCommand(String command) throws ManagerCommunicationException
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(COMMAND_PREFIX);
         sb.append(" ");
         sb.append(command);
@@ -152,14 +152,14 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
         server.sendAction(new CommandAction(sb.toString()));
     }
-    
+
     @Override
    public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         int systemHashcode;
 
-        sb = new StringBuffer("MeetMeUser[");
+        sb = new StringBuilder("MeetMeUser[");
 
         synchronized (this)
         {

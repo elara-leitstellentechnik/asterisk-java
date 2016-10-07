@@ -17,17 +17,17 @@
 
 package org.asteriskjava.util.internal;
 
+import org.asteriskjava.util.Log;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.asteriskjava.util.Log;
 
 /**
  * Implementation of {@link Log} that maps to the <strong>Logger</strong> of
  * the java.util.logging package.
  * <p>
  * Kindly donated by Sun's Steve Drach.
- * 
+ *
  * @author drach
  */
 public class JavaLoggingLog implements Log
@@ -40,7 +40,7 @@ public class JavaLoggingLog implements Log
     /**
      * Creates a new JavaLoggingLog obtained from java.util.logging for the
      * given class.
-     * 
+     *
      * @param clazz the class to log for.
      */
     public JavaLoggingLog(Class<?> clazz)
@@ -134,7 +134,7 @@ public class JavaLoggingLog implements Log
 
     private StackTraceElement getInvokerSTE()
     {
-        StackTraceElement stack[] = (new Throwable()).getStackTrace();
+        StackTraceElement[] stack = (new Throwable()).getStackTrace();
 
         if (stack.length > 2)
         {

@@ -16,10 +16,13 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.io.IOException;
-
+import org.asteriskjava.fastagi.AgiChannelFactory;
+import org.asteriskjava.fastagi.AgiReader;
+import org.asteriskjava.fastagi.AgiWriter;
 import org.asteriskjava.fastagi.MappingStrategy;
 import org.asteriskjava.util.SocketConnectionFacade;
+
+import java.io.IOException;
 
 /**
  * An AgiConnectionHandler for FastAGI.

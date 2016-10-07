@@ -16,17 +16,17 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 
 /**
  * Implementation of the ResponseEvents interface.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -42,7 +42,7 @@ public class ResponseEventsImpl implements ResponseEvents
      */
     public ResponseEventsImpl()
     {
-        this.events = new ArrayList<ResponseEvent>();
+        this.events = new ArrayList<>();
         this.complete = false;
     }
 
@@ -67,7 +67,7 @@ public class ResponseEventsImpl implements ResponseEvents
 
     /**
      * Sets the ManagerResponse received.
-     * 
+     *
      * @param response the ManagerResponse received.
      */
     public void setRepsonse(ManagerResponse response)
@@ -77,7 +77,7 @@ public class ResponseEventsImpl implements ResponseEvents
 
     /**
      * Adds a ResponseEvent that has been received.
-     * 
+     *
      * @param event the ResponseEvent that has been received.
      */
     public void addEvent(ResponseEvent event)
@@ -90,7 +90,7 @@ public class ResponseEventsImpl implements ResponseEvents
 
     /**
      * Indicats if all events have been received.
-     * 
+     *
      * @param complete <code>true</code> if all events have been received,
      *            <code>false</code> otherwise.
      */

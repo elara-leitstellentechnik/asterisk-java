@@ -16,12 +16,11 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-
-import org.asteriskjava.manager.internal.ManagerReader;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
+
+import java.io.IOException;
 
 public class ManagerReaderMock implements ManagerReader
 {
@@ -46,7 +45,7 @@ public class ManagerReaderMock implements ManagerReader
 
     public void expectResponseClass(String actionId, Class<? extends ManagerResponse> responseClass)
     {
-        
+
     }
 
     public void die()
@@ -58,7 +57,7 @@ public class ManagerReaderMock implements ManagerReader
     {
         return false;
     }
-    
+
     public void run()
     {
         runCalls++;

@@ -16,11 +16,15 @@
  */
 package org.asteriskjava.manager.event;
 
-import java.lang.reflect.Method;
-import java.util.*;
-
 import org.asteriskjava.util.AstState;
 import org.asteriskjava.util.ReflectionUtil;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.EventObject;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract base class for all Events that can be received from the Asterisk

@@ -16,15 +16,15 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeRoom;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.manager.action.CommandAction;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Default implementation of the MeetMeRoom interface.
@@ -36,7 +36,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     private static final String UNLOCK_COMMAND = "unlock";
 
     private final String roomNumber;
-    
+
     /**
      * Maps userNumber to user.
      */
@@ -46,7 +46,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     {
         super(server);
         this.roomNumber = roomNumber;
-        this.users = new HashMap<Integer, MeetMeUserImpl>(20);
+        this.users = new HashMap<>(20);
     }
 
     public String getRoomNumber()
@@ -74,10 +74,10 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     {
         synchronized (users)
         {
-            return new ArrayList<MeetMeUserImpl>(users.values());
+            return new ArrayList<>(users.values());
         }
     }
-    
+
     void addUser(MeetMeUserImpl user)
     {
         synchronized (users)
@@ -116,7 +116,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     private void sendMeetMeCommand(String command) throws ManagerCommunicationException
     {
-        final StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
         sb.append(COMMAND_PREFIX);
         sb.append(" ");
         sb.append(command);
@@ -129,10 +129,10 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
     @Override
    public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         int systemHashcode;
 
-        sb = new StringBuffer("MeetMeRoom[");
+        sb = new StringBuilder("MeetMeRoom[");
 
         synchronized (this)
         {

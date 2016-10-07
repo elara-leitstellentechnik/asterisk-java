@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.TimeZone;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.TimeZone;
 
 public class CoreStatusResponseTest
 {
@@ -17,7 +17,7 @@ public class CoreStatusResponseTest
     private TimeZone defaultTimeZone;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.response = new CoreStatusResponse();
         defaultTimeZone = TimeZone.getDefault();
@@ -25,7 +25,7 @@ public class CoreStatusResponseTest
     }
 
     @After
-    public void tearDown() throws Exception
+    public void tearDown()
     {
         TimeZone.setDefault(defaultTimeZone);
     }

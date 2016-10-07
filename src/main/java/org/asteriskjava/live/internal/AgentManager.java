@@ -16,11 +16,6 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.asteriskjava.live.AgentState;
 import org.asteriskjava.live.AsteriskAgent;
 import org.asteriskjava.live.ManagerCommunicationException;
@@ -37,6 +32,11 @@ import org.asteriskjava.manager.event.AgentsEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manages all events related to agents on Asterisk server. For correct work
@@ -68,8 +68,8 @@ public class AgentManager
     AgentManager(AsteriskServerImpl asteriskServerImpl)
     {
         this.server = asteriskServerImpl;
-        agents = new HashMap<String, AsteriskAgentImpl>();
-        ringingAgents = new HashMap<String, AsteriskAgentImpl>();
+        agents = new HashMap<>();
+        ringingAgents = new HashMap<>();
     }
 
     /**
@@ -211,7 +211,7 @@ public class AgentManager
         }
         agent.updateState(AgentState.AGENT_ONCALL);
     }
-    
+
     /**
      * Change state if agent logs in.
      *
