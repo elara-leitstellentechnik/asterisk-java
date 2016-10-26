@@ -31,7 +31,6 @@ public class NewChannelEvent extends AbstractChannelStateEvent
      */
     static final long serialVersionUID = 1L;
 
-    private String accountCode;
     private String language;
     private String linkedid;
 
@@ -50,30 +49,6 @@ public class NewChannelEvent extends AbstractChannelStateEvent
         this.language = language;
     }
 
-    /**
-     * Returns the account code of the new channel.
-     * <p>
-     * This property is available since Asterisk 1.6.
-     *
-     * @return the account code of the new channel.
-     * @since 1.0.0
-     */
-    public String getAccountCode()
-    {
-        return accountCode;
-    }
-
-    /**
-     * Sets the account code of the new channel.
-     *
-     * @param accountCode the account code of the new channel.
-     * @since 1.0.0
-     */
-    public void setAccountCode(String accountCode)
-    {
-        this.accountCode = accountCode;
-    }
-
     public String getLinkedid()
     {
         return linkedid;
@@ -83,6 +58,6 @@ public class NewChannelEvent extends AbstractChannelStateEvent
     {
         this.linkedid = linkedid;
     }
-    
-    
+
+
 }

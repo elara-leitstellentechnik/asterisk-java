@@ -30,19 +30,19 @@ import java.util.ResourceBundle;
  * qualified class name of the corresponding AgiScript as value.
  * <p>
  * Example:
- * 
+ *
  * <pre>
  * leastcostdial.agi = com.example.fastagi.LeastCostDialAgiScript
  * hello.agi = com.example.fastagi.HelloAgiScript
  * </pre>
- * 
+ *
  * LeastCostDialAgiScript and HelloAgiScript must both implement the AgiScript
  * interface and have a default constructor with no parameters.
  * <p>
  * The resource bundle (properties) file is called
  * <code>fastagi-mapping.properties</code> by default and must be available on
  * the classpath.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -65,7 +65,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     /**
      * Creates a new ResourceBundleMappingStrategy with the given basename of
      * the resource bundle to use.
-     * 
+     *
      * @param resourceBundleName basename of the resource bundle to use
      */
     public ResourceBundleMappingStrategy(String resourceBundleName)
@@ -76,7 +76,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
     /**
      * Creates a new ResourceBundleMappingStrategy indicating whether to use
      * shared instances or not.
-     * 
+     *
      * @param shareInstances <code>true</code> to use shared instances,
      *            <code>false</code> to create a new instance for each request.
      * @since 0.3
@@ -90,7 +90,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      * Creates a new ResourceBundleMappingStrategy with the given basename of
      * the resource bundle to use and indicating whether to use shared instances
      * or not.
-     * 
+     *
      * @param resourceBundleName basename of the resource bundle to use
      * @param shareInstances <code>true</code> to use shared instances,
      *            <code>false</code> to create a new instance for each request.
@@ -107,7 +107,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      * Sets the basename of the resource bundle to use.
      * <p>
      * Default is "fastagi-mapping".
-     * 
+     *
      * @param resourceBundleName basename of the resource bundle to use
      */
     public void setResourceBundleName(String resourceBundleName)
@@ -126,7 +126,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
      * to <code>false</code> a new instance is created for each request.
      * <p>
      * Default is <code>true</code>.
-     * 
+     *
      * @param shareInstances <code>true</code> to use shared instances,
      *            <code>false</code> to create a new instance for each request.
      * @since 0.3
@@ -184,6 +184,7 @@ public class ResourceBundleMappingStrategy extends AbstractMappingStrategy
         }
     }
 
+    @Override
     public synchronized AgiScript determineScript(AgiRequest request)
     {
         if (mappings == null || (shareInstances && instances == null))

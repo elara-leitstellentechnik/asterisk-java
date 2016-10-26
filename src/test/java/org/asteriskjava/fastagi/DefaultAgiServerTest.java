@@ -100,6 +100,7 @@ public class DefaultAgiServerTest
         public int acceptCalls = 0;
         public int closeCalls = 0;
 
+        @Override
         public SocketConnectionFacade accept() throws IOException
         {
             acceptCalls++;
@@ -119,6 +120,7 @@ public class DefaultAgiServerTest
             throw new IOException("Provoked IOException");
         }
 
+        @Override
         public void close() throws IOException
         {
             closeCalls++;

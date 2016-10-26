@@ -215,6 +215,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
         return line;
     }
 
+    @Override
     public void write(String s) throws IOException
     {
         writer.write(s);

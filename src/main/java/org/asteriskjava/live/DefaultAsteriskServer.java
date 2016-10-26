@@ -121,6 +121,7 @@ public class DefaultAsteriskServer implements AsteriskServer
         this.impl.setManagerConnection(eventConnection);
     }
 
+    @Override
     public void initialize() throws ManagerCommunicationException
     {
         this.impl.initialize();
@@ -128,185 +129,220 @@ public class DefaultAsteriskServer implements AsteriskServer
 
     /* Implementation of the AsteriskServer interface */
 
+    @Override
     public ManagerConnection getManagerConnection()
     {
         return this.impl.getManagerConnection();
     }
 
+    @Override
     public AsteriskChannel originate(OriginateAction originateAction)
             throws ManagerCommunicationException, NoSuchChannelException
     {
         return this.impl.originate(originateAction);
     }
 
+    @Override
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout)
             throws ManagerCommunicationException, NoSuchChannelException
     {
         return this.impl.originateToExtension(channel, context, exten, priority, timeout);
     }
 
+    @Override
     public AsteriskChannel originateToExtension(String channel, String context, String exten, int priority, long timeout,
             CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException, NoSuchChannelException
     {
         return this.impl.originateToExtension(channel, context, exten, priority, timeout, callerId, variables);
     }
 
+    @Override
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout)
             throws ManagerCommunicationException, NoSuchChannelException
     {
         return this.impl.originateToApplication(channel, application, data, timeout);
     }
 
+    @Override
     public AsteriskChannel originateToApplication(String channel, String application, String data, long timeout,
             CallerId callerId, Map<String, String> variables) throws ManagerCommunicationException, NoSuchChannelException
     {
         return this.impl.originateToApplication(channel, application, data, timeout, callerId, variables);
     }
 
+    @Override
     public void originateAsync(OriginateAction originateAction, OriginateCallback cb) throws ManagerCommunicationException
     {
         this.impl.originateAsync(originateAction, cb);
     }
 
+    @Override
     public void originateToApplicationAsync(String channel, String application, String data, long timeout, CallerId callerId,
             Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
         this.impl.originateToApplicationAsync(channel, application, data, timeout, callerId, variables, cb);
     }
 
+    @Override
     public void originateToApplicationAsync(String channel, String application, String data, long timeout,
             OriginateCallback cb) throws ManagerCommunicationException
     {
         this.impl.originateToApplicationAsync(channel, application, data, timeout, cb);
     }
 
+    @Override
     public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout,
             CallerId callerId, Map<String, String> variables, OriginateCallback cb) throws ManagerCommunicationException
     {
         this.impl.originateToExtensionAsync(channel, context, exten, priority, timeout, callerId, variables, cb);
     }
 
+    @Override
     public void originateToExtensionAsync(String channel, String context, String exten, int priority, long timeout,
             OriginateCallback cb) throws ManagerCommunicationException
     {
         this.impl.originateToExtensionAsync(channel, context, exten, priority, timeout, cb);
     }
 
+    @Override
     public Collection<AsteriskChannel> getChannels() throws ManagerCommunicationException
     {
         return this.impl.getChannels();
     }
 
+    @Override
     public AsteriskChannel getChannelByName(String name) throws ManagerCommunicationException
     {
         return this.impl.getChannelByName(name);
     }
 
+    @Override
     public AsteriskChannel getChannelById(String id) throws ManagerCommunicationException
     {
         return this.impl.getChannelById(id);
     }
 
+    @Override
     public Collection<MeetMeRoom> getMeetMeRooms() throws ManagerCommunicationException
     {
         return this.impl.getMeetMeRooms();
     }
 
+    @Override
     public MeetMeRoom getMeetMeRoom(String name) throws ManagerCommunicationException
     {
         return this.impl.getMeetMeRoom(name);
     }
 
+    @Override
     public Collection<AsteriskQueue> getQueues() throws ManagerCommunicationException
     {
         return this.impl.getQueues();
     }
 
+    @Override
     public String getVersion() throws ManagerCommunicationException
     {
         return this.impl.getVersion();
     }
 
+    @Override
     public int[] getVersion(String file) throws ManagerCommunicationException
     {
         return this.impl.getVersion(file);
     }
 
+    @Override
     public String getGlobalVariable(String variable) throws ManagerCommunicationException
     {
         return this.impl.getGlobalVariable(variable);
     }
 
+    @Override
     public void setGlobalVariable(String variable, String value) throws ManagerCommunicationException
     {
         this.impl.setGlobalVariable(variable, value);
     }
 
+    @Override
     public Collection<Voicemailbox> getVoicemailboxes() throws ManagerCommunicationException
     {
         return this.impl.getVoicemailboxes();
     }
 
+    @Override
     public List<String> executeCliCommand(String command) throws ManagerCommunicationException
     {
         return this.impl.executeCliCommand(command);
     }
 
+    @Override
     public boolean isModuleLoaded(String module) throws ManagerCommunicationException
     {
         return this.impl.isModuleLoaded(module);
     }
 
+    @Override
     public ConfigFile getConfig(String filename) throws ManagerCommunicationException
     {
         return this.impl.getConfig(filename);
     }
 
+    @Override
     public void reloadAllModules() throws ManagerCommunicationException
     {
         this.impl.reloadAllModules();
     }
 
+    @Override
     public void reloadModule(String module) throws ManagerCommunicationException
     {
         this.impl.reloadModule(module);
     }
 
+    @Override
     public void unloadModule(String module) throws ManagerCommunicationException
     {
         this.impl.unloadModule(module);
     }
 
+    @Override
     public void loadModule(String module) throws ManagerCommunicationException
     {
         this.impl.loadModule(module);
     }
 
+    @Override
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         this.impl.addAsteriskServerListener(listener);
     }
 
+    @Override
     public void removeAsteriskServerListener(AsteriskServerListener listener)
     {
         this.impl.removeAsteriskServerListener(listener);
     }
 
+    @Override
     public boolean isAsteriskServerListening(AsteriskServerListener listener)
     {
         return this.impl.isAsteriskServerListening(listener);
     }
 
+    @Override
     public void shutdown()
     {
         this.impl.shutdown();
     }
 
+    @Override
     public Collection<AsteriskAgent> getAgents() throws ManagerCommunicationException
     {
         return this.impl.getAgents();
     }
 
+    @Override
     public AsteriskQueue getQueueByName(String queueName)
     {
         return impl.getQueueByName(queueName);

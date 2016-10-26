@@ -160,6 +160,7 @@ public class AgiRequestImpl implements AgiRequest
         return map;
     }
 
+    @Override
     public Map<String, String> getRequest()
     {
         return request;
@@ -170,6 +171,7 @@ public class AgiRequestImpl implements AgiRequest
      *
      * @return the name of the script to execute.
      */
+    @Override
     public synchronized String getScript()
     {
         return script;
@@ -182,6 +184,7 @@ public class AgiRequestImpl implements AgiRequest
      * @return the full URL of the request in the form
      *         agi://host[:port][/script].
      */
+    @Override
     public String getRequestURL()
     {
         return request.get("request");
@@ -192,6 +195,7 @@ public class AgiRequestImpl implements AgiRequest
      *
      * @return the name of the channel.
      */
+    @Override
     public String getChannel()
     {
         return request.get("channel");
@@ -202,27 +206,32 @@ public class AgiRequestImpl implements AgiRequest
      *
      * @return the unqiue id of the channel.
      */
+    @Override
     public String getUniqueId()
     {
         return request.get("uniqueid");
     }
 
+    @Override
     public String getType()
     {
         return request.get("type");
     }
 
+    @Override
     public String getLanguage()
     {
         return request.get("language");
     }
 
+    @Override
     @Deprecated
     public String getCallerId()
     {
         return getCallerIdNumber();
     }
 
+    @Override
     public String getCallerIdNumber()
     {
         String callerIdName;
@@ -244,6 +253,7 @@ public class AgiRequestImpl implements AgiRequest
         return getCallerId10();
     }
 
+    @Override
     public String getCallerIdName()
     {
         String callerIdName;
@@ -302,6 +312,7 @@ public class AgiRequestImpl implements AgiRequest
         return AstUtil.parseCallerId(rawCallerId)[0];
     }
 
+    @Override
     public String getDnid()
     {
         String dnid;
@@ -316,6 +327,7 @@ public class AgiRequestImpl implements AgiRequest
         return dnid;
     }
 
+    @Override
     public String getRdnis()
     {
         String rdnis;
@@ -330,16 +342,19 @@ public class AgiRequestImpl implements AgiRequest
         return rdnis;
     }
 
+    @Override
     public String getContext()
     {
         return request.get("context");
     }
 
+    @Override
     public String getExtension()
     {
         return request.get("extension");
     }
 
+    @Override
     public Integer getPriority()
     {
         if (request.get("priority") != null)
@@ -349,6 +364,7 @@ public class AgiRequestImpl implements AgiRequest
         return null;
     }
 
+    @Override
     public Boolean getEnhanced()
     {
         if (request.get("enhanced") != null)
@@ -362,11 +378,13 @@ public class AgiRequestImpl implements AgiRequest
         return null;
     }
 
+    @Override
     public String getAccountCode()
     {
         return request.get("accountcode");
     }
 
+    @Override
     public Integer getCallingAni2()
     {
         if (request.get("callingani2") == null)
@@ -384,6 +402,7 @@ public class AgiRequestImpl implements AgiRequest
         }
     }
 
+    @Override
     public Integer getCallingPres()
     {
         if (request.get("callingpres") == null)
@@ -401,6 +420,7 @@ public class AgiRequestImpl implements AgiRequest
         }
     }
 
+    @Override
     public Integer getCallingTns()
     {
         if (request.get("callingtns") == null)
@@ -418,6 +438,7 @@ public class AgiRequestImpl implements AgiRequest
         }
     }
 
+    @Override
     public Integer getCallingTon()
     {
         if (request.get("callington") == null)
@@ -435,6 +456,7 @@ public class AgiRequestImpl implements AgiRequest
         }
     }
 
+    @Override
     public String getParameter(String name)
     {
         String[] values;
@@ -449,6 +471,7 @@ public class AgiRequestImpl implements AgiRequest
         return values[0];
     }
 
+    @Override
     public synchronized String[] getParameterValues(String name)
     {
         if (getParameterMap().isEmpty())
@@ -460,6 +483,7 @@ public class AgiRequestImpl implements AgiRequest
         return values == null ? new String[0] : values;
     }
 
+    @Override
     public synchronized Map<String, String[]> getParameterMap()
     {
         if (parameterMap == null)
@@ -551,6 +575,7 @@ public class AgiRequestImpl implements AgiRequest
         return result;
     }
 
+    @Override
     public synchronized String[] getArguments()
     {
         if (arguments != null)
@@ -584,6 +609,7 @@ public class AgiRequestImpl implements AgiRequest
         return arguments.clone();
     }
 
+    @Override
     public InetAddress getLocalAddress()
     {
         return localAddress;
@@ -594,6 +620,7 @@ public class AgiRequestImpl implements AgiRequest
         this.localAddress = localAddress;
     }
 
+    @Override
     public int getLocalPort()
     {
         return localPort;
@@ -604,6 +631,7 @@ public class AgiRequestImpl implements AgiRequest
         this.localPort = localPort;
     }
 
+    @Override
     public InetAddress getRemoteAddress()
     {
         return remoteAddress;
@@ -614,6 +642,7 @@ public class AgiRequestImpl implements AgiRequest
         this.remoteAddress = remoteAddress;
     }
 
+    @Override
     public int getRemotePort()
     {
         return remotePort;

@@ -201,6 +201,7 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
 
             final File[] jarFiles = libDir.listFiles(new FilenameFilter()
             {
+                @Override
                 public boolean accept(File dir, String name)
                 {
                     return name.endsWith(".jar");
@@ -371,11 +372,13 @@ public class ScriptEngineMappingStrategy implements MappingStrategy
             this.scriptEngine = scriptEngine;
         }
 
+        @Override
         public String getName()
         {
             return file == null ? null : file.getName();
         }
 
+        @Override
         public void service(AgiRequest request, AgiChannel channel) throws AgiException
         {
             final Bindings bindings = scriptEngine.createBindings();

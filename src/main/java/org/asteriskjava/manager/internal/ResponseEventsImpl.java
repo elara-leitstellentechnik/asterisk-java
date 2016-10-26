@@ -48,11 +48,13 @@ public class ResponseEventsImpl implements ResponseEvents
 
     // implementation of the ResponseEvents interface
 
+    @Override
     public ManagerResponse getResponse()
     {
         return response;
     }
 
+    @Override
     public Collection<ResponseEvent> getEvents()
     {
         return events;

@@ -110,6 +110,7 @@ public class Log4JLogger implements Log, Serializable
     /**
      * Log a message to the Log4j Logger with <code>DEBUG</code> priority.
      */
+    @Override
     public void debug(Object message)
     {
         if (IS12)
@@ -140,6 +141,7 @@ public class Log4JLogger implements Log, Serializable
     /**
      * Log a message to the Log4j Logger with <code>INFO</code> priority.
      */
+    @Override
     public void info(Object message)
     {
         if (IS12)
@@ -170,6 +172,7 @@ public class Log4JLogger implements Log, Serializable
     /**
      * Log a message to the Log4j Logger with <code>WARN</code> priority.
      */
+    @Override
     public void warn(Object message)
     {
         if (IS12)
@@ -185,6 +188,7 @@ public class Log4JLogger implements Log, Serializable
     /**
      * Log an error to the Log4j Logger with <code>WARN</code> priority.
      */
+    @Override
     public void warn(Object message, Throwable t)
     {
         if (IS12)
@@ -200,6 +204,7 @@ public class Log4JLogger implements Log, Serializable
     /**
      * Log a message to the Log4j Logger with <code>ERROR</code> priority.
      */
+    @Override
     public void error(Object message)
     {
         if (IS12)
@@ -215,6 +220,7 @@ public class Log4JLogger implements Log, Serializable
     /**
      * Log an error to the Log4j Logger with <code>ERROR</code> priority.
      */
+    @Override
     public void error(Object message, Throwable t)
     {
         if (IS12)
@@ -273,6 +279,7 @@ public class Log4JLogger implements Log, Serializable
      * Check whether the Log4j Logger used is enabled for <code>DEBUG</code>
      * priority.
      */
+    @Override
     public boolean isDebugEnabled()
     {
         return getLogger().isDebugEnabled();

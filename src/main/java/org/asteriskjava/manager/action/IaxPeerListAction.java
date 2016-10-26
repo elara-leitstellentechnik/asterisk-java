@@ -53,6 +53,7 @@ public class IaxPeerListAction extends AbstractManagerAction implements EventGen
         return "IAXpeerlist";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return PeerlistCompleteEvent.class;

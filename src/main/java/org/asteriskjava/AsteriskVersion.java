@@ -114,6 +114,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
         return version >= o.version;
     }
 
+    @Override
     public int compareTo(AsteriskVersion o)
     {
         return Integer.compare(version, o.version);

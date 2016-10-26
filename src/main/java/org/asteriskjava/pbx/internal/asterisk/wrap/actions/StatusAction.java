@@ -26,6 +26,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
 			this._channel = null;
 	}
 
+	@Override
 	public org.asteriskjava.manager.action.ManagerAction getAJAction()
 	{
 		final org.asteriskjava.manager.action.StatusAction action;

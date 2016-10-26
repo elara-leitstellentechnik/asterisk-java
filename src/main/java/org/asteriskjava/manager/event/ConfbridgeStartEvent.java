@@ -13,9 +13,6 @@ public class ConfbridgeStartEvent extends AbstractConfbridgeEvent
      */
     private static final long serialVersionUID = 1L;
 
-    @SuppressWarnings("unused")
-    private String conference;
-
     public ConfbridgeStartEvent(Object source)
     {
         super(source);

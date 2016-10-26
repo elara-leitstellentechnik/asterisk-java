@@ -51,26 +51,31 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         this.state = MeetMeUserState.JOINED;
     }
 
+    @Override
     public MeetMeRoomImpl getRoom()
     {
         return room;
     }
 
+    @Override
     public Integer getUserNumber()
     {
         return userNumber;
     }
 
+    @Override
     public AsteriskChannelImpl getChannel()
     {
         return channel;
     }
 
+    @Override
     public Date getDateJoined()
     {
         return dateJoined;
     }
 
+    @Override
     public Date getDateLeft()
     {
         return dateLeft;
@@ -93,11 +98,13 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 
+    @Override
     public MeetMeUserState getState()
     {
         return state;
     }
 
+    @Override
     public boolean isTalking()
     {
         return talking;
@@ -110,6 +117,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         firePropertyChange(PROPERTY_TALKING, oldTalking, talking);
     }
 
+    @Override
     public boolean isMuted()
     {
         return muted;
@@ -124,16 +132,19 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
     // action methods
 
+    @Override
     public void kick() throws ManagerCommunicationException
     {
         sendMeetMeUserCommand(KICK_COMMAND);
     }
 
+    @Override
     public void mute() throws ManagerCommunicationException
     {
         sendMeetMeUserCommand(MUTE_COMMAND);
     }
 
+    @Override
     public void unmute() throws ManagerCommunicationException
     {
         sendMeetMeUserCommand(UNMUTE_COMMAND);

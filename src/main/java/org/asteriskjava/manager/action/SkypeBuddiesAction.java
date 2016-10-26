@@ -86,6 +86,7 @@ public class SkypeBuddiesAction extends AbstractManagerAction implements EventGe
         return "SkypeBuddies";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return SkypeBuddyListCompleteEvent.class;

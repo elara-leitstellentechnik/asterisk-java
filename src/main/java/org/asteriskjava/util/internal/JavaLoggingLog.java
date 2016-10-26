@@ -48,6 +48,7 @@ public class JavaLoggingLog implements Log
         log = Logger.getLogger(clazz.getName());
     }
 
+    @Override
     public void debug(Object obj)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -62,6 +63,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void info(Object obj)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -76,6 +78,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void warn(Object obj)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -90,6 +93,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void warn(Object obj, Throwable ex)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -104,6 +108,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void error(Object obj)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -118,6 +123,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void error(Object obj, Throwable ex)
     {
         StackTraceElement ste = getInvokerSTE();

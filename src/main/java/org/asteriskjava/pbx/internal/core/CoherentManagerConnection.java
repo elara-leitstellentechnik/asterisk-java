@@ -1,15 +1,5 @@
 package org.asteriskjava.pbx.internal.core;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import javax.naming.OperationNotSupportedException;
-
 import org.apache.log4j.Logger;
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
@@ -34,6 +24,16 @@ import org.asteriskjava.pbx.internal.asterisk.wrap.events.ManagerEvent;
 import org.asteriskjava.pbx.internal.asterisk.wrap.events.ResponseEvents;
 import org.asteriskjava.pbx.internal.asterisk.wrap.response.ManagerResponse;
 import org.asteriskjava.pbx.internal.managerAPI.Connector;
+
+import javax.naming.OperationNotSupportedException;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This is a wrapper class for the asterisk manager. <br>
@@ -64,7 +64,7 @@ import org.asteriskjava.pbx.internal.managerAPI.Connector;
  * coherent. <br>
  * <br>
  * For connections that generate large number of events you should use
- * 
+ *
  * @see org.asteriskjava.pbx.internal.core.CoherentManagerEventQueue Note:
  *      events for any action are distributed to all listeners!
  */
@@ -196,7 +196,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
     /**
      * Retrieves and returns the value of a variable associated with a channel.
      * If the variable is empty or null then an empty string is returned.
-     * 
+     *
      * @param channel
      * @param variableName
      * @return
@@ -233,7 +233,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
      * Allows the caller to send an action to asterisk without waiting for the
      * response. You should only use this if you don't care whether the action
      * actually succeeds.
-     * 
+     *
      * @param sa
      */
     public static void sendActionNoWait(final ManagerAction action)
@@ -290,7 +290,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
 
     /**
      * Sends an Asterisk action and waits for a ManagerRespose.
-     * 
+     *
      * @param action
      * @param timeout timeout in milliseconds
      * @return
@@ -619,6 +619,7 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
             logger.warn("****************** Asterisk manager connection lost **************************"); //$NON-NLS-1$
             new Thread(new Runnable()
             {
+                @Override
                 public void run()
                 {
                     reconnect();

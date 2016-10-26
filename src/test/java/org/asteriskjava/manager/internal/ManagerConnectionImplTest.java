@@ -599,6 +599,7 @@ public class ManagerConnectionImplTest
             expect(list.add(index)).andReturn(true);
             mc.addEventListener(new ManagerEventListener()
             {
+                @Override
                 public void onManagerEvent(ManagerEvent event)
                 {
                     list.add(index);
@@ -630,6 +631,7 @@ public class ManagerConnectionImplTest
             this.eventsHandled = new ArrayList<ManagerEvent>();
         }
 
+        @Override
         public void onManagerEvent(ManagerEvent event)
         {
             eventsHandled.add(event);

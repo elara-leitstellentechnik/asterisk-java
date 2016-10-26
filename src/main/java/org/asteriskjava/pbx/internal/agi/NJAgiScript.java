@@ -12,6 +12,7 @@ abstract public class NJAgiScript extends BaseAgiScript
     protected AgiRequest request;
     protected AgiChannel channel;
 
+    @Override
     public synchronized void service(AgiRequest request, AgiChannel channel) throws AgiException
     {
         this.request = request;
@@ -22,7 +23,7 @@ abstract public class NJAgiScript extends BaseAgiScript
     /**
      * field variables request and channel will be set prior to calling
      * service() AgiRequest request AgiChannel channel
-     * 
+     *
      * @throws AgiException
      */
 
@@ -40,6 +41,7 @@ abstract public class NJAgiScript extends BaseAgiScript
         return required(name, request.getParameter(name));
     }
 
+    @Override
     public void setVariable(String name, String value) throws AgiException
     {
         logger.debug("AGIVar set: " + name + "=(" + value + ")");

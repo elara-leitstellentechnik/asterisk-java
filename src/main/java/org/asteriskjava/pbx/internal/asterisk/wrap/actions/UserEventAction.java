@@ -15,11 +15,13 @@ abstract public class UserEventAction extends AbstractManagerAction
 		// NOOP
 	}
 
+	@Override
 	public void setActionId(String actionId)
 	{
 		this._actionId = actionId;
 	}
 
+	@Override
 	public String getActionId()
 	{
 		return this._actionId;

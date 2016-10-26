@@ -131,6 +131,7 @@ public class AgiServerThread
 
         t = new Thread(new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -186,6 +187,7 @@ public class AgiServerThread
 
     class AgiThreadUncaughtExceptionHanlder implements UncaughtExceptionHandler
     {
+        @Override
         public void uncaughtException(Thread t, Throwable e)
         {
             logger.error("Uncaught exception in AgiServerThread", e);

@@ -46,16 +46,19 @@ abstract class AbstractLiveObject implements LiveObject
         stampLastUpdate();
     }
 
+    @Override
     public AsteriskServer getServer()
     {
         return server;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener)
     {
         changes.addPropertyChangeListener(listener);
     }
 
+    @Override
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
     {
         boolean haveToAdd = true;
@@ -73,11 +76,13 @@ abstract class AbstractLiveObject implements LiveObject
         }
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener)
     {
         changes.removePropertyChangeListener(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
     {
         changes.removePropertyChangeListener(propertyName, listener);

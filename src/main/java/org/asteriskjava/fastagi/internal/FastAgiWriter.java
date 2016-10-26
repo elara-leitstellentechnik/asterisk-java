@@ -40,6 +40,7 @@ class FastAgiWriter implements AgiWriter
         this.socket = socket;
     }
 
+    @Override
     public void sendCommand(AgiCommand command) throws AgiException
     {
         try

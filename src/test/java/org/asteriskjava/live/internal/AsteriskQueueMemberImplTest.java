@@ -82,6 +82,7 @@ public class AsteriskQueueMemberImplTest
         assertEquals(QueueMemberState.DEVICE_UNKNOWN, queueMember.getState());
         queueMember.addPropertyChangeListener(new PropertyChangeListener()
         {
+            @Override
             public void propertyChange(PropertyChangeEvent evt)
             {
                 assertEquals("wrong propertyName", "state", evt.getPropertyName());

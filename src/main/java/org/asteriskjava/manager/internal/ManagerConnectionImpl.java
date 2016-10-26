@@ -378,11 +378,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     /* Implementation of ManagerConnection interface */
 
+    @Override
     public String getUsername()
     {
         return username;
     }
 
+    @Override
     public String getPassword()
     {
         return password;
@@ -394,46 +396,55 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return encoding;
     }
 
+    @Override
     public AsteriskVersion getVersion()
     {
         return version;
     }
 
+    @Override
     public String getHostname()
     {
         return hostname;
     }
 
+    @Override
     public int getPort()
     {
         return port;
     }
 
+    @Override
     public boolean isSsl()
     {
         return ssl;
     }
 
+    @Override
     public InetAddress getLocalAddress()
     {
         return socket.getLocalAddress();
     }
 
+    @Override
     public int getLocalPort()
     {
         return socket.getLocalPort();
     }
 
+    @Override
     public InetAddress getRemoteAddress()
     {
         return socket.getRemoteAddress();
     }
 
+    @Override
     public int getRemotePort()
     {
         return socket.getRemotePort();
     }
 
+    @Override
     public void registerUserEventClass(Class< ? extends ManagerEvent> userEventClass)
     {
         if (reader == null)
@@ -444,21 +455,25 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         reader.registerEventClass(userEventClass);
     }
 
+    @Override
     public void setSocketTimeout(int socketTimeout)
     {
         this.socketTimeout = socketTimeout;
     }
 
+    @Override
     public void setSocketReadTimeout(int socketReadTimeout)
     {
         this.socketReadTimeout = socketReadTimeout;
     }
 
+    @Override
     public synchronized void login() throws IOException, AuthenticationFailedException, TimeoutException
     {
         login(null);
     }
 
+    @Override
     public synchronized void login(String eventMask) throws IOException, AuthenticationFailedException, TimeoutException
     {
         if (state != INITIAL && state != DISCONNECTED)
@@ -807,6 +822,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return new SocketConnectionFacadeImpl(hostname, port, ssl, socketTimeout, socketReadTimeout, encoding);
     }
 
+    @Override
     public synchronized void logoff() throws IllegalStateException
     {
         if (state != CONNECTED && state != RECONNECTING)
@@ -853,6 +869,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         protocolIdentifier.value = null;
     }
 
+    @Override
     public ManagerResponse sendAction(ManagerAction action)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
     {
@@ -862,6 +879,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /*
      * Implements synchronous sending of "simple" actions.
      */
+    @Override
     public ManagerResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
     {
@@ -907,6 +925,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return result.getResponse();
     }
 
+    @Override
     public void sendAction(ManagerAction action, SendActionCallback callback)
             throws IOException, IllegalArgumentException, IllegalStateException
     {
@@ -981,6 +1000,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return annotation.value();
     }
 
+    @Override
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
     {
@@ -990,6 +1010,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     /*
      * Implements synchronous sending of event generating actions.
      */
+    @Override
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
     {
@@ -1108,6 +1129,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         return sb.toString();
     }
 
+    @Override
     public void addEventListener(final ManagerEventListener listener)
     {
         synchronized (this.eventListeners)
@@ -1120,6 +1142,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
     }
 
+    @Override
     public void removeEventListener(final ManagerEventListener listener)
     {
         synchronized (this.eventListeners)
@@ -1131,11 +1154,13 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
     }
 
+    @Override
     public String getProtocolIdentifier()
     {
         return protocolIdentifier.value;
     }
 
+    @Override
     public ManagerConnectionState getState()
     {
         return state;
@@ -1151,6 +1176,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * @param response the response received by the reader
      * @see ManagerReader
      */
+    @Override
     public void dispatchResponse(ManagerResponse response)
     {
         final String actionId;
@@ -1224,6 +1250,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
      * @see #removeEventListener(ManagerEventListener)
      * @see ManagerReader
      */
+    @Override
     public void dispatchEvent(ManagerEvent event)
     {
         // shouldn't happen
@@ -1295,6 +1322,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 cleanup();
                 Thread reconnectThread = new Thread(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         reconnect();
@@ -1547,6 +1575,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             this.result = result;
         }
 
+        @Override
         public void onResponse(ManagerResponse response)
         {
             synchronized (result)
@@ -1579,6 +1608,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             this.actionCompleteEventClass = actionCompleteEventClass;
         }
 
+        @Override
         public void onManagerEvent(ManagerEvent event)
         {
             synchronized (events)
@@ -1606,6 +1636,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             }
         }
 
+        @Override
         public void onResponse(ManagerResponse response)
         {
             synchronized (events)

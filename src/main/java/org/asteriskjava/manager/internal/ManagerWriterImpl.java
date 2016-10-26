@@ -16,16 +16,16 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ManagerAction;
 import org.asteriskjava.util.SocketConnectionFacade;
 
+import java.io.IOException;
+
 
 /**
  * Default implementation of ManagerWriter interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -52,16 +52,19 @@ public class ManagerWriterImpl implements ManagerWriter
         this.actionBuilder = new ActionBuilderImpl();
     }
 
+    @Override
     public void setTargetVersion(AsteriskVersion version)
     {
         actionBuilder.setTargetVersion(version);
     }
 
+    @Override
     public synchronized void setSocket(final SocketConnectionFacade socket)
     {
         this.socket = socket;
     }
 
+    @Override
     public synchronized void sendAction(final ManagerAction action, final String internalActionId) throws IOException
     {
         final String actionString;

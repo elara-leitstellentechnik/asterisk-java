@@ -119,16 +119,19 @@ public class ManagerReaderImpl implements ManagerReader
      *
      * @param socket the socket to use for reading from the asterisk server.
      */
+    @Override
     public void setSocket(final SocketConnectionFacade socket)
     {
         this.socket = socket;
     }
 
+    @Override
     public void registerEventClass(Class< ? extends ManagerEvent> eventClass)
     {
         eventBuilder.registerEventClass(eventClass);
     }
 
+    @Override
     public void expectResponseClass(String internalActionId, Class< ? extends ManagerResponse> responseClass)
     {
         expectedResponseClasses.put(internalActionId, responseClass);
@@ -144,6 +147,7 @@ public class ManagerReaderImpl implements ManagerReader
      * @see org.asteriskjava.manager.internal.Dispatcher#dispatchEvent(ManagerEvent)
      * @see org.asteriskjava.manager.internal.Dispatcher#dispatchResponse(ManagerResponse)
      */
+    @Override
     public void run()
     {
         final Map<String, Object> buffer = new HashMap<>();
@@ -321,16 +325,19 @@ public class ManagerReaderImpl implements ManagerReader
         }
     }
 
+    @Override
     public void die()
     {
         this.die = true;
     }
 
+    @Override
     public boolean isDead()
     {
         return dead;
     }
 
+    @Override
     public IOException getTerminationException()
     {
         return terminationException;

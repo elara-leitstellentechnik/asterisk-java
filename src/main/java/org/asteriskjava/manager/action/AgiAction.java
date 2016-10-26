@@ -86,6 +86,7 @@ public class AgiAction extends AbstractManagerAction implements EventGeneratingA
         return "AGI";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return AsyncAgiEvent.class;

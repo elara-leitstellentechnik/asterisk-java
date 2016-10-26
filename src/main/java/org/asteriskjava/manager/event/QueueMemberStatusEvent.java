@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * A QueueMemberStatusEvent shows the status of a QueueMemberEvent
- * 
+ *
  * @author Asteria Solutions Group, Inc. http://www.asteriasgi.com/
  * @version $Id$
  */
@@ -31,7 +31,6 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
 
     private String ringinuse;
     private String iface;
-    private Integer incall;
 
     /**
      * @param source
@@ -67,15 +66,4 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
         this.ringinuse = ringinuse;
     }
 
-    public Integer getIncall()
-    {
-        return incall;
-    }
-
-    public void setIncall(Integer incall)
-    {
-        this.incall = incall;
-    }
-    
-    
 }

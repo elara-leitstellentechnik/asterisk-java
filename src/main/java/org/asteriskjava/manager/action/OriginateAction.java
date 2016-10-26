@@ -18,17 +18,14 @@ package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.asteriskjava.manager.event.OriginateResponseEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
 
 /**
  * The OriginateAction generates an outgoing call to the extension in the given
@@ -519,6 +516,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         this.codecs = buffer.toString();
     }
 
+    @Override
     public Class< ? extends ResponseEvent> getActionCompleteEventClass()
     {
         return OriginateResponseEvent.class;

@@ -72,6 +72,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
         return "Status";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return StatusCompleteEvent.class;

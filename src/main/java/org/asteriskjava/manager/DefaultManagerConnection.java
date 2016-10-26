@@ -233,21 +233,25 @@ public class DefaultManagerConnection implements ManagerConnection
 
     /* Implementation of ManagerConnection interface */
 
+    @Override
     public String getHostname()
     {
         return impl.getHostname();
     }
 
+    @Override
     public int getPort()
     {
         return impl.getPort();
     }
 
+    @Override
     public String getUsername()
     {
         return impl.getUsername();
     }
 
+    @Override
     public String getPassword()
     {
         return impl.getPassword();
@@ -259,112 +263,133 @@ public class DefaultManagerConnection implements ManagerConnection
         return impl.getEncoding();
     }
 
+    @Override
     public AsteriskVersion getVersion()
     {
         return impl.getVersion();
     }
 
+    @Override
     public boolean isSsl()
     {
         return impl.isSsl();
     }
 
+    @Override
     public InetAddress getLocalAddress()
     {
         return impl.getLocalAddress();
     }
 
+    @Override
     public int getLocalPort()
     {
         return impl.getLocalPort();
     }
 
+    @Override
     public InetAddress getRemoteAddress()
     {
         return impl.getRemoteAddress();
     }
 
+    @Override
     public int getRemotePort()
     {
         return impl.getRemotePort();
     }
 
+    @Override
     public void registerUserEventClass(Class< ? extends ManagerEvent> userEventClass)
     {
         impl.registerUserEventClass(userEventClass);
     }
 
+    @Override
     public void setSocketTimeout(int socketTimeout)
     {
         impl.setSocketTimeout(socketTimeout);
     }
 
+    @Override
     public void setSocketReadTimeout(int socketReadTimeout)
     {
         impl.setSocketReadTimeout(socketReadTimeout);
     }
 
+    @Override
     public void login() throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
     {
         impl.login();
     }
 
+    @Override
     public void login(String events)
             throws IllegalStateException, IOException, AuthenticationFailedException, TimeoutException
     {
         impl.login(events);
     }
 
+    @Override
     public void logoff() throws IllegalStateException
     {
         impl.logoff();
     }
 
+    @Override
     public ManagerResponse sendAction(ManagerAction action)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendAction(action);
     }
 
+    @Override
     public ManagerResponse sendAction(ManagerAction action, long timeout)
             throws IOException, TimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendAction(action, timeout);
     }
 
+    @Override
     public void sendAction(ManagerAction action, SendActionCallback callbackHandler)
             throws IOException, IllegalArgumentException, IllegalStateException
     {
         impl.sendAction(action, callbackHandler);
     }
 
+    @Override
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendEventGeneratingAction(action);
     }
 
+    @Override
     public ResponseEvents sendEventGeneratingAction(EventGeneratingAction action, long timeout)
             throws IOException, EventTimeoutException, IllegalArgumentException, IllegalStateException
     {
         return impl.sendEventGeneratingAction(action, timeout);
     }
 
+    @Override
     public void addEventListener(final ManagerEventListener listener)
     {
         impl.addEventListener(listener);
     }
 
+    @Override
     public void removeEventListener(final ManagerEventListener listener)
     {
         impl.removeEventListener(listener);
     }
 
+    @Override
     public String getProtocolIdentifier()
     {
         return impl.getProtocolIdentifier();
     }
 
+    @Override
     public ManagerConnectionState getState()
     {
         return impl.getState();

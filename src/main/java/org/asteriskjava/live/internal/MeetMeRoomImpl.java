@@ -49,11 +49,13 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
         this.users = new HashMap<>(20);
     }
 
+    @Override
     public String getRoomNumber()
     {
         return roomNumber;
     }
 
+    @Override
     public Collection<MeetMeUser> getUsers()
     {
         synchronized (users)
@@ -62,6 +64,7 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
         }
     }
 
+    @Override
     public boolean isEmpty()
     {
         synchronized (users)
@@ -104,11 +107,13 @@ class MeetMeRoomImpl extends AbstractLiveObject implements MeetMeRoom
 
     // action methods
 
+    @Override
     public void lock() throws ManagerCommunicationException
     {
         sendMeetMeCommand(LOCK_COMMAND);
     }
 
+    @Override
     public void unlock() throws ManagerCommunicationException
     {
         sendMeetMeCommand(UNLOCK_COMMAND);

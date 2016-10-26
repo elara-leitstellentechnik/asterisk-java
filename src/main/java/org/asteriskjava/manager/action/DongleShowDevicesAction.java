@@ -31,6 +31,7 @@ public class DongleShowDevicesAction extends AbstractManagerAction
         return "DongleShowDevices";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return DongleShowDevicesCompleteEvent.class;

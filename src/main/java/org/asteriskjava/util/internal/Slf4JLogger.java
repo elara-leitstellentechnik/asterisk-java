@@ -78,6 +78,7 @@ public class Slf4JLogger implements Log, Serializable
     /**
      * Log a message to the SLF4J Logger with <code>DEBUG</code> priority.
      */
+    @Override
     public void debug(Object message)
     {
         getLogger().debug(message.toString());
@@ -94,6 +95,7 @@ public class Slf4JLogger implements Log, Serializable
     /**
      * Log a message to the SLF4J Logger with <code>INFO</code> priority.
      */
+    @Override
     public void info(Object message)
     {
         getLogger().info(message.toString());
@@ -110,6 +112,7 @@ public class Slf4JLogger implements Log, Serializable
     /**
      * Log a message to the SLF4J Logger with <code>WARN</code> priority.
      */
+    @Override
     public void warn(Object message)
     {
         getLogger().warn(message.toString());
@@ -118,6 +121,7 @@ public class Slf4JLogger implements Log, Serializable
     /**
      * Log an error to the SLF4J Logger with <code>WARN</code> priority.
      */
+    @Override
     public void warn(Object message, Throwable t)
     {
         getLogger().warn(message.toString(), t);
@@ -126,6 +130,7 @@ public class Slf4JLogger implements Log, Serializable
     /**
      * Log a message to the SLF4J Logger with <code>ERROR</code> priority.
      */
+    @Override
     public void error(Object message)
     {
         getLogger().error(message.toString());
@@ -134,6 +139,7 @@ public class Slf4JLogger implements Log, Serializable
     /**
      * Log an error to the SLF4J Logger with <code>ERROR</code> priority.
      */
+    @Override
     public void error(Object message, Throwable t)
     {
         getLogger().error(message.toString(), t);
@@ -179,6 +185,7 @@ public class Slf4JLogger implements Log, Serializable
      * Check whether the SLF4J Logger used is enabled for <code>DEBUG</code>
      * priority.
      */
+    @Override
     public boolean isDebugEnabled()
     {
         return getLogger().isDebugEnabled();

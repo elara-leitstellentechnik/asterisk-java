@@ -363,11 +363,13 @@ public class ManagerReaderImplTest
             this.dispatchedResponses = new ArrayList<ManagerResponse>();
         }
 
+        @Override
         public void dispatchResponse(ManagerResponse response)
         {
             dispatchedResponses.add(response);
         }
 
+        @Override
         public void dispatchEvent(ManagerEvent event)
         {
             dispatchedEvents.add(event);

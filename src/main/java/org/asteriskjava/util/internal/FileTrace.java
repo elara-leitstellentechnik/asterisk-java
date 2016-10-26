@@ -84,6 +84,7 @@ public class FileTrace implements Trace
         return sb.toString();
     }
 
+    @Override
     public synchronized void received(String s)
     {
         try
@@ -96,6 +97,7 @@ public class FileTrace implements Trace
         }
     }
 
+    @Override
     public synchronized void sent(String s)
     {
         try
@@ -160,6 +162,7 @@ public class FileTrace implements Trace
         }
     }
 
+    @Override
     public void close()
     {
         try

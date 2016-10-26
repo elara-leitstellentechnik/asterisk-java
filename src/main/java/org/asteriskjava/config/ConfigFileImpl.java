@@ -39,11 +39,13 @@ public class ConfigFileImpl implements ConfigFile
         this.categories = categories;
     }
 
+    @Override
     public String getFilename()
     {
         return filename;
     }
 
+    @Override
     public Map<String, List<String>> getCategories()
     {
         final Map<String, List<String>> c;
@@ -72,6 +74,7 @@ public class ConfigFileImpl implements ConfigFile
         return c;
     }
 
+    @Override
     public String getValue(String categoryName, String key)
     {
         final Category category;
@@ -97,6 +100,7 @@ public class ConfigFileImpl implements ConfigFile
         return null;
     }
 
+    @Override
     public List<String> getValues(String categoryName, String key)
     {
         final Category category;

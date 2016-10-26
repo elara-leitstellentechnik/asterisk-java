@@ -30,6 +30,7 @@ public class AsyncAgiWriter implements AgiWriter
         this.channelName = channelName;
     }
 
+    @Override
     public void sendCommand(AgiCommand command) throws AgiException
     {
         final AgiAction agiAction;

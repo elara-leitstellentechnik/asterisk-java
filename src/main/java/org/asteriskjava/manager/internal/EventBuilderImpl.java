@@ -228,6 +228,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ZapShowChannelsCompleteEvent.class);
     }
 
+    @Override
     public final void registerEventClass(Class< ? extends ManagerEvent> clazz) throws IllegalArgumentException
     {
         String className;
@@ -292,6 +293,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public ManagerEvent buildEvent(Object source, Map<String, Object> attributes)
     {

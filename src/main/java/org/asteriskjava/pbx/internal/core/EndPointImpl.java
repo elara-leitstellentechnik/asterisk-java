@@ -22,10 +22,10 @@ public class EndPointImpl implements EndPoint
 	/**
 	 * Creates a EndPoint from a fully qualified peer name of the form: SIP/NNN
 	 * LOCAL/NNN
-	 * 
+	 *
 	 * TODO: the tech encoding should probably be specific to a particular pbx
 	 * Implementation.
-	 * 
+	 *
 	 * @param fullyQualifiedPeerName
 	 */
 	public EndPointImpl(final String fullyQualifiedEndPoint)
@@ -63,7 +63,7 @@ public class EndPointImpl implements EndPoint
 
 	/**
 	 * Creates an EndPoint from from a simple endpoint name and a tech.
-	 * 
+	 *
 	 * @param _tech
 	 * @param peerName
 	 */
@@ -178,7 +178,7 @@ public class EndPointImpl implements EndPoint
 	/**
 	 * Cleans up an endpoint name by removing all whitespace (including internal
 	 * whitespace) as well as making the string lower case.
-	 * 
+	 *
 	 * @param _endPointName
 	 * @return
 	 */
@@ -221,6 +221,7 @@ public class EndPointImpl implements EndPoint
 		return name;
 	}
 
+	@Override
 	public boolean isEmpty()
 	{
 		return this._empty;

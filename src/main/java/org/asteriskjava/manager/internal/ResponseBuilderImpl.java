@@ -45,6 +45,7 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
     private static final String PROXY_RESPONSE_KEY = "proxyresponse";
     private static final String RESPONSE_TYPE_ERROR = "error";
 
+    @Override
     public ManagerResponse buildResponse(Class<? extends ManagerResponse> responseClass, Map<String, Object> attributes)
     {
         final ManagerResponse response;

@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * Abstract base class providing common properties channel related events.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -48,7 +48,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
 
     /**
      * Returns the name of the channel.
-     * 
+     *
      * @return the name of the channel.
      */
     public final String getChannel()
@@ -63,7 +63,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
 
     /**
      * Returns the unique id of the channel.
-     * 
+     *
      * @return the unique id of the channel.
      */
     public final String getUniqueId()
@@ -92,7 +92,7 @@ public abstract class AbstractChannelEvent extends ManagerEvent
 
     /**
      * Sets the Caller*ID of the channel.
-     * 
+     *
      * @param callerId the Caller*ID of the channel.
      * @deprecated
      */
@@ -109,11 +109,13 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * @return the Caller*ID number
      * @since 0.3
      */
+    @Override
     public final String getCallerIdNum()
     {
         return callerIdNum;
     }
 
+    @Override
     public final void setCallerIdNum(String callerIdNum)
     {
         this.callerIdNum = callerIdNum;
@@ -122,14 +124,16 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     /**
      * Returns the Caller*ID Name of the channel if set or <code>null</code> if
      * none has been set.
-     * 
+     *
      * @return the Caller*ID Name of the channel.
      */
+    @Override
     public final String getCallerIdName()
     {
         return callerIdName;
     }
 
+    @Override
     public final void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;

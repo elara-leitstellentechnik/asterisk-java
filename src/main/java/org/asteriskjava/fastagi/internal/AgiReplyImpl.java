@@ -100,16 +100,19 @@ public class AgiReplyImpl implements AgiReply
         }
     }
 
+    @Override
     public String getFirstLine()
     {
         return firstLine;
     }
 
+    @Override
     public List<String> getLines()
     {
         return lines;
     }
 
+    @Override
     public int getResultCode()
     {
         String result;
@@ -130,6 +133,7 @@ public class AgiReplyImpl implements AgiReply
         }
     }
 
+    @Override
     public char getResultCodeAsChar()
     {
         int resultCode;
@@ -143,6 +147,7 @@ public class AgiReplyImpl implements AgiReply
         return (char) resultCode;
     }
 
+    @Override
     public String getResult()
     {
         if (result != null)
@@ -160,6 +165,7 @@ public class AgiReplyImpl implements AgiReply
         return result;
     }
 
+    @Override
     public int getStatus()
     {
         if (status != null)
@@ -181,6 +187,7 @@ public class AgiReplyImpl implements AgiReply
         return -1;
     }
 
+    @Override
     public String getAttribute(String name)
     {
         if (getStatus() != SC_SUCCESS)
@@ -273,6 +280,7 @@ public class AgiReplyImpl implements AgiReply
 
     private boolean extraCreated;
 
+    @Override
     public String getExtra()
     {
         if (getStatus() != SC_SUCCESS)
@@ -294,6 +302,7 @@ public class AgiReplyImpl implements AgiReply
         return extra;
     }
 
+    @Override
     public String getSynopsis()
     {
         if (getStatus() != SC_INVALID_COMMAND_SYNTAX)
@@ -323,6 +332,7 @@ public class AgiReplyImpl implements AgiReply
      * @return the usage of the command sent, <code>null</code> if there were no
      *         syntax errors.
      */
+    @Override
     public String getUsage()
     {
         if (usage == null)

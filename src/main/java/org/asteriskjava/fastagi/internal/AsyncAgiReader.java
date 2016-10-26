@@ -26,11 +26,13 @@ public class AsyncAgiReader implements AgiReader
         request.setRemotePort(connection.getRemotePort());
     }
 
+    @Override
     public AgiRequest readRequest() throws AgiException
     {
         return request;
     }
 
+    @Override
     public AgiReply readReply() throws AgiException
     {
         try

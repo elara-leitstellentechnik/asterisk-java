@@ -33,36 +33,43 @@ public class ManagerReaderMock implements ManagerReader
 
     }
 
+    @Override
     public void registerEventClass(Class< ? extends ManagerEvent> event)
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void setSocket(SocketConnectionFacade socket)
     {
         setSocketCalls++;
     }
 
+    @Override
     public void expectResponseClass(String actionId, Class< ? extends ManagerResponse> responseClass)
     {
 
     }
 
+    @Override
     public void die()
     {
         dieCalls++;
     }
 
+    @Override
     public boolean isDead()
     {
         return false;
     }
 
+    @Override
     public void run()
     {
         runCalls++;
     }
 
+    @Override
     public IOException getTerminationException()
     {
         return null;

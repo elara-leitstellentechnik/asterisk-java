@@ -55,6 +55,7 @@ public class VoicemailUsersListAction extends AbstractManagerAction implements E
         return "VoicemailUsersList";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return VoicemailUserEntryCompleteEvent.class;

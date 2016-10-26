@@ -108,6 +108,7 @@ public class DbGetAction extends AbstractManagerAction implements EventGeneratin
         this.key = key;
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return DbGetResponseEvent.class;

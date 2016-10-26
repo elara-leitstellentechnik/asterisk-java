@@ -38,13 +38,16 @@ public abstract class AbstractManagerAction implements ManagerAction
 
     private String actionId;
 
+    @Override
     public abstract String getAction();
 
+    @Override
     public String getActionId()
     {
         return actionId;
     }
 
+    @Override
     public void setActionId(String actionId)
     {
         this.actionId = actionId;

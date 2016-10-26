@@ -112,6 +112,7 @@ public class HtmlEventTracer implements ManagerEventListener
         }
     }
 
+    @Override
     public void onManagerEvent(ManagerEvent event)
     {
         events.add(event);

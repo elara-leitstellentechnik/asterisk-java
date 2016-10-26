@@ -74,16 +74,19 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         this.membership = membership;
     }
 
+    @Override
     public AsteriskQueue getQueue()
     {
         return queue;
     }
 
+    @Override
     public String getLocation()
     {
         return location;
     }
 
+    @Override
     public QueueMemberState getState()
     {
         return state;
@@ -118,22 +121,26 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         this.lastCall = lastCall;
     }
 
+    @Override
     @Deprecated
     public boolean getPaused()
     {
         return isPaused();
     }
 
+    @Override
     public boolean isPaused()
     {
         return paused;
     }
 
+    @Override
     public void setPaused(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException
     {
         sendPauseAction(new QueuePauseAction(location, queue.getName(), paused));
     }
 
+    @Override
     public void setPausedAll(boolean paused) throws ManagerCommunicationException, NoSuchInterfaceException
     {
         sendPauseAction(new QueuePauseAction(location, paused));
@@ -157,26 +164,31 @@ class AsteriskQueueMemberImpl extends AbstractLiveObject implements AsteriskQueu
         }
     }
 
+    @Override
     public String getMembership()
     {
         return membership;
     }
 
+    @Override
     public boolean isStatic()
     {
         return membership != null && "static".equals(membership);
     }
 
+    @Override
     public boolean isDynamic()
     {
         return membership != null && "dynamic".equals(membership);
     }
 
+    @Override
     public Integer getPenalty()
     {
         return penalty;
     }
 
+    @Override
     public void setPenalty(int penalty)
             throws IllegalArgumentException, ManagerCommunicationException, InvalidPenaltyException
     {

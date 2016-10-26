@@ -186,6 +186,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         this.linkedChannels = new ArrayList<>();
     }
 
+    @Override
     public String getId()
     {
         return id;
@@ -220,6 +221,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         this.traceId = traceId;
     }
 
+    @Override
     public String getName()
     {
         return name;
@@ -244,6 +246,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         firePropertyChange(PROPERTY_NAME, oldName, name);
     }
 
+    @Override
     public CallerId getCallerId()
     {
         return callerId;
@@ -262,11 +265,13 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         firePropertyChange(PROPERTY_CALLER_ID, oldCallerId, callerId);
     }
 
+    @Override
     public ChannelState getState()
     {
         return state;
     }
 
+    @Override
     public boolean wasInState(ChannelState state)
     {
         synchronized (stateHistory)
@@ -283,6 +288,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return false;
     }
 
+    @Override
     public boolean wasBusy()
     {
         return wasInState(ChannelState.BUSY) || hangupCause == HangupCause.AST_CAUSE_BUSY
@@ -317,6 +323,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 
+    @Override
     public String getAccount()
     {
         return account;
@@ -335,6 +342,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         firePropertyChange(PROPERTY_ACCOUNT, oldAccount, account);
     }
 
+    @Override
     public Extension getCurrentExtension()
     {
         final Extension extension;
@@ -354,6 +362,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return extension;
     }
 
+    @Override
     public Extension getFirstExtension()
     {
         final Extension extension;
@@ -373,6 +382,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return extension;
     }
 
+    @Override
     public List<ExtensionHistoryEntry> getExtensionHistory()
     {
         final List<ExtensionHistoryEntry> copy;
@@ -406,26 +416,31 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         firePropertyChange(PROPERTY_CURRENT_EXTENSION, oldCurrentExtension, extension);
     }
 
+    @Override
     public Date getDateOfCreation()
     {
         return dateOfCreation;
     }
 
+    @Override
     public Date getDateOfRemoval()
     {
         return dateOfRemoval;
     }
 
+    @Override
     public HangupCause getHangupCause()
     {
         return hangupCause;
     }
 
+    @Override
     public String getHangupCauseText()
     {
         return hangupCauseText;
     }
 
+    @Override
     public CallDetailRecord getCallDetailRecord()
     {
         return callDetailRecord;
@@ -461,6 +476,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
      *
      * @return List of all dialed channels
      */
+    @Override
     public List<AsteriskChannel> getDialedChannels()
     {
         final List<AsteriskChannel> copy;
@@ -475,6 +491,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     /* dialed channels */
 
+    @Override
     public AsteriskChannel getDialedChannel()
     {
         synchronized (dialedChannels)
@@ -488,6 +505,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return null;
     }
 
+    @Override
     public List<DialedChannelHistoryEntry> getDialedChannelHistory()
     {
         final List<DialedChannelHistoryEntry> copy;
@@ -524,6 +542,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     /* dialed channels */
 
+    @Override
     public AsteriskChannel getDialingChannel()
     {
         synchronized (dialingChannels)
@@ -556,6 +575,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     /* linked channels */
 
+    @Override
     public AsteriskChannel getLinkedChannel()
     {
         synchronized (linkedChannels)
@@ -566,6 +586,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public List<LinkedChannelHistoryEntry> getLinkedChannelHistory()
     {
         final List<LinkedChannelHistoryEntry> copy;
@@ -578,6 +599,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return copy;
     }
 
+    @Override
     public boolean wasLinked()
     {
         return wasLinked;
@@ -658,6 +680,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     /* MeetMe user */
 
+    @Override
     public MeetMeUserImpl getMeetMeUser()
     {
         return meetMeUserImpl;
@@ -672,11 +695,13 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
 
     // action methods
 
+    @Override
     public void hangup() throws ManagerCommunicationException, NoSuchChannelException
     {
         hangup(null);
     }
 
+    @Override
     public void hangup(HangupCause cause) throws ManagerCommunicationException, NoSuchChannelException
     {
         final HangupAction action;
@@ -699,6 +724,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void setAbsoluteTimeout(int seconds) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -710,6 +736,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void redirect(String context, String exten, int priority)
             throws ManagerCommunicationException, NoSuchChannelException
     {
@@ -722,6 +749,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void redirectBothLegs(String context, String exten, int priority)
             throws ManagerCommunicationException, NoSuchChannelException
     {
@@ -746,6 +774,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public String getVariable(String variable) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -776,6 +805,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         return value;
     }
 
+    @Override
     public void setVariable(String variable, String value) throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -791,6 +821,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void playDtmf(String digit) throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
     {
         ManagerResponse response;
@@ -807,16 +838,19 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void startMonitoring(String filename) throws ManagerCommunicationException, NoSuchChannelException
     {
         startMonitoring(filename, null, false);
     }
 
+    @Override
     public void startMonitoring(String filename, String format) throws ManagerCommunicationException, NoSuchChannelException
     {
         startMonitoring(filename, format, false);
     }
 
+    @Override
     public void startMonitoring(String filename, String format, boolean mix)
             throws ManagerCommunicationException, NoSuchChannelException
     {
@@ -829,6 +863,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void changeMonitoring(String filename)
             throws ManagerCommunicationException, NoSuchChannelException, IllegalArgumentException
     {
@@ -846,6 +881,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void stopMonitoring() throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -857,6 +893,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void pauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -868,6 +905,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void unpauseMonitoring() throws ManagerCommunicationException, NoSuchChannelException
     {
         ManagerResponse response;
@@ -879,6 +917,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void pauseMixMonitor(MixMonitorDirection direction)
             throws ManagerCommunicationException, NoSuchChannelException, RecordingException
     {
@@ -894,6 +933,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public void unPauseMixMonitor(MixMonitorDirection direction)
             throws ManagerCommunicationException, NoSuchChannelException, RecordingException
     {
@@ -909,6 +949,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public Extension getParkedAt()
     {
         // warning: the context of this extension will be null until we get the
@@ -935,6 +976,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public Map<String, String> getVariables()
     {
         synchronized (variables)
@@ -943,11 +985,13 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         }
     }
 
+    @Override
     public Character getDtmfReceived()
     {
         return this.dtmfReceived;
     }
 
+    @Override
     public Character getDtmfSent()
     {
         return this.dtmfSent;
@@ -969,6 +1013,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         firePropertyChange(PROPERTY_DTMF_SENT, oldDtmfSent, digit);
     }
 
+    @Override
     public AsteriskQueueEntryImpl getQueueEntry()
     {
         return queueEntryImpl;
@@ -982,6 +1027,7 @@ class AsteriskChannelImpl extends AbstractLiveObject implements AsteriskChannel
         firePropertyChange(PROPERTY_QUEUE_ENTRY, oldQueueEntry, queueEntry);
     }
 
+    @Override
     public boolean isMonitored()
     {
         return this.isMonitored;

@@ -149,6 +149,7 @@ public class AgiChannelImplTest
         private String synopsis;
         private String usage;
 
+        @Override
         public String getFirstLine()
         {
             throw new UnsupportedOperationException();
@@ -174,46 +175,55 @@ public class AgiChannelImplTest
             this.status = status;
         }
 
+        @Override
         public List<String> getLines()
         {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public int getResultCode()
         {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public char getResultCodeAsChar()
         {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public String getResult()
         {
             return result;
         }
 
+        @Override
         public int getStatus()
         {
             return status;
         }
 
+        @Override
         public String getAttribute(String name)
         {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public String getExtra()
         {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public String getSynopsis()
         {
             return synopsis;
         }
 
+        @Override
         public String getUsage()
         {
             return usage;

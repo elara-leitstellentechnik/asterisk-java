@@ -115,16 +115,19 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         timer.cancel();
     }
 
+    @Override
     public String getName()
     {
         return name;
     }
 
+    @Override
     public Integer getMax()
     {
         return max;
     }
 
+    @Override
     public String getStrategy()
     {
         return strategy;
@@ -145,6 +148,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     	return false;
     }
 
+    @Override
     public Integer getServiceLevel()
     {
         return serviceLevel;
@@ -286,6 +290,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
 		return false;
 	}
 
+    @Override
     public Integer getWeight()
     {
         return weight;
@@ -306,6 +311,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
     	return false;
     }
 
+    @Override
     public List<AsteriskQueueEntry> getEntries()
     {
         synchronized (entries)
@@ -461,6 +467,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         return sb.toString();
     }
 
+    @Override
     public void addAsteriskQueueListener(AsteriskQueueListener listener)
     {
         synchronized (listeners)
@@ -469,6 +476,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
         }
     }
 
+    @Override
     public void removeAsteriskQueueListener(AsteriskQueueListener listener)
     {
         synchronized (listeners)
@@ -574,6 +582,7 @@ class AsteriskQueueImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @see org.asteriskjava.live.AsteriskQueue#getMembers()
      */
+    @Override
     public Collection<AsteriskQueueMember> getMembers()
     {
         List<AsteriskQueueMember> listOfMembers = new ArrayList<>(members.size());

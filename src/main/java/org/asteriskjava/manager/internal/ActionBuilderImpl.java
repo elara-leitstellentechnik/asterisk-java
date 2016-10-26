@@ -70,16 +70,19 @@ class ActionBuilderImpl implements ActionBuilder
         this.membersToIgnore.add(ATTRIBUTES_PROPERTY_NAME);
     }
 
+    @Override
     public void setTargetVersion(AsteriskVersion targetVersion)
     {
         this.targetVersion = targetVersion;
     }
 
+    @Override
     public String buildAction(final ManagerAction action)
     {
         return buildAction(action, null);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId)
     {

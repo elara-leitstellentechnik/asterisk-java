@@ -31,42 +31,49 @@ public class SimpleAgiRequest implements AgiRequest
     {
         this.script = "hello.agi";
     }
-    
+
     public SimpleAgiRequest(String script)
     {
         this.script = script;
     }
-    
+
+    @Override
     public Map<String, String> getRequest()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getScript()
     {
         return script;
     }
 
+    @Override
     public String getRequestURL()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getChannel()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getUniqueId()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getType()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getLanguage()
     {
         throw new UnsupportedOperationException();
@@ -81,96 +88,115 @@ public class SimpleAgiRequest implements AgiRequest
      *         is "unknown" <code>null</code> is returned.
      * @deprecated as of 0.3, use {@link #getCallerIdNumber()} instead.
      */
+    @Override
     public String getCallerId()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getCallerIdNumber()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getCallerIdName()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getDnid()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getRdnis()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getContext()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getExtension()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Integer getPriority()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Boolean getEnhanced()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getAccountCode()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Integer getCallingAni2()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Integer getCallingPres()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Integer getCallingTns()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Integer getCallingTon()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getParameter(String name)
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String[] getParameterValues(String name)
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Map<String, String[]> getParameterMap()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String[] getArguments()
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public InetAddress getLocalAddress()
     {
         return localAddress;
@@ -181,6 +207,7 @@ public class SimpleAgiRequest implements AgiRequest
         this.localAddress = localAddress;
     }
 
+    @Override
     public int getLocalPort()
     {
         return localPort;
@@ -191,6 +218,7 @@ public class SimpleAgiRequest implements AgiRequest
         this.localPort = localPort;
     }
 
+    @Override
     public InetAddress getRemoteAddress()
     {
         return remoteAddress;
@@ -201,6 +229,7 @@ public class SimpleAgiRequest implements AgiRequest
         this.remoteAddress = remoteAddress;
     }
 
+    @Override
     public int getRemotePort()
     {
         return remotePort;

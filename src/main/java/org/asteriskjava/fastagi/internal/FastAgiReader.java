@@ -43,6 +43,7 @@ class FastAgiReader implements AgiReader
         this.socket = socket;
     }
 
+    @Override
     public AgiRequest readRequest() throws AgiException
     {
         AgiRequestImpl request;
@@ -77,6 +78,7 @@ class FastAgiReader implements AgiReader
         return request;
     }
 
+    @Override
     public AgiReply readReply() throws AgiException
     {
         AgiReply reply;

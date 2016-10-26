@@ -398,7 +398,7 @@ public abstract class ManagerEvent extends EventObject
     }
 
     @Override
-    public String toString()
+    public final String toString()
     {
         final List<String> ignoredProperties = Arrays.asList("file", "func", "line", "sequenceNumber", "datereceived",
                 "privilege", "source", "class");

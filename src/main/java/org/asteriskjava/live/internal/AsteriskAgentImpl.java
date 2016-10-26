@@ -43,16 +43,19 @@ public class AsteriskAgentImpl extends AbstractLiveObject implements AsteriskAge
         this.state = state;
     }
 
+    @Override
     public String getName()
     {
         return name;
     }
 
+    @Override
     public String getAgentId()
     {
         return agentId;
     }
 
+    @Override
     public AgentState getState()
     {
         return state;
