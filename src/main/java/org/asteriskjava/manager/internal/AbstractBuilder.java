@@ -121,7 +121,11 @@ abstract class AbstractBuilder
                     value = null;
                 }
             }
-            else
+	        else if (AstUtil.isNull(entry.getValue()))
+	        {
+		        value = null;
+	        }
+	        else
             {
                 try
                 {

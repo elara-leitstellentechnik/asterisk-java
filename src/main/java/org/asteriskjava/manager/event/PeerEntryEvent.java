@@ -45,6 +45,7 @@ public class PeerEntryEvent extends ResponseEvent
     private String objectUserName;
     private String chanObjectType;
     private String ipAddress;
+    private String mask;
     private Integer port;
     private Boolean dynamic;
     private Boolean natSupport;
@@ -148,7 +149,15 @@ public class PeerEntryEvent extends ResponseEvent
         this.ipAddress = ipAddress;
     }
 
-    /**
+	public String getMask() {
+		return mask;
+	}
+
+	public void setMask(String mask) {
+		this.mask = mask;
+	}
+
+	/**
      * Returns the port of the peer.
      *
      * @return the port of the peer.
