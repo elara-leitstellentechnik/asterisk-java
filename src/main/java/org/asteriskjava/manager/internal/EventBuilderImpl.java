@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Default implementation of the EventBuilder interface.
@@ -40,11 +41,11 @@ import java.util.Set;
 class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 {
     private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
-    private Map<String, Class< ? >> registeredEventClasses;
+    private final Map<String, Class< ? >> registeredEventClasses;
 
     EventBuilderImpl()
     {
-        this.registeredEventClasses = new HashMap<>();
+        this.registeredEventClasses = new ConcurrentHashMap<>();
         registerBuiltinEventClasses();
     }
 
