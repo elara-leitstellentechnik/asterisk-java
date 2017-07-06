@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * @version $Id$
  * @since 0.2
  */
-public abstract class AbstractParkedCallEvent extends ManagerEvent
+public abstract class AbstractParkedCallEvent extends ResponseEvent
 {
     private static final long serialVersionUID = 0L;
     private String uniqueId;
@@ -128,7 +128,7 @@ public abstract class AbstractParkedCallEvent extends ManagerEvent
 
     /**
      * use getParkeeChannel() instead
-     * 
+     *
      * @return
      */
     @Deprecated
