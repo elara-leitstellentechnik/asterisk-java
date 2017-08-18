@@ -844,7 +844,11 @@ class ChannelManager
             // configured in features.conf
             // unfortunately we don't get the context in the ParkedCallEvent so
             // for now we'll set it to null.
-            Extension ext = new Extension(null, event.getExten(), 1);
+	        String exten = event.getExten();
+	        if(exten == null) {
+	        	exten = event.getParkingSpace();
+	        }
+	        Extension ext = new Extension(null, exten, 1);
             channel.setParkedAt(ext);
             logger.info("Channel " + channel.getName() + " is parked at " + channel.getParkedAt().getExtension());
         }
