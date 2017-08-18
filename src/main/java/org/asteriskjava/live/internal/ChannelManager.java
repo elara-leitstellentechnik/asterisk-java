@@ -16,16 +16,54 @@
  */
 package org.asteriskjava.live.internal;
 
-import org.asteriskjava.live.*;
+import org.asteriskjava.live.AsteriskChannel;
+import org.asteriskjava.live.CallerId;
+import org.asteriskjava.live.ChannelState;
+import org.asteriskjava.live.Extension;
+import org.asteriskjava.live.HangupCause;
+import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.manager.ResponseEvents;
 import org.asteriskjava.manager.action.StatusAction;
-import org.asteriskjava.manager.event.*;
+import org.asteriskjava.manager.event.AbstractBridgeEvent;
+import org.asteriskjava.manager.event.AbstractChannelEvent;
+import org.asteriskjava.manager.event.BridgeCreateEvent;
+import org.asteriskjava.manager.event.BridgeDestroyEvent;
+import org.asteriskjava.manager.event.BridgeEnterEvent;
+import org.asteriskjava.manager.event.BridgeEvent;
+import org.asteriskjava.manager.event.BridgeLeaveEvent;
+import org.asteriskjava.manager.event.CdrEvent;
+import org.asteriskjava.manager.event.DialEvent;
+import org.asteriskjava.manager.event.DtmfEvent;
+import org.asteriskjava.manager.event.HangupEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.MonitorStartEvent;
+import org.asteriskjava.manager.event.MonitorStopEvent;
+import org.asteriskjava.manager.event.NewCallerIdEvent;
+import org.asteriskjava.manager.event.NewChannelEvent;
+import org.asteriskjava.manager.event.NewExtenEvent;
+import org.asteriskjava.manager.event.NewStateEvent;
+import org.asteriskjava.manager.event.ParkedCallEvent;
+import org.asteriskjava.manager.event.ParkedCallGiveUpEvent;
+import org.asteriskjava.manager.event.ParkedCallTimeOutEvent;
+import org.asteriskjava.manager.event.RenameEvent;
+import org.asteriskjava.manager.event.StatusEvent;
+import org.asteriskjava.manager.event.UnparkedCallEvent;
+import org.asteriskjava.manager.event.VarSetEvent;
 import org.asteriskjava.util.DaemonThreadFactory;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -732,7 +770,11 @@ class ChannelManager
         {
             // todo The context should be "parkedcalls" or whatever has been configured in features.conf
             // unfortunately we don't get the context in the ParkedCallEvent so for now we'll set it to null.
-            Extension ext = new Extension(null, event.getExten(), 1);
+	        String exten = event.getExten();
+	        if(exten == null) {
+	        	exten = event.getParkingSpace();
+	        }
+	        Extension ext = new Extension(null, exten, 1);
             channel.setParkedAt(ext);
             logger.info("Channel " + channel.getName() + " is parked at " + channel.getParkedAt().getExtension());
         }
