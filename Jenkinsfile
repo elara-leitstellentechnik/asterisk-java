@@ -46,7 +46,7 @@ node {
 
     stage('Package') {
         withDockerContainer('elara/mvn:3.5.0') {
-            sh 'mvn -B -e -DskipTests -P release package'
+            sh 'mvn -B -e -DskipTests -P release -Dmaven.javadoc.skip=true package'
         }
     }
 
