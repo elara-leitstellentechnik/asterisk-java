@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.elara.asgard.lib</groupId>
     <artifactId>asterisk-java</artifactId>
@@ -60,17 +62,9 @@
     </scm>
     <distributionManagement>
         <repository>
-            <id>reucon</id>
-            <url>https://nexus.reucon.com/content/repositories/opensource</url>
+            <id>asgard</id>
+            <url>${maven.server.url}</url>
         </repository>
-        <snapshotRepository>
-            <id>reucon</id>
-            <url>https://nexus.reucon.com/content/repositories/opensource-snapshots</url>
-        </snapshotRepository>
-        <site>
-            <id>reucon</id>
-            <url>dav:https://maven.reucon.com/projects/public/${project.artifactId}/${project.version}</url>
-        </site>
     </distributionManagement>
     <issueManagement>
         <system>GitHub</system>
@@ -80,18 +74,24 @@
         <mailingList>
             <name>Asterisk-Java User List</name>
             <subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</subscribe>
-            <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users</unsubscribe>
-            <archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-users</archive>
+            <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-users
+            </unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-users
+            </archive>
         </mailingList>
         <mailingList>
             <name>Asterisk-Java Developer List</name>
             <subscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</subscribe>
-            <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel</unsubscribe>
-            <archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-devel</archive>
+            <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/asterisk-java-devel
+            </unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=asterisk-java-devel
+            </archive>
         </mailingList>
     </mailingLists>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.server.url>http://elara-nexus3/repository/asgard</maven.server.url>
+        <git.server.url>ssh://git@elara-gitlab:8022/internal/asterisk-java.git</git.server.url>
     </properties>
     <build>
         <plugins>
@@ -107,6 +107,14 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
@@ -361,6 +369,25 @@
                         </executions>
                         <configuration>
                             <keyname>C47292FB</keyname>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <version>1.6.4</version>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-deploy</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <serverId>asgard</serverId>
+                            <nexusUrl>${maven.server.url}</nexusUrl>
+                            <skipStaging>true</skipStaging>
                         </configuration>
                     </plugin>
                 </plugins>
