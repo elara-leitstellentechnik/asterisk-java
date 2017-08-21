@@ -53,7 +53,7 @@ node {
     stage('Release') {
 //        parallel 'Deploy to Nexus': {
         withDockerContainer('elara/mvn:3.5.0') {
-            sh 'mvn -B -e -DskipTests -P release -Dmaven.javadoc.skip=true deploy'
+            sh 'mvn -B -e -DskipTests -P release -Dmaven.javadoc.skip=true -Dgpg.skip=true deploy'
         }
 //        }, 'Tag': {
 //            withDockerContainer('elara/mvn:3.5.0') {
