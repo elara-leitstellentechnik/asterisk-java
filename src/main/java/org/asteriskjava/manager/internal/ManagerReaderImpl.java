@@ -198,19 +198,18 @@ public class ManagerReaderImpl implements ManagerReader
                     // see AJ-77
                     // Use this workaround only when line starts from "From "
                     // and "To "
-                    int isFromAtStart = line.indexOf("From ");
-                    int isToAtStart = line.indexOf("To ");
-
-                    int delimiterIndex = isFromAtStart == 0 || isToAtStart == 0
-                        ? line.indexOf(" ") : line.indexOf(":");
+                    String delimiter = line.startsWith("From ") || line.startsWith("To ")
+	                    ? " "
+	                    : ": ";
                     // end of workaround for Astersik bug 13319
 
-                    int delimiterLength = 1;
+	                int delimiterIndex = line.indexOf(delimiter);
+	                int delimiterLength = delimiter.length();
 
                     if (delimiterIndex > 0 && line.length() > delimiterIndex + delimiterLength)
                     {
-                        String name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH).trim();
-                        String value = line.substring(delimiterIndex + delimiterLength).trim();
+                        String name = line.substring(0, delimiterIndex).toLowerCase(Locale.ENGLISH);
+                        String value = line.substring(delimiterIndex + delimiterLength);
 
                         addToBuffer(buffer, name, value);
                         // TODO tracing
