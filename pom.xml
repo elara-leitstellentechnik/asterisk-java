@@ -332,30 +332,6 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jarsigner-plugin</artifactId>
-                        <version>1.3.2</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <!-- Add to the command line:
-                              -Dkeystore=Stefan_Reuter_Code_Signing.jks
-                              -Dstorepass=secret
-                            -->
-                            <alias>Stefan_Reuter_Code_Signing</alias>
-                            <verify>true</verify>
-                            <!--
-                            <keystore>Stefan_Reuter_Code_Signing.jks</keystore>
-                            <storepass>secret</storepass>
-                            -->
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.5</version>
                         <executions>
