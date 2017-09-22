@@ -51,14 +51,17 @@ node {
     }
 
     stage('Release') {
-//        parallel 'Deploy to Nexus': {
-        withDockerContainer('elara/mvn:3.5.0') {
-            sh 'mvn -B -e -DskipTests -P release -Dmaven.javadoc.skip=true -Dgpg.skip=true deploy'
+        parallel 'Deploy': {
+            withDockerContainer('elara/mvn:3.5.0') {
+                sh 'mvn -B -e -DskipTests deploy'
+            }
+        }, 'Tag': {
+            sshagent(['cis-ssh']) {
+                sh('git config --global user.email "cis@elara-gmbh.de"')
+                sh('git config --global user.name "jenkins"')
+                sh("git tag ${version}")
+                sh('git push --tags')
+            }
         }
-//        }, 'Tag': {
-//            withDockerContainer('elara/mvn:3.5.0') {
-//                sh 'mvn -B -e scm:tag'
-//            }
-//    }
     }
 }
