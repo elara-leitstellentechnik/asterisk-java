@@ -18,9 +18,13 @@ package org.asteriskjava.util.internal;
 
 import org.asteriskjava.util.SocketConnectionFacade;
 
-import javax.net.SocketFactory;
-import javax.net.ssl.SSLSocketFactory;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -46,11 +50,6 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     private BufferedWriter writer;
     private Trace trace;
 
-    
-    //DHP
-    private String charsetName = null; 
-    
-    
     /**
      * Creates a new instance for use with the Manager API that uses CRNL ("\r\n") as line delimiter.
      *
@@ -81,25 +80,23 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      */
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding, Pattern lineDelimiter) throws IOException
     {
-    	this.charsetName = charsetName;
+	    NioSocket nioSocket;
         Socket socket;
 
-        if (ssl)
-        {
-            socket = SSLSocketFactory.getDefault().createSocket();
+	    if (ssl)
+	    {
+		    throw new UnsupportedOperationException("SSL sockets are disabled for ELARA");
+	    }
+	    else {
+            nioSocket = new NioSocket(timeout, timeout, readTimeout);
+            nioSocket.connect(new InetSocketAddress(host, port));
+            socket = nioSocket.getSocket();
         }
-        else
-        {
-            socket = SocketFactory.getDefault().createSocket();
-        }
-        socket.setSoTimeout(readTimeout);
-        socket.connect(new InetSocketAddress(host, port), timeout);
 
-        initialize(socket, encoding, lineDelimiter);
-        if (System.getProperty(Trace.TRACE_PROPERTY, "false").equalsIgnoreCase("true"))
-        {
-            trace = new FileTrace(socket);
-        }
+	    initialize(socket, encoding, lineDelimiter, nioSocket.getInputStream(), nioSocket.getOutputStream());
+	    if (System.getProperty(Trace.TRACE_PROPERTY, "false").equalsIgnoreCase("true")) {
+		    trace = new FileTrace(socket);
+	    }
     }
 
     /**
@@ -110,19 +107,17 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
      */
     SocketConnectionFacadeImpl(Socket socket) throws IOException {
 	    socket.setSoTimeout(MAX_SOCKET_READ_TIMEOUT_MILLIS);
-	    initialize(socket, StandardCharsets.UTF_8, NL_PATTERN);
+	    initialize(socket, StandardCharsets.UTF_8, NL_PATTERN, socket.getInputStream(), socket.getOutputStream());
     }
 
 	/** 70 mi = 70 * 60 * 1000 */
 	private static final int MAX_SOCKET_READ_TIMEOUT_MILLIS = 4200000;
 
 
-    private void initialize(Socket socket, Charset encoding, Pattern pattern) throws IOException
+    private void initialize(Socket socket, Charset encoding, Pattern pattern, InputStream inputStream, OutputStream outputStream) throws IOException
     {
         this.socket = socket;
 
-        InputStream inputStream = socket.getInputStream();
-        OutputStream outputStream = socket.getOutputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, encoding));
 
         this.scanner = new Scanner(reader);
