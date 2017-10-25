@@ -53,7 +53,7 @@ node {
     stage('Release') {
         parallel 'Deploy': {
             withDockerContainer('elara/mvn:3.5.0') {
-                sh 'mvn -B -e -DskipTests deploy'
+                sh 'mvn -B -e -DskipTests -P release -Dmaven.javadoc.skip=true -Dgpg.skip=true deploy'
             }
         }, 'Tag': {
             sshagent(['cis-ssh']) {
