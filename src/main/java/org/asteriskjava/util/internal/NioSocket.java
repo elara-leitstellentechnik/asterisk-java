@@ -17,20 +17,35 @@ import java.nio.channels.SocketChannel;
 public class NioSocket implements AutoCloseable {
 
 	private static final Log LOGGER = LogFactory.getLog(NioSocket.class);
+	private static final boolean DEBUG = true; // FIXME: LOGGER.isDebugEnabled();
 
 	private final int connectTimeout;
+
 	private final SocketChannel channel;
+	private final Selector selectorRead;
+	private final Selector selectorWrite;
 	private final OutputStream outputStream;
 	private final InputStream inputStream;
 
 	public NioSocket(final int connectTimeout, final int writeTimeout, final int readTimeout) throws IOException {
 		this.connectTimeout = connectTimeout;
+		try {
+			channel = SocketChannel.open();
+			log("+");
+			channel.configureBlocking(false);
+			selectorRead = Selector.open();
+			selectorWrite = Selector.open();
+			inputStream = getInputStream(readTimeout);
+			outputStream = getOutputStream(writeTimeout);
+		} catch (Throwable e) {
+			closeSilently();
+			throw e;
+		}
+	}
 
-		channel = SocketChannel.open();
-		channel.configureBlocking(false);
-
-		inputStream = new InputStream() {
-			private final SelectionKey key = channel.register(Selector.open(), SelectionKey.OP_READ);
+	private InputStream getInputStream(final int readTimeout) throws IOException {
+		return new InputStream() {
+			private final SelectionKey key = channel.register(selectorRead, SelectionKey.OP_READ);
 
 			@Override
 			public int read() throws IOException {
@@ -55,8 +70,10 @@ public class NioSocket implements AutoCloseable {
 				try {
 					long millis = System.currentTimeMillis();
 					key.selector().select(readTimeout);
-					millis = System.currentTimeMillis() - millis;
-					LOGGER.debug("< " + key.isReadable() + " " + millis);
+					if (DEBUG) {
+						millis = System.currentTimeMillis() - millis;
+						log("< " + key.isReadable() + " " + millis);
+					}
 					if (!key.isReadable()) {
 						throw new SocketTimeoutException("recv buffer was empty for " + readTimeout + "ms");
 					}
@@ -64,16 +81,20 @@ public class NioSocket implements AutoCloseable {
 					buffer.position(off);
 					buffer.limit(off + len);
 					int read = channel.read(buffer);
-					LOGGER.debug("< " + read);
+					if (DEBUG) {
+						log("< " + read);
+					}
 					return read;
 				} catch (IOException e) {
 					throw e;
 				}
 			}
 		};
+	}
 
-		outputStream = new OutputStream() {
-			private final SelectionKey key = channel.register(Selector.open(), SelectionKey.OP_WRITE);
+	private OutputStream getOutputStream(final int writeTimeout) throws IOException {
+		return new OutputStream() {
+			private final SelectionKey key = channel.register(selectorWrite, SelectionKey.OP_WRITE);
 
 			@Override
 			public void write(int b) throws IOException {
@@ -88,21 +109,25 @@ public class NioSocket implements AutoCloseable {
 					buffer.limit(off + len);
 					while (buffer.hasRemaining()) {
 						int write = channel.write(buffer);
-						LOGGER.debug("> " + write);
+						if (DEBUG) {
+							log("> " + write);
+						}
 						if (write == 0) {
 							// nothing written? => wait for channel!
 							long millis = System.currentTimeMillis();
 							key.selector().select(writeTimeout);
 							millis = System.currentTimeMillis() - millis;
 							boolean writable = key.isWritable();
-							LOGGER.debug("> " + writable + " " + millis);
+							if (DEBUG) {
+								log("> " + writable + " " + millis);
+							}
 							if (!writable) {
 								throw new SocketTimeoutException("send buffer was full for " + writeTimeout + "ms");
 							}
 						}
 					}
 				} catch (IOException e) {
-					LOGGER.debug(e);
+					log(e);
 					closeSilently();
 					throw e;
 				}
@@ -113,15 +138,14 @@ public class NioSocket implements AutoCloseable {
 	public void connect(SocketAddress endpoint) throws IOException {
 		try {
 			channel.connect(endpoint);
-
-			Selector selector = Selector.open();
-			SelectionKey key = channel.register(selector, SelectionKey.OP_CONNECT);
-			selector.select(connectTimeout);
-			if (!key.isConnectable()) {
-				throw new SocketTimeoutException();
+			try (Selector selector = Selector.open()) {
+				SelectionKey key = channel.register(selector, SelectionKey.OP_CONNECT);
+				selector.select(connectTimeout);
+				if (!key.isConnectable()) {
+					throw new SocketTimeoutException();
+				}
+				channel.finishConnect();
 			}
-			channel.finishConnect();
-			selector.close();
 		} catch (Throwable e) {
 			closeSilently();
 			throw e;
@@ -138,8 +162,16 @@ public class NioSocket implements AutoCloseable {
 
 	@Override
 	public void close() throws IOException {
-		LOGGER.debug("!");
-		channel.close();
+		log("-");
+		if (channel != null) {
+			channel.close();
+		}
+		if (selectorRead != null && selectorRead.isOpen()) {
+			selectorRead.close();
+		}
+		if (selectorWrite != null && selectorWrite.isOpen()) {
+			selectorWrite.close();
+		}
 	}
 
 	private void closeSilently() {
@@ -152,4 +184,11 @@ public class NioSocket implements AutoCloseable {
 	public Socket getSocket() {
 		return channel.socket();
 	}
+
+	private void log(Object obj) {
+		if (DEBUG) {
+			LOGGER.debug(System.identityHashCode(channel.socket()) + " " + obj);
+		}
+	}
+
 }
