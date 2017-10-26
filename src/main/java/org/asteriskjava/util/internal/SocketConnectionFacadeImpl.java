@@ -44,12 +44,13 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 {
     public static final Pattern CRNL_PATTERN = Pattern.compile("\r\n");
     public static final Pattern NL_PATTERN = Pattern.compile("\n");
+	private NioSocket nioSocket;
     private Socket socket;
     private Scanner scanner;
     private BufferedWriter writer;
     private Trace trace;
 
-    /**
+	/**
      * <<<<<<< HEAD Creates a new instance for use with the Manager API that
      * uses UTF-8 as encoding and CRNL ("\r\n") as line delimiter. =======
      * Creates a new instance for use with the Manager API that uses CRNL
@@ -123,8 +124,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding,
             Pattern lineDelimiter) throws IOException
     {
-	    NioSocket nioSocket;
-        Socket socket;
+	    Socket socket;
 
 	    if (ssl)
 	    {
@@ -222,6 +222,9 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     @Override
     public void close() throws IOException
     {
+	    if (nioSocket != null) {
+		    nioSocket.close();
+	    }
         socket.close();
         scanner.close();
         // close the trace only if it was activated (the object is not null)
