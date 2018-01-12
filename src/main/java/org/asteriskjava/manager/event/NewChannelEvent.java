@@ -31,33 +31,9 @@ public class NewChannelEvent extends AbstractChannelStateEvent
      */
     static final long serialVersionUID = 1L;
 
-    private String language;
-    private String linkedid;
-
     public NewChannelEvent(Object source)
     {
         super(source);
     }
-
-    public String getLanguage()
-    {
-        return language;
-    }
-
-    public void setLanguage(String language)
-    {
-        this.language = language;
-    }
-
-    public String getLinkedid()
-    {
-        return linkedid;
-    }
-
-    public void setLinkedid(String linkedid)
-    {
-        this.linkedid = linkedid;
-    }
-
 
 }

@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
 /**
  * A NewCallerIdEvent is triggered when the caller id of a channel changes.<p>
  * It is implemented in <code>channel.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -36,27 +36,15 @@ public class NewCallerIdEvent extends AbstractChannelEvent
      */
     private Integer cidCallingPres;
     private String cidCallingPresTxt;
-    private String language;
-    private String linkedId;
 
     public NewCallerIdEvent(Object source)
     {
         super(source);
     }
 
-    public String getLanguage()
-    {
-    	return language;
-    }
-    
-    public void setLanguage(String language)
-    {
-    	this.language = language;
-    }
-    
     /**
      * Returns the CallerId presentation/screening.
-     * 
+     *
      * @return the CallerId presentation/screening.
      * @since 0.2
      */
@@ -67,7 +55,7 @@ public class NewCallerIdEvent extends AbstractChannelEvent
 
     /**
      * Returns the textual respresentation of the CallerId presentation/screening.
-     * 
+     *
      * @return the textual respresentation of the CallerId presentation/screening.
      * @since 0.2
      */
@@ -78,7 +66,7 @@ public class NewCallerIdEvent extends AbstractChannelEvent
 
     /**
      * Sets the CallerId presentation/screening in the form "%d (%s)".
-     * 
+     *
      * @param s the CallerId presentation/screening in the form "%d (%s)".
      * @since 0.2
      */
@@ -110,15 +98,5 @@ public class NewCallerIdEvent extends AbstractChannelEvent
         {
             this.cidCallingPresTxt = s.substring(spaceIdx + 2, s.length() - 1);
         }
-    }
-
-    public String getLinkedId()
-    {
-        return linkedId;
-    }
-
-    public void setLinkedId(String linkedId)
-    {
-        this.linkedId = linkedId;
     }
 }

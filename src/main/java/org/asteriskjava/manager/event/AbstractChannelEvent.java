@@ -39,7 +39,10 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     /**
      * The unique id of the channel.
      */
-    protected String uniqueId;
+    private String uniqueId;
+
+	private String linkedId;
+	private String language;
 
     protected AbstractChannelEvent(Object source)
     {
@@ -148,4 +151,24 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     {
         this.accountCode = accountCode;
     }
+
+	public final String getLinkedId()
+	{
+		return linkedId;
+	}
+
+	public final void setLinkedId(String linkedId)
+	{
+		this.linkedId = linkedId;
+	}
+
+	public final String getLanguage()
+	{
+		return language;
+	}
+
+	public final void setLanguage(String language)
+	{
+		this.language = language;
+	}
 }

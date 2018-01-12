@@ -32,23 +32,11 @@ public class HangupEvent extends AbstractChannelStateEvent
 
     private Integer cause;
     private String causeTxt;
-    private String language;
-    private String linkedId;
     private String connectedlinenum;
 
     public HangupEvent(Object source)
     {
         super(source);
-    }
-
-    public String getLanguage()
-    {
-    	return language;
-    }
-
-    public void setLanguage(String language)
-    {
-    	this.language = language;
     }
 
     /**
@@ -92,16 +80,6 @@ public class HangupEvent extends AbstractChannelStateEvent
     public void setCauseTxt(String causeTxt)
     {
         this.causeTxt = causeTxt;
-    }
-
-    public String getLinkedId()
-    {
-        return linkedId;
-    }
-
-    public void setLinkedId(String linkedId)
-    {
-        this.linkedId = linkedId;
     }
 
 	public String getConnectedlinenum()

@@ -29,22 +29,10 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
     static final long serialVersionUID = 0L;
 
     private Integer cause;
-    private String language;
-    private String linkedId;
 
     public SoftHangupRequestEvent(Object source)
     {
         super(source);
-    }
-
-    public String getLanguage()
-    {
-        return language;
-    }
-
-    public void setLanguage(String language)
-    {
-        this.language = language;
     }
 
     /**
@@ -68,14 +56,4 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
         this.cause = cause;
     }
 
-    public String getLinkedId()
-    {
-        return linkedId;
-    }
-
-    public void setLinkedId(String linkedId)
-    {
-        this.linkedId = linkedId;
-    }
-    
 }

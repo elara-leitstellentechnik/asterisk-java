@@ -29,18 +29,6 @@ public class HangupRequestEvent extends AbstractChannelEvent
     static final long serialVersionUID = 0L;
 
     private Integer cause;
-    private String language;
-    private String linkedId;
-
-    public String getLanguage()
-    {
-        return language;
-    }
-
-    public void setLanguage(String language)
-    {
-        this.language = language;
-    }
 
     public HangupRequestEvent(Object source)
     {
@@ -66,16 +54,6 @@ public class HangupRequestEvent extends AbstractChannelEvent
     public void setCause(Integer cause)
     {
         this.cause = cause;
-    }
-
-    public String getLinkedId()
-    {
-        return linkedId;
-    }
-
-    public void setLinkedId(String linkedId)
-    {
-        this.linkedId = linkedId;
     }
 
 }
