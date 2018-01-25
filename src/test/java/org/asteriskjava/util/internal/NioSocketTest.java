@@ -1,6 +1,9 @@
 package org.asteriskjava.util.internal;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -9,7 +12,9 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * @author sere
@@ -17,6 +22,19 @@ import java.util.Set;
  */
 public class NioSocketTest {
 	public static void main(String[] args) throws IOException {
+		NioSocket socket = new NioSocket(1000, 1000, 1000);
+		socket.connect(new InetSocketAddress("entwicklervm01", 8000));
+
+		InputStream in = socket.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+		Scanner scanner = new Scanner(reader);
+		scanner.useDelimiter(Pattern.compile("\r\n"));
+		for (; ; ) {
+			reader.readLine();
+		}
+	}
+
+	public static void main1(String[] args) throws IOException {
 		NioSocket socket = new NioSocket(10000, 10000, 10000);
 		socket.connect(new InetSocketAddress("192.168.178.39", 8000));
 
@@ -72,9 +90,9 @@ public class NioSocketTest {
 				SocketChannel channel = (SocketChannel) key.channel();
 
 				System.out.println("Channel: "
-						+ (key.isReadable() ? "r" : "-")
-						+ (key.isWritable() ? "w" : "-")
-						+ (key.isConnectable() ? "c" : "-")
+					+ (key.isReadable() ? "r" : "-")
+					+ (key.isWritable() ? "w" : "-")
+					+ (key.isConnectable() ? "c" : "-")
 				);
 
 				// Attempt a connection

@@ -30,8 +30,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 
@@ -47,7 +45,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     public static final Pattern NL_PATTERN = Pattern.compile("\n");
 	private NioSocket nioSocket;
     private Socket socket;
-    private Scanner scanner;
+	private BufferedReader scanner;
     private BufferedWriter writer;
     private Trace trace;
 
@@ -118,45 +116,15 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     {
         this.socket = socket;
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, encoding));
-
-        this.scanner = new Scanner(reader);
-        this.scanner.useDelimiter(pattern);
+        this.scanner = new BufferedReader(new InputStreamReader(inputStream, encoding));
         this.writer = new BufferedWriter(new OutputStreamWriter(outputStream, encoding));
     }
 
     @Override
     public String readLine() throws IOException
     {
-        String line;
-        try
-        {
-            line = scanner.next();
-        }
-        catch (IllegalStateException e)
-        {
-            if (scanner.ioException() != null)
-            {
-                throw scanner.ioException();
-            }
-            else
-            {
-                // throw new IOException("No more lines available", e); // JDK6
-                throw new IOException("No more lines available: " + e.getMessage());
-            }
-        }
-        catch (NoSuchElementException e)
-        {
-            if (scanner.ioException() != null)
-            {
-                throw scanner.ioException();
-            }
-            else
-            {
-                // throw new IOException("No more lines available", e); // JDK6
-                throw new IOException("No more lines available: " + e.getMessage());
-            }
-        }
+	    String line;
+	    line = scanner.readLine();
 
         if (trace != null)
         {
@@ -187,7 +155,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 		    nioSocket.close();
 	    }
         socket.close();
-        scanner.close();
+	    scanner.close();
         // close the trace only if it was activated (the object is not null)
         if (trace != null){
         	trace.close();
