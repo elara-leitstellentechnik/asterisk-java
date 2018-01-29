@@ -18,7 +18,6 @@ package org.asteriskjava.util.internal;
 
 import org.asteriskjava.util.SocketConnectionFacade;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +43,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     public static final Pattern NL_PATTERN = Pattern.compile("\n");
 	private NioSocket nioSocket;
     private Socket socket;
-	private BufferedReader scanner;
+	private BufferedReaderCrLfOnly scanner;
     private BufferedWriter writer;
     private Trace trace;
 
@@ -160,7 +159,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     {
         this.socket = socket;
 
-        this.scanner = new BufferedReader(new InputStreamReader(inputStream, encoding));
+        this.scanner = new BufferedReaderCrLfOnly(new InputStreamReader(inputStream, encoding));
         this.writer = new BufferedWriter(new OutputStreamWriter(outputStream, encoding));
     }
 
