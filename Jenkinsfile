@@ -27,23 +27,6 @@ node {
         }
     }
 
-    stage('SonarQube Analysis') {
-        withDockerContainer('elara/mvn:3.5.0') {
-            withSonarQubeEnv("SonarQube") {
-                sh 'mvn -B -e org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar'
-            }
-        }
-    }
-
-    stage("SonarQube Quality Gate") {
-        timeout(time: 5, unit: 'MINUTES') {
-            def qg = waitForQualityGate()
-            if (qg.status != 'OK') {
-                error "Pipeline aborted due to quality gate failure: ${qg.status}"
-            }
-        }
-    }
-
     stage('Package') {
         withDockerContainer('elara/mvn:3.5.0') {
             sh 'mvn -B -e -DskipTests -P release -Dmaven.javadoc.skip=true package'
@@ -61,6 +44,14 @@ node {
                 sh('git config --global user.name "jenkins"')
                 sh("git tag ${version}")
                 sh('git push --tags')
+            }
+        }
+    }
+
+    stage('SonarQube Analysis') {
+        withDockerContainer('elara/mvn:3.5.0') {
+            withSonarQubeEnv("SonarQube") {
+                sh 'mvn -B -e org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar'
             }
         }
     }
