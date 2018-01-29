@@ -35,15 +35,6 @@ node {
         }
     }
 
-    stage("SonarQube Quality Gate") {
-        timeout(time: 5, unit: 'MINUTES') {
-            def qg = waitForQualityGate()
-            if (qg.status != 'OK') {
-                error "Pipeline aborted due to quality gate failure: ${qg.status}"
-            }
-        }
-    }
-
     stage('Package') {
         withDockerContainer('elara/mvn:3.5.0') {
             sh 'mvn -B -e -DskipTests -P release -Dmaven.javadoc.skip=true package'
