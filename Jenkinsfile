@@ -27,14 +27,6 @@ node {
         }
     }
 
-    stage('SonarQube Analysis') {
-        withDockerContainer('elara/mvn:3.5.0') {
-            withSonarQubeEnv("SonarQube") {
-                sh 'mvn -B -e org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar'
-            }
-        }
-    }
-
     stage('Package') {
         withDockerContainer('elara/mvn:3.5.0') {
             sh 'mvn -B -e -DskipTests -P release -Dmaven.javadoc.skip=true package'
@@ -51,5 +43,13 @@ node {
 //                sh 'mvn -B -e scm:tag'
 //            }
 //    }
+    }
+
+    stage('SonarQube Analysis') {
+        withDockerContainer('elara/mvn:3.5.0') {
+            withSonarQubeEnv("SonarQube") {
+                sh 'mvn -B -e org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar'
+            }
+        }
     }
 }
