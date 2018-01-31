@@ -644,8 +644,6 @@ class ChannelManager
         }//i
 
         logger.info(sourceChannel.getName() + " dialed " + destinationChannel.getName());
-        getTraceId(sourceChannel);
-        getTraceId(destinationChannel);
         synchronized (sourceChannel)
         {
             sourceChannel.channelDialed(event.getDateReceived(), destinationChannel);
