@@ -3,32 +3,37 @@ package org.asteriskjava.pbx.internal.core;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
+import org.asteriskjava.pbx.AgiChannelActivityAction;
+import org.asteriskjava.pbx.AsteriskSettings;
 import org.asteriskjava.pbx.CallerID;
 import org.asteriskjava.pbx.Channel;
 import org.asteriskjava.pbx.ChannelFactory;
 import org.asteriskjava.pbx.ChannelHangupListener;
 import org.asteriskjava.pbx.EndPoint;
+import org.asteriskjava.pbx.InvalidChannelName;
 import org.asteriskjava.pbx.PBX;
 import org.asteriskjava.pbx.PBXFactory;
-import org.asteriskjava.pbx.internal.agi.AgiChannelActivityAction;
-import org.asteriskjava.pbx.internal.asterisk.AsteriskSettings;
-import org.asteriskjava.pbx.internal.asterisk.InvalidChannelName;
-import org.asteriskjava.pbx.internal.asterisk.PBXSettingsManager;
+import org.asteriskjava.pbx.TechType;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
 /**
  * TODO set the channel unique id when registering against an existing channel
- * which doesn't have its unique id set. Create a single asterisk event source.
- * All users of MyBaseEventCalls will become listeners to this class rather than
- * talking to asterisk directly. Each listener will have events queued to it. It
- * can process these events in a separate thread. Key feature is that one a
- * 'rename' event arrives we must pause all of the queues wait for them to empty
- * and for the queue clients to quiescent, then apply the rename before resuming
- * pushing data in to the queues. Additionally we need to redo the asterisk
- * events classes with our own classes that pass around an iChannel rather than
- * a raw channel name. By doing this the rename affectively becomes global
- * updating every instance of the channel (because they actually only have an
- * instance handle).
+ * which doesn't have its unique id set. <br>
+ * <br>
+ * Create a single asterisk event source. All users of MyBaseEventCalls will
+ * become listeners to this class rather than talking to asterisk directly. Each
+ * listener will have events queued to it. It can process these events in a
+ * separate thread. <br>
+ * <br>
+ * Key feature is that one a 'rename' event arrives we must pause all of the
+ * queues wait for them to empty and for the queue clients to quiescent, then
+ * apply the rename before resuming pushing data in to the queues. <br>
+ * <br>
+ * Additionally we need to redo the asterisk events classes with our own classes
+ * that pass around an iChannel rather than a raw channel name. By doing this
+ * the rename affectively becomes global updating every instance of the channel
+ * (because they actually only have an instance handle).
  * 
  * @author bsutton
  */
@@ -39,7 +44,7 @@ public class ChannelImpl implements Channel
 
     public static final String UNKNOWN_UNIQUE_ID = "-1"; //$NON-NLS-1$
 
-    private static Logger logger = Logger.getLogger(ChannelImpl.class);
+    private static final Log logger = LogFactory.getLog(ChannelImpl.class);
     private static int logCounter = 100;
 
     /**
@@ -54,7 +59,7 @@ public class ChannelImpl implements Channel
      * a channel can be 're-created' on the fly. In this case the channels name
      * will be the same but the unique id will change.
      */
-    final private String _uniqueID;
+    private String _uniqueID;
     /**
      * This is an abbreviated form of the channel name obtained by removing
      * everything after the '-' in the channel name.
@@ -77,7 +82,7 @@ public class ChannelImpl implements Channel
 
     private boolean _parked = false;
 
-    private boolean _isZombie = false;
+    private volatile boolean _isZombie = false;
 
     /**
      * A channel is live if it has not been hungup.
@@ -89,14 +94,14 @@ public class ChannelImpl implements Channel
      * Masqueraded channels have an extra suffix <MASQ> after the sequence
      * number e.g. SIP/100-000009823<MASQ>
      */
-    private boolean _isMasqueraded = false;
+    private volatile boolean _isMasqueraded = false;
 
     /**
      * Indicates that the channel is undergoing an action such as being parked.
      * Action channels have an extra prefix before the tech e.g.
      * Parked/SIP/100-000009823
      */
-    private boolean _isInAction = false;
+    private volatile boolean _isInAction = false;
 
     /**
      * Indicates that the channel has been originated directly from the Asterisk
@@ -173,7 +178,7 @@ public class ChannelImpl implements Channel
 
         if (uniqueID.compareToIgnoreCase("-1") == 0)
         {
-            logger.info("uniqueID is -1");
+            logger.debug("uniqueID is -1");
         }
 
         this._uniqueID = uniqueID;
@@ -188,7 +193,7 @@ public class ChannelImpl implements Channel
      * a complete clone just the key elements that we generally track on our
      * side rather than getting directly from asterisk.
      */
-    void masquerade(Channel channel)
+    public void masquerade(Channel channel)
     {
         // If the channel doesn't have a caller id
         // preserve the existing one (as given this is a clone they should be
@@ -223,6 +228,7 @@ public class ChannelImpl implements Channel
 
     private void setChannelName(final String channelName) throws InvalidChannelName
     {
+        logger.debug("Renamed channel from " + this._channelName + " to " + channelName);
         this._channelName = this.cleanChannelName(channelName);
         this.validateChannelName(this._channelName);
 
@@ -249,13 +255,6 @@ public class ChannelImpl implements Channel
                 ChannelImpl.logCounter--;
             }
         }
-    }
-
-    @Override
-    public void rename(final String newName) throws InvalidChannelName
-    {
-        this.setChannelName(newName);
-
     }
 
     /**
@@ -349,7 +348,7 @@ public class ChannelImpl implements Channel
         }
         if (wasInAction != this._isInAction)
         {
-            logger.info("Channel " + this + " : inaction status changed from " + wasInAction + " to " + this._isInAction);
+            logger.debug("Channel " + this + " : inaction status changed from " + wasInAction + " to " + this._isInAction);
         }
 
         // Channels can be marked as in a zombie state
@@ -377,6 +376,30 @@ public class ChannelImpl implements Channel
         }
 
         return cleanedName;
+    }
+
+    @Override
+    public void rename(final String newName, String uniqueId) throws InvalidChannelName
+    {
+
+        String oldChannelName = getChannelName();
+        logger.info("Changing " + oldChannelName + " to " + newName + " on " + oldChannelName + " " + _uniqueID);
+        this.setChannelName(newName);
+
+        if (_uniqueID.equalsIgnoreCase("-1"))
+        {
+            logger.info("Changing " + _uniqueID + " to " + uniqueId + " on " + oldChannelName + " " + _uniqueID);
+            _uniqueID = uniqueId;
+        }
+
+        // the new replacement channel will go through a rename (without
+        // MASQ) and is ready to use.
+
+        // the old channel will go through a rename (MASQ), then anther
+        // rename (ZOMBIE) and finally a hangup
+
+        _isInAction = false;
+
     }
 
     @Override
@@ -423,7 +446,7 @@ public class ChannelImpl implements Channel
         return ret;
     }
 
-    void setCallerId(final CallerID callerId)
+    public void setCallerId(final CallerID callerId)
     {
         this._callerID = callerId;
     }
@@ -559,7 +582,7 @@ public class ChannelImpl implements Channel
      * @param uniqueID
      * @return
      */
-    boolean sameUniqueID(String uniqueID)
+    public boolean sameUniqueID(String uniqueID)
     {
         boolean equals = false;
         if ((this._uniqueID.compareTo(ChannelImpl.UNKNOWN_UNIQUE_ID) != 0)
@@ -793,7 +816,7 @@ public class ChannelImpl implements Channel
     {
         boolean canDetectHangup = true;
 
-        AsteriskSettings profile = PBXSettingsManager.getActiveProfile();
+        AsteriskSettings profile = PBXFactory.getActiveProfile();
         final boolean detect = profile.getCanDetectHangup();
         if (!this.getEndPoint().isSIP() && !detect)
         {

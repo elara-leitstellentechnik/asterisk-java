@@ -22,7 +22,8 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of the ResponseEvents interface.
@@ -36,6 +37,7 @@ public class ResponseEventsImpl implements ResponseEvents
     private ManagerResponse response;
     private final Collection<ResponseEvent> events;
     private boolean complete;
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     /**
      * Creates a new instance.
@@ -99,5 +101,19 @@ public class ResponseEventsImpl implements ResponseEvents
     public void setComplete(boolean complete)
     {
         this.complete = complete;
+    }
+
+    /**
+     * @param timeout - milliseconds
+     * @throws InterruptedException
+     */
+    public void await(long timeout) throws InterruptedException
+    {
+        latch.await(timeout, TimeUnit.MILLISECONDS);
+    }
+
+    public void countDown()
+    {
+        latch.countDown();
     }
 }

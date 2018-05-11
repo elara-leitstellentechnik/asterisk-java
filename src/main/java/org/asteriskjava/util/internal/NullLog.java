@@ -71,4 +71,10 @@ public class NullLog implements Log
     {
         return false;
     }
+
+    @Override
+    public void debug(Object e, Throwable e2)
+    {
+
+    }
 }
