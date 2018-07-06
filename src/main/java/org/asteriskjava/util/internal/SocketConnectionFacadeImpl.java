@@ -16,8 +16,6 @@
  */
 package org.asteriskjava.util.internal;
 
-import org.asteriskjava.util.SocketConnectionFacade;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +27,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
+
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocketFactory;
+
+import org.asteriskjava.util.SocketConnectionFacade;
 
 /**
  * Default implementation of the SocketConnectionFacade interface using java.io.
@@ -43,7 +47,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     public static final Pattern NL_PATTERN = Pattern.compile("\n");
 	private NioSocket nioSocket;
     private Socket socket;
-	private BufferedReaderCrLfOnly scanner;
+    private BufferedReaderCrLfOnly scanner;
     private BufferedWriter writer;
     private Trace trace;
 

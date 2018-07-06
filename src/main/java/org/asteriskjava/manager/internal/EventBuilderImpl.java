@@ -103,6 +103,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ConfbridgeStartEvent.class);
         registerEventClass(ConfbridgeTalkingEvent.class);
         registerEventClass(ConfbridgeUnmuteEvent.class);
+        registerEventClass(ContactStatusEvent.class);
         registerEventClass(CoreShowChannelEvent.class);
         registerEventClass(CoreShowChannelsCompleteEvent.class);
         registerEventClass(DAHDIChannelEvent.class);
@@ -142,6 +143,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(LinkEvent.class);
         registerEventClass(ListDialplanEvent.class);
         registerEventClass(LocalBridgeEvent.class);
+        registerEventClass(LocalOptimizationBeginEvent.class);
+        registerEventClass(LocalOptimizationEndEvent.class);
         registerEventClass(LogChannelEvent.class);
         registerEventClass(NewConnectedLineEvent.class);
         registerEventClass(MasqueradeEvent.class);
@@ -279,7 +282,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         try
         {
-            defaultConstructor = clazz.getConstructor(new Class[]{Object.class});
+            defaultConstructor = clazz.getConstructor(Object.class);
         }
         catch (NoSuchMethodException ex)
         {
@@ -397,7 +400,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         try
         {
-            constructor = eventClass.getConstructor(new Class[]{Object.class});
+            constructor = eventClass.getConstructor(Object.class);
         }
         catch (NoSuchMethodException ex)
         {
@@ -474,7 +477,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         }
         if (toRemove.isEmpty())
         {
-            logger.error("Couldn't remove event type " + eventClass);
+            logger.warn("Couldn't remove event type " + eventClass);
         }
         else
         {

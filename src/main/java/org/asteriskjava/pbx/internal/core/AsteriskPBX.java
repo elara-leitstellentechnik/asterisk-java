@@ -305,7 +305,7 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     {
         if (channel.isLive())
         {
-            logger.warn("Sending hangup action for channel: " + channel); //$NON-NLS-1$
+            logger.info("Sending hangup action for channel: " + channel); //$NON-NLS-1$
 
             PBX pbx = PBXFactory.getActivePBX();
             if (!pbx.waitForChannelToQuiescent(channel, 3000))
@@ -880,7 +880,10 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
 
         final CompletionAdaptor<DialToAgiActivity> completion = new CompletionAdaptor<>();
 
-        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, false, completion, null, action);
+        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, null, false, completion, null,
+                action);
+
+        dialer.startActivity(false);
 
         completion.waitForCompletion(3, TimeUnit.MINUTES);
 
@@ -898,6 +901,18 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
         iCallback.progress(dialer, status, status.getDefaultMessage());
 
         return dialer;
+    }
+
+    public DialToAgiWithAbortCallback dialToAgiWithAbort(EndPoint endPoint, CallerID callerID, int timeout,
+            AgiChannelActivityAction action, ActivityCallback<DialToAgiActivity> iCallback)
+    {
+
+        final CompletionAdaptor<DialToAgiActivity> completion = new CompletionAdaptor<>();
+
+        final DialToAgiActivityImpl dialer = new DialToAgiActivityImpl(endPoint, callerID, timeout, false, completion, null,
+                action);
+
+        return new DialToAgiWithAbortCallback(dialer, completion, iCallback);
     }
 
     /**
@@ -947,9 +962,19 @@ public enum AsteriskPBX implements PBX, ChannelHangupListener
     public boolean checkDialplanExists(AsteriskSettings profile)
             throws IllegalArgumentException, IllegalStateException, IOException, TimeoutException
     {
-        String ext = "show dialplan " + profile.getManagementContext();
+        String command;
 
-        CommandAction action = new CommandAction(ext);
+        if (getVersion().isAtLeast(AsteriskVersion.ASTERISK_1_6))
+        {
+            // TODO: Use ShowDialplanAction instead of CommandAction?
+            command = "dialplan show " + profile.getManagementContext();
+        }
+        else
+        {
+            command = "show dialplan " + profile.getManagementContext();
+        }
+
+        CommandAction action = new CommandAction(command);
         CommandResponse response = (CommandResponse) sendAction(action, 30000);
 
         boolean exists = false;

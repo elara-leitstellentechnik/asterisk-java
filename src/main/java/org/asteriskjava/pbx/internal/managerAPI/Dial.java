@@ -33,8 +33,7 @@ public class Dial extends EventListenerBaseClass
 
     public Dial(final String descriptiveName)
     {
-        super(descriptiveName);
-        this.startListener(PBXFactory.getActivePBX());
+        super(descriptiveName, PBXFactory.getActivePBX());
     }
 
     /**
@@ -60,14 +59,16 @@ public class Dial extends EventListenerBaseClass
     {
         final PBX pbx = PBXFactory.getActivePBX();
 
-        try (final OriginateToExtension originate = new OriginateToExtension(listener);)
+        try (final OriginateToExtension originate = new OriginateToExtension(listener))
         {
+
+            this.startListener();
 
             // First bring the operator's handset up and connect it to the
             // 'njr-dial' extension where they can
             // wait whilst we complete the second leg
             final OriginateResult trcResult = originate.originate(localHandset, pbx.getExtensionAgi(), true,
-                    ((AsteriskPBX) pbx).getManagementContext(), callerID, hideCallerId, channelVarsToSet);
+                    ((AsteriskPBX) pbx).getManagementContext(), callerID, null, hideCallerId, channelVarsToSet);
 
             this.result[0] = trcResult;
             if (trcResult.isSuccess() == true)
@@ -110,6 +111,10 @@ public class Dial extends EventListenerBaseClass
             }
 
             return this.result;
+        }
+        finally
+        {
+            this.close();
         }
     }
 

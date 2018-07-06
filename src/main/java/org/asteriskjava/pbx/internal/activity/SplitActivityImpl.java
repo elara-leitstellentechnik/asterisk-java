@@ -3,6 +3,9 @@ package org.asteriskjava.pbx.internal.activity;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.asteriskjava.pbx.ActivityCallback;
 import org.asteriskjava.pbx.AsteriskSettings;
@@ -14,9 +17,11 @@ import org.asteriskjava.pbx.ListenerPriority;
 import org.asteriskjava.pbx.PBXException;
 import org.asteriskjava.pbx.PBXFactory;
 import org.asteriskjava.pbx.activities.SplitActivity;
+import org.asteriskjava.pbx.agi.AgiChannelActivityBridge;
 import org.asteriskjava.pbx.agi.AgiChannelActivityHold;
 import org.asteriskjava.pbx.asterisk.wrap.actions.RedirectAction;
 import org.asteriskjava.pbx.asterisk.wrap.events.ManagerEvent;
+import org.asteriskjava.pbx.asterisk.wrap.events.RenameEvent;
 import org.asteriskjava.pbx.internal.core.AsteriskPBX;
 import org.asteriskjava.pbx.internal.core.ChannelProxy;
 import org.asteriskjava.util.Log;
@@ -56,6 +61,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     {
         super("SplitActivity", listener);
 
+        renameEventReceived.set(new CountDownLatch(1));
         this._callToSplit = callToSplit;
 
         List<Channel> tmp = callToSplit.getChannels();
@@ -102,14 +108,23 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
     {
         HashSet<Class< ? extends ManagerEvent>> required = new HashSet<>();
 
-        // No events required.
+        required.add(RenameEvent.class);
         return required;
     }
+
+    final AtomicReference<CountDownLatch> renameEventReceived = new AtomicReference<>();
 
     @Override
     synchronized public void onManagerEvent(final ManagerEvent event)
     {
-        // NOOP
+        if (event instanceof RenameEvent)
+        {
+            RenameEvent rename = (RenameEvent) event;
+            if (rename.getChannel().isSame(channel1) || rename.getChannel().isSame(channel2))
+            {
+                renameEventReceived.get().countDown();
+            }
+        }
     }
 
     @Override
@@ -161,8 +176,7 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
 
         if (channel1 == channel2)
         {
-            throw new NullPointerException(
-                    "channel1 is the same as channel2. if I let this happen, asterisk will core dump :)");
+            throw new PBXException("channel1 is the same as channel2. if I let this happen, asterisk will core dump :)");
         }
 
         List<Channel> channels = new LinkedList<>();
@@ -186,8 +200,22 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
         pbx.setVariable(channel1, "proxyId", "" + ((ChannelProxy) channel1).getIdentity());
         pbx.setVariable(channel2, "proxyId", "" + ((ChannelProxy) channel2).getIdentity());
 
-        channel1.setCurrentActivityAction(agi1);
-        channel2.setCurrentActivityAction(agi2);
+        // AgiChannelAcitivyBridge has a latch which other activities may be
+        // sleeping on, so it's important
+        // to change the other channels activity first to avoid it waking and
+        // taking an undesired action
+        // when the AgiChannelActivityBridge channel has it's acitvity
+        // cancelled.
+        if (channel2.getCurrentActivityAction() instanceof AgiChannelActivityBridge)
+        {
+            channel1.setCurrentActivityAction(agi1);
+            channel2.setCurrentActivityAction(agi2);
+        }
+        else
+        {
+            channel2.setCurrentActivityAction(agi2);
+            channel1.setCurrentActivityAction(agi1);
+        }
 
         final String agiExten = profile.getAgiExtension();
         final String agiContext = profile.getManagementContext();
@@ -207,8 +235,32 @@ public class SplitActivityImpl extends ActivityHelper<SplitActivity> implements 
             try
             {
 
+                renameEventReceived.set(new CountDownLatch(1));
+
                 // final ManagerResponse response =
                 pbx.sendAction(redirect, 1000);
+
+                // wait for channels to unbridge
+                if (!renameEventReceived.get().await(2000, TimeUnit.MILLISECONDS))
+                {
+                    logger.error("There was no rename event");
+                }
+                else
+                {
+                    logger.warn("Channels are renaming, now waiting for Quiescent");
+                }
+
+                channels.clear();
+
+                channels.add(channel1);
+                channels.add(channel2);
+                if (!pbx.waitForChannelsToQuiescent(channels, 3000))
+                {
+                    logger.error(callSite, callSite);
+                    throw new PBXException("Channel: " + channel1 + " or " + channel2
+                            + " cannot be split as they are still in transition.");
+                }
+
                 double ctr = 0;
                 while ((!agi1.hasCallReachedAgi() || !agi2.hasCallReachedAgi()) && ctr < 10)
                 {

@@ -1,6 +1,14 @@
 package org.asteriskjava.pbx.internal.core;
 
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import javax.naming.OperationNotSupportedException;
+
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.EventTimeoutException;
@@ -398,7 +406,8 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         // that it hasn't already)
         // and should have no duplicate events. Once drained the queue will be
         // garbage collected.
-        CoherentManagerEventQueue newRealtime = new CoherentManagerEventQueue("Realtime"); //$NON-NLS-1$
+        CoherentManagerEventQueue newRealtime = new CoherentManagerEventQueue("Realtime", //$NON-NLS-1$
+                CoherentManagerConnection.managerConnection);
         if (this.realtimeEventQueue != null)
         {
             this.realtimeEventQueue.stop();
@@ -406,7 +415,8 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         }
         this.realtimeEventQueue = newRealtime;
 
-        CoherentManagerEventQueue newStandard = new CoherentManagerEventQueue("Standard"); //$NON-NLS-1$
+        CoherentManagerEventQueue newStandard = new CoherentManagerEventQueue("Standard", //$NON-NLS-1$
+                CoherentManagerConnection.managerConnection);
         if (this.eventQueue != null)
         {
             this.eventQueue.stop();
@@ -444,120 +454,6 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         else
         {
             this.canBridge = bridgeFound;
-        }
-    }
-
-    // @SuppressWarnings("unused")
-    // private boolean ping(final int timeout)
-    // {
-    // boolean result = false;
-    //
-    // try
-    // {
-    // // logger.debug("ping");
-    // final PingAction pa = new PingAction();
-    // result = true;
-    // }
-    // catch (final Exception e)
-    // {
-    // // logger.warn("ping failed asterisk connection may have been lost");
-    //
-    // }
-    // return result;
-    //
-    // }
-
-    // // TODO consider putting the ping logic back in.
-    // // Having said that the ping command doesn't appear to have been working
-    // for
-    // // some time
-    // // as it was always returning true.
-    // public void run()
-    // {
-    // // Establish the initial connection.
-    // this.connector = new Connector();
-    // try
-    // {
-    // this.managerListener = this.con.connect(this.profile);
-    // this.queue = new ManagerEventQueue(this);
-    //
-    // this.managerListener.addEventListener(this.queue);
-    //
-    // this.managerWriter = this.con.connect(this.profile);
-    //
-    // }
-    // catch (final Exception e)
-    // {
-    // logger.error(e, e);
-    // }
-    //
-    // // Monitor the connection by doing an asterisk ping.
-    // while (this.stop == false)
-    // {
-    // if (!this.ping(200))
-    // {
-    // if (!this.ping(90))
-    // {
-    // if (!this.ping(90))
-    // {
-    // logger.error("Asterisk connection lost, attempting reconnect");
-    // //$NON-NLS-1$
-    // // The ping has failed so we need to force a reconnect.
-    // this.reconnect();
-    // }
-    // }
-    // }
-    // try
-    // {
-    // Thread.sleep(500);
-    // }
-    // catch (final InterruptedException e)
-    // {
-    // CallMarker.logger.error(e, e);
-    // }
-    //
-    // }
-    //
-    // }
-
-    private void reconnect()
-    {
-        final ManagerConnection oldConnection = CoherentManagerConnection.managerConnection;
-        try
-        {
-            try
-            {
-                final InetAddress address = InetAddress.getByName(CoherentManagerConnection.managerConnection.getHostname());
-                int counter = 0;
-                while (!address.isReachable(100))
-                {
-                    if (counter % 10 == 0)
-                        CoherentManagerConnection.logger.debug("Testing for host " //$NON-NLS-1$
-                                + CoherentManagerConnection.managerConnection.getHostname());
-                    counter++;
-                }
-            }
-            catch (final Exception e2)
-            {
-                CoherentManagerConnection.logger.error(e2, e2);
-            }
-            try
-            {
-                CoherentManagerConnection.logger.debug("reconnecting to asterisk"); //$NON-NLS-1$
-
-                connector = new Connector();
-                this.configureConnection();
-                CoherentManagerConnection.logger.debug("asterisk reconnection complete"); //$NON-NLS-1$
-            }
-            catch (final Exception e1)
-            {
-
-                CoherentManagerConnection.logger.error(e1, e1);
-            }
-        }
-        finally
-        {
-            oldConnection.logoff();
         }
     }
 
@@ -641,14 +537,13 @@ class CoherentManagerConnection implements FilteredManagerListener<ManagerEvent>
         else if (event instanceof DisconnectEvent)
         {
             logger.warn("****************** Asterisk manager connection lost **************************"); //$NON-NLS-1$
-            new Thread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    reconnect();
-                }
-            });
+            // new Thread(new Runnable()
+            // {
+            // public void run()
+            // {
+            // reconnect();
+            // }
+            // });
         }
 
     }

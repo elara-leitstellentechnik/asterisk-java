@@ -64,15 +64,6 @@ abstract class AbstractBuilder
                 setterName = "clazz";
             }
 
-            /*
-             * The class property needs to be renamed. It is used in
-             * MusicOnHoldEvent.
-             */
-            if ("class".equals(setterName))
-            {
-                setterName = "classname";
-            }
-
             setter = setters.get(setterName);
 
             if (setter == null && !setterName.endsWith("s")) // no exact match
@@ -114,14 +105,14 @@ abstract class AbstractBuilder
 
                     value = null;
                 }
-                if(value instanceof List){
-                	StringBuffer strBuff = new StringBuffer();
-                	for(String tmp : (List<String>)value){
-                		if(tmp != null && tmp.length() != 0){
-                			strBuff.append(tmp + "\n");
-                		}
-                	}
-                	value = strBuff.toString();
+                if (value instanceof List) {
+                    StringBuilder strBuff = new StringBuilder();
+                    for (String tmp : (List<String>) value) {
+                        if (tmp != null && tmp.length() != 0) {
+                            strBuff.append(tmp).append('\n');
+                        }
+                    }
+                    value = strBuff.toString();
                 }
             }
             else if (dataType.isAssignableFrom(Map.class))
@@ -148,7 +139,7 @@ abstract class AbstractBuilder
             {
                 try
                 {
-                    Constructor< ? > constructor = dataType.getConstructor(new Class[]{String.class});
+                    Constructor< ? > constructor = dataType.getConstructor(String.class);
                     value = constructor.newInstance(entry.getValue());
                 }
                 catch (Exception e)

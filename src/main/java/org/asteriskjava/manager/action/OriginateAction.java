@@ -21,10 +21,12 @@ import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
@@ -73,6 +75,11 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     private String data;
     private Boolean async;
     private String codecs;
+    private Boolean earlyMedia;
+
+    // starting at ten saves on a formatter.
+    private int headerCounter = 10;
+    private Set<String> preventDuplicateSipHeaders = new HashSet<>();
 
     /**
      * Returns the name of this action, i.e. "Originate".
@@ -447,7 +454,14 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      */
     public void setVariables(Map<String, String> variables)
     {
-        this.variables = variables;
+        if (this.variables != null)
+        {
+            this.variables.putAll(variables);
+        }
+        else
+        {
+            this.variables = variables;
+        }
     }
 
     /**
@@ -465,6 +479,20 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     public void setAsync(Boolean async)
     {
         this.async = async;
+    }
+
+    /**
+     * @param earlyMedia the earlyMedia to set
+     */
+    public void setEarlyMedia(Boolean earlyMedia) {
+        this.earlyMedia = earlyMedia;
+    }
+
+    /**
+     * @return the earlyMedia
+     */
+    public Boolean getEarlyMedia() {
+        return earlyMedia;
     }
 
     /**
@@ -521,4 +549,22 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     {
         return OriginateResponseEvent.class;
     }
+
+    public void addSipHeader(VariableInheritance inheritance, String header)
+    {
+        if (!preventDuplicateSipHeaders.contains(header))
+        {
+            setVariable(inheritance.getPrefix() + "SIPADDHEADER" + (headerCounter++), header);
+            preventDuplicateSipHeaders.add(header);
+            if (headerCounter > 50)
+            {
+                logger.warn("I think only 50 headers are allowed by asterisk?");
+            }
+        }
+        else
+        {
+            logger.error("Already added the sip header " + header);
+        }
+    }
+
 }

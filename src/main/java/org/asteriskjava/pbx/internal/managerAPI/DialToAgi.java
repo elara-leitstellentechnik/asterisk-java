@@ -27,10 +27,11 @@ public class DialToAgi extends EventListenerBaseClass
 
     private volatile boolean hangupDetected = false;
 
+    private OriginateToExtension originator;
+
     public DialToAgi(final String descriptiveName)
     {
-        super(descriptiveName);
-        this.startListener(PBXFactory.getActivePBX());
+        super(descriptiveName, PBXFactory.getActivePBX());
     }
 
     /**
@@ -51,42 +52,53 @@ public class DialToAgi extends EventListenerBaseClass
      * @throws PBXException
      */
     public OriginateResult[] dial(final NewChannelListener listener, final EndPoint localHandset,
-            final AgiChannelActivityAction action, final CallerID callerID, final boolean hideCallerId,
+            final AgiChannelActivityAction action, final CallerID callerID, Integer timeout, final boolean hideCallerId,
             Map<String, String> channelVarsToSet) throws PBXException, InterruptedException
     {
         final PBX pbx = PBXFactory.getActivePBX();
 
-        try (final OriginateToExtension originate = new OriginateToExtension(listener);)
+        try (final OriginateToExtension originate = new OriginateToExtension(listener))
         {
+            this.startListener();
+            originator = originate;
 
             // First bring the operator's handset up and connect it to the
             // 'njr-dial' extension where they can
             // wait whilst we complete the second leg
             final OriginateResult trcResult = originate.originate(localHandset, pbx.getExtensionAgi(), true,
-                    ((AsteriskPBX) pbx).getManagementContext(), callerID, hideCallerId, channelVarsToSet);
+                    ((AsteriskPBX) pbx).getManagementContext(), callerID, timeout, hideCallerId, channelVarsToSet);
 
             this.result[0] = trcResult;
             if (trcResult.isSuccess() == true)
             {
-
-                trcResult.getChannel().setCurrentActivityAction(action);
-                if (trcResult.getChannel().waitForChannelToReachAgi(30, TimeUnit.SECONDS))
+                if (trcResult.getChannel() != null)
                 {
-                    logger.info("Call reached AGI");
+                    trcResult.getChannel().setCurrentActivityAction(action);
+                    if (trcResult.getChannel().waitForChannelToReachAgi(30, TimeUnit.SECONDS))
+                    {
+                        logger.info("Call reached AGI");
+                    }
+                    else
+                    {
+                        logger.error("Call never reached agi");
+                    }
                 }
                 else
                 {
                     logger.error("Call never reached agi");
                 }
-
             }
             else
             {
-                logger.error("Originate failed: " + trcResult.getAbortReason());
+                logger.warn("Originate failed: " + trcResult.getAbortReason());
             }
             logger.info("Hangup status is " + hangupDetected);
 
             return this.result;
+        }
+        finally
+        {
+            this.close();
         }
     }
 
@@ -124,6 +136,11 @@ public class DialToAgi extends EventListenerBaseClass
     public ListenerPriority getPriority()
     {
         return ListenerPriority.NORMAL;
+    }
+
+    public void abort()
+    {
+        originator.abort("user abort");
     }
 
 }
