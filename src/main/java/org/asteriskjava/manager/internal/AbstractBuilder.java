@@ -6,8 +6,12 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
 
+import javafx.util.Pair;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,13 +23,19 @@ import java.util.Set;
 abstract class AbstractBuilder
 {
     protected final Log logger = LogFactory.getLog(getClass());
+	private static HashMap<Class<?>, Map<String, Method>> settersCache = new HashMap<>();
+	private static HashSet<Pair<String, String>> warns = new HashSet<>();
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     protected void setAttributes(Object target, Map<String, Object> attributes, Set<String> ignoredAttributes)
     {
         Map<String, Method> setters;
 
-        setters = ReflectionUtil.getSetters(target.getClass());
+        setters = settersCache.get(target.getClass());
+	    if (setters == null) {
+		    setters = ReflectionUtil.getSetters(target.getClass());
+		    settersCache.put(target.getClass(), setters);
+	    }
         for (Map.Entry<String, Object> entry : attributes.entrySet())
         {
             Object value;
@@ -76,9 +86,9 @@ abstract class AbstractBuilder
                 }
             }
 
-            // it seems silly to warn if it's a user event -- maybe it was
+	        // it seems silly to warn if it's a user event -- maybe it was
             // intentional
-            if (setter == null && !(target instanceof UserEvent))
+            if (setter == null && !(target instanceof UserEvent) && warns.add(new Pair<>(target.getClass().getName(), entry.getKey())))
             {
                 logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
                         + target.getClass().getName()
