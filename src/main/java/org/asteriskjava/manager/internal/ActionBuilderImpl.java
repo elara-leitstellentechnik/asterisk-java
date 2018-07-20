@@ -30,6 +30,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -180,6 +181,25 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
+    private void appendList(CheckedStringBuilder sb, String key, List<String> values)
+    {
+        String singularKey;
+
+        // strip plural s (i.e. use "variable: " instead of "variables: "
+        if (key.endsWith("s"))
+        {
+            singularKey = key.substring(0, key.length() - 1);
+        }
+        else
+        {
+            singularKey = key;
+        }
+	    for (String value : values)
+	    {
+		    appendString(sb, singularKey, value);
+	    }
+    }
+
     private void appendMap10(CheckedStringBuilder sb, String singularKey, Map<String, String> values)
     {
         Iterator<Map.Entry<String, String>> entryIterator;
@@ -301,6 +321,10 @@ class ActionBuilderImpl implements ActionBuilder
             if (value instanceof Map)
             {
                 appendMap(sb, mappedName, (Map<String, String>) value);
+            }
+            else if (value instanceof List)
+            {
+                appendList(sb, mappedName, (List<String>) value);
             }
             else if (value instanceof String)
             {
