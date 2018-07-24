@@ -71,7 +71,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Pattern;
 
 /**
  * Internal implemention of the ManagerConnection interface.
@@ -89,17 +88,6 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final int RECONNECTION_VERSION_INTERVAL = 500;
     private static final int MAX_VERSION_ATTEMPTS = 4;
     private static final String CMD_SHOW_VERSION = "core show version";
-
-    private static final Pattern VERSION_PATTERN_1_6 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.6[-. ].*");
-    private static final Pattern VERSION_PATTERN_1_8 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.8[-. ].*");
-    private static final Pattern VERSION_PATTERN_10 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?10[-. ].*");
-    private static final Pattern VERSION_PATTERN_11 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?11[-. ].*");
-    private static final Pattern VERSION_PATTERN_CERTIFIED_11 = Pattern.compile("^\\s*Asterisk certified/((SVN-branch|GIT)-)?11[-. ].*");
-    private static final Pattern VERSION_PATTERN_12 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?12[-. ].*");
-    private static final Pattern VERSION_PATTERN_13 = Pattern.compile("^\\s*Asterisk ((SVN-branch|GIT)-)?13[-. ].*");
-    private static final Pattern VERSION_PATTERN_CERTIFIED_13 = Pattern.compile("^\\s*Asterisk certified/((SVN-branch|GIT)-)?13[-. ].*");
-    private static final Pattern VERSION_PATTERN_14 = Pattern.compile("^\\s*Asterisk (GIT-)?14[-. ].*");
-    private static final Pattern VERSION_PATTERN_15 = Pattern.compile("^\\s*Asterisk (GIT-)?15[-. ].*");
 
     private static final AtomicLong idCounter = new AtomicLong(0);
 
@@ -710,7 +698,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         String ver = ((CoreSettingsResponse)response).getAsteriskVersion();
-        return parseVersionString("Asterisk " + ver);
+        return AsteriskVersion.getDetermineVersionFromString("Asterisk " + ver);
     }
 
     /**
@@ -736,57 +724,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         final String coreLine = coreShowVersionResult.get(0);
-        return parseVersionString(coreLine);
-    }
-
-    /**
-     * Parse a version identifier coming from ast_get_version.
-     * @param versionString
-     * @return
-     */
-    protected AsteriskVersion parseVersionString(String versionString) {
-
-        if (VERSION_PATTERN_1_6.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_1_6;
-        }
-        else if (VERSION_PATTERN_1_8.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_1_8;
-        }
-        else if (VERSION_PATTERN_10.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_10;
-        }
-        else if (VERSION_PATTERN_11.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_11;
-        }
-        else if (VERSION_PATTERN_CERTIFIED_11.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_11;
-        }
-        else if (VERSION_PATTERN_12.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_12;
-        }
-        else if (VERSION_PATTERN_13.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_13;
-        }
-        else if (VERSION_PATTERN_CERTIFIED_13.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_13;
-        }
-        else if (VERSION_PATTERN_14.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_14;
-        }
-        else if (VERSION_PATTERN_15.matcher(versionString).matches())
-        {
-            return AsteriskVersion.ASTERISK_15;
-        }
-        return null;
+	    return AsteriskVersion.getDetermineVersionFromString(coreLine);
     }
 
     protected synchronized void connect() throws IOException
