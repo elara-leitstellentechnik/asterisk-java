@@ -24,7 +24,7 @@ import java.net.InetAddress;
  * communication over TCP/IP sockets.<p>
  * It hides the details of the underlying I/O system used for socket
  * communication.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -36,7 +36,7 @@ public interface SocketConnectionFacade
      * encounters.<p>
      * Depending on the implementation different newline delimiters are used
      * ("\r\n" for the Manager API and "\n" for AGI).
-     * 
+     *
      * @return the line of text received excluding the newline delimiter.
      * @throws IOException if the connection has been closed.
      */
@@ -44,7 +44,7 @@ public interface SocketConnectionFacade
 
     /**
      * Sends a given String to the socket connection.
-     * 
+     *
      * @param s the String to send.
      * @throws IOException if the String cannot be sent, maybe because the
      *             connection has already been closed.
@@ -54,7 +54,7 @@ public interface SocketConnectionFacade
     /**
      * Flushes the socket connection by sending any buffered but yet unsent
      * data.
-     * 
+     *
      * @throws IOException if the connection cannot be flushed.
      */
     void flush() throws IOException;
@@ -64,14 +64,14 @@ public interface SocketConnectionFacade
      * frees all associated ressources.<p>
      * When calling close() any Thread currently blocked by a call to readLine()
      * will be unblocked and receive an IOException.
-     * 
+     *
      * @throws IOException if the socket connection cannot be closed.
      */
     void close() throws IOException;
 
     /**
      * Returns the connection state of the socket.
-     * 
+     *
      * @return <code>true</code> if the socket successfuly connected to a
      *         server
      */
@@ -79,7 +79,7 @@ public interface SocketConnectionFacade
 
     /**
      * Returns the local address this socket connection.
-     * 
+     *
      * @return the local address this socket connection.
      * @since 0.2
      */
@@ -87,7 +87,7 @@ public interface SocketConnectionFacade
 
     /**
      * Returns the local port of this socket connection.
-     * 
+     *
      * @return the local port of this socket connection.
      * @since 0.2
      */
@@ -95,7 +95,7 @@ public interface SocketConnectionFacade
 
     /**
      * Returns the remote address of this socket connection.
-     * 
+     *
      * @return the remote address of this socket connection.
      * @since 0.2
      */
@@ -103,9 +103,11 @@ public interface SocketConnectionFacade
 
     /**
      * Returns the remote port of this socket connection.
-     * 
+     *
      * @return the remote port of this socket connection.
      * @since 0.2
      */
     int getRemotePort();
+
+	void activateGZIP() throws IOException;
 }

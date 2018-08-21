@@ -39,6 +39,7 @@ import org.asteriskjava.manager.action.EventGeneratingAction;
 import org.asteriskjava.manager.action.LoginAction;
 import org.asteriskjava.manager.action.LogoffAction;
 import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.manager.action.ProxyCompressionAction;
 import org.asteriskjava.manager.action.UserEventAction;
 import org.asteriskjava.manager.event.ConnectEvent;
 import org.asteriskjava.manager.event.DisconnectEvent;
@@ -621,6 +622,25 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             writer.setTargetVersion(version);
 
             logger.info("Determined Asterisk version: " + version);
+
+            if (protocolIdentifier.value.startsWith("Asterisk Call Manager Proxy/Elara/")) {
+                ProxyCompressionAction compressionAction = new ProxyCompressionAction("gzip");
+                sendAction(compressionAction, new SendActionCallback() {
+                    @Override
+                    public void onResponse(ManagerResponse response) {
+                        if (response instanceof ManagerError) {
+                            logger.info("Compressing rejected!");
+                        } else {
+                            try {
+                                socket.activateGZIP();
+                                logger.info("Compressing with GZIP!");
+                            } catch (IOException e) {
+                                logger.info("Compressing failed: " + e);
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         // generate pseudo event indicating a successful login

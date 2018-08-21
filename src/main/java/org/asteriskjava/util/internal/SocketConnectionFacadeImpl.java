@@ -19,18 +19,20 @@ package org.asteriskjava.util.internal;
 import org.asteriskjava.util.SocketConnectionFacade;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.SequenceInputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.regex.Pattern;
-
+import java.util.zip.GZIPInputStream;
 
 /**
  * Default implementation of the SocketConnectionFacade interface using java.io.
@@ -40,11 +42,14 @@ import java.util.regex.Pattern;
  */
 public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 {
+	/** 8 MB */
+	private static final int BUFFER_LIMIT = 8 * 1024 * 1024;
     public static final Pattern CRNL_PATTERN = Pattern.compile("\r\n");
     public static final Pattern NL_PATTERN = Pattern.compile("\n");
 	private NioSocket nioSocket;
     private Socket socket;
-	private BufferedReaderCrLfOnly scanner;
+	private Charset encoding;
+    private InputStream scanner;
     private BufferedWriter writer;
     private Trace trace;
 
@@ -115,15 +120,68 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     {
         this.socket = socket;
 
-        this.scanner = new BufferedReaderCrLfOnly(new InputStreamReader(inputStream, encoding));
+	    this.encoding = encoding;
+	    this.scanner = inputStream;
         this.writer = new BufferedWriter(new OutputStreamWriter(outputStream, encoding));
     }
 
     @Override
+    public void activateGZIP() throws IOException
+    {
+	    if (scanner instanceof GZIPInputStream) {
+		    throw new IllegalStateException("GZIP is active already");
+	    }
+
+	    // rescue unprocessed bytes from `buf` ?!
+	    if (end - off > 0) {
+		    byte[] remaining = Arrays.copyOfRange(this.buf, off, end);
+		    off = end = 0;
+		    scanner = new SequenceInputStream(new ByteArrayInputStream(remaining), scanner);
+	    }
+
+	    scanner = new GZIPInputStream(scanner);
+    }
+
+	private byte[] buf = new byte[512];
+	private int off = 0;
+	private int end = 0;
+
+	@Override
     public String readLine() throws IOException
     {
 	    String line;
-	    line = scanner.readLine();
+	    int posCrLf = off;
+	    loop:
+	    while (true) {
+		    for (; posCrLf < end - 1; posCrLf++) {
+			    if (buf[posCrLf] == '\r' && buf[posCrLf + 1] == '\n') {
+				    line = new String(buf, off, posCrLf-off, encoding);
+			    	off = posCrLf + 2;
+				    break loop;
+			    }
+		    }
+
+		    // ensure free capacity
+		    if (end == buf.length) {
+		    	if(off == 0) {
+				    // enlarge buffer
+				    int newLength = buf.length * 2;
+				    if (newLength > BUFFER_LIMIT) {
+					    throw new IllegalStateException();
+				    }
+				    buf = Arrays.copyOfRange(buf, 0, newLength);
+			    }else {
+				    // move to the left
+				    end -= off;  // new end after moving (aka length)
+				    posCrLf -= off;
+		    		System.arraycopy(buf, off, buf, 0, end);
+		    		off = 0;
+			    }
+		    }
+		    assert end < buf.length;
+
+		    end += scanner.read(buf, end, buf.length - end);
+	    }
 
         if (trace != null)
         {
