@@ -23,6 +23,39 @@ import static org.asteriskjava.manager.ManagerConnectionState.DISCONNECTING;
 import static org.asteriskjava.manager.ManagerConnectionState.INITIAL;
 import static org.asteriskjava.manager.ManagerConnectionState.RECONNECTING;
 
+import org.asteriskjava.AsteriskVersion;
+import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.EventTimeoutException;
+import org.asteriskjava.manager.ExpectedResponse;
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionState;
+import org.asteriskjava.manager.ManagerEventListener;
+import org.asteriskjava.manager.ResponseEvents;
+import org.asteriskjava.manager.SendActionCallback;
+import org.asteriskjava.manager.TimeoutException;
+import org.asteriskjava.manager.action.ChallengeAction;
+import org.asteriskjava.manager.action.CommandAction;
+import org.asteriskjava.manager.action.EventGeneratingAction;
+import org.asteriskjava.manager.action.LoginAction;
+import org.asteriskjava.manager.action.LogoffAction;
+import org.asteriskjava.manager.action.ManagerAction;
+import org.asteriskjava.manager.action.ProxyCompressionAction;
+import org.asteriskjava.manager.action.UserEventAction;
+import org.asteriskjava.manager.event.ConnectEvent;
+import org.asteriskjava.manager.event.DisconnectEvent;
+import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
+import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.response.ChallengeResponse;
+import org.asteriskjava.manager.response.CommandResponse;
+import org.asteriskjava.manager.response.ManagerError;
+import org.asteriskjava.manager.response.ManagerResponse;
+import org.asteriskjava.util.DateUtil;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
+import org.asteriskjava.util.SocketConnectionFacade;
+import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -41,38 +74,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.manager.AuthenticationFailedException;
-import org.asteriskjava.manager.EventTimeoutException;
-import org.asteriskjava.manager.ExpectedResponse;
-import org.asteriskjava.manager.ManagerConnection;
-import org.asteriskjava.manager.ManagerConnectionState;
-import org.asteriskjava.manager.ManagerEventListener;
-import org.asteriskjava.manager.ResponseEvents;
-import org.asteriskjava.manager.SendActionCallback;
-import org.asteriskjava.manager.TimeoutException;
-import org.asteriskjava.manager.action.ChallengeAction;
-import org.asteriskjava.manager.action.CommandAction;
-import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.LoginAction;
-import org.asteriskjava.manager.action.LogoffAction;
-import org.asteriskjava.manager.action.ManagerAction;
-import org.asteriskjava.manager.action.UserEventAction;
-import org.asteriskjava.manager.event.ConnectEvent;
-import org.asteriskjava.manager.event.DisconnectEvent;
-import org.asteriskjava.manager.event.ManagerEvent;
-import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.event.ResponseEvent;
-import org.asteriskjava.manager.response.ChallengeResponse;
-import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.ManagerError;
-import org.asteriskjava.manager.response.ManagerResponse;
-import org.asteriskjava.util.DateUtil;
-import org.asteriskjava.util.Log;
-import org.asteriskjava.util.LogFactory;
-import org.asteriskjava.util.SocketConnectionFacade;
-import org.asteriskjava.util.internal.SocketConnectionFacadeImpl;
 
 /**
  * Internal implemention of the ManagerConnection interface.
@@ -643,6 +644,25 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
             writer.setTargetVersion(version);
 
             logger.info("Determined Asterisk version: " + version);
+
+            if (protocolIdentifier.getValue().startsWith("Asterisk Call Manager Proxy/Elara/")) {
+                ProxyCompressionAction compressionAction = new ProxyCompressionAction("gzip");
+                sendAction(compressionAction, new SendActionCallback() {
+                    @Override
+                    public void onResponse(ManagerResponse response) {
+                        if (response instanceof ManagerError) {
+                            logger.info("Compressing rejected!");
+                        } else {
+                            try {
+                                socket.activateGZIP();
+                                logger.info("Compressing with GZIP!");
+                            } catch (IOException e) {
+                                logger.info("Compressing failed: " + e);
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         // generate pseudo event indicating a successful login
