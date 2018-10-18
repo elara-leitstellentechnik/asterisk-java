@@ -3,6 +3,7 @@ package org.asteriskjava.util.internal;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,6 +11,8 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
+import java.nio.channels.CancelledKeyException;
+import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -69,13 +72,27 @@ public class NioSocket implements AutoCloseable {
 			public int read(byte[] b, int off, int len) throws IOException {
 				try {
 					long millis = System.currentTimeMillis();
-					key.selector().select(readTimeout);
-					if (DEBUG) {
-						millis = System.currentTimeMillis() - millis;
-						log("< " + key.isReadable() + " " + millis);
-					}
-					if (!key.isReadable()) {
-						throw new SocketTimeoutException("recv buffer was empty for " + readTimeout + "ms");
+					try {
+						key.selector().select(readTimeout);
+						if (DEBUG) {
+							millis = System.currentTimeMillis() - millis;
+							log("< " + (!key.isValid() ? "invalid" : key.isReadable()) + " " + millis);
+						}
+						if (!key.isValid()) {
+							if (selectorRead.isOpen()) {
+								return -1;
+							} else {
+								throw new EOFException();
+							}
+						}
+					} catch (ClosedSelectorException | CancelledKeyException e) {
+						if (selectorRead.isOpen()) {
+							return -1;
+						} else {
+							EOFException ee = new EOFException();
+							ee.initCause(e);
+							throw ee;
+						}
 					}
 					ByteBuffer buffer = ByteBuffer.wrap(b);
 					buffer.position(off);
@@ -84,8 +101,13 @@ public class NioSocket implements AutoCloseable {
 					if (DEBUG) {
 						log("< " + read);
 					}
+					if(read == 0 && readTimeout > 0) {
+						throw new SocketTimeoutException("recv buffer was empty for " + readTimeout + "ms");
+					}
 					return read;
 				} catch (IOException e) {
+					log(e);
+					closeSilently();
 					throw e;
 				}
 			}
@@ -114,15 +136,23 @@ public class NioSocket implements AutoCloseable {
 						}
 						if (write == 0) {
 							// nothing written? => wait for channel!
-							long millis = System.currentTimeMillis();
-							key.selector().select(writeTimeout);
-							millis = System.currentTimeMillis() - millis;
-							boolean writable = key.isWritable();
-							if (DEBUG) {
-								log("> " + writable + " " + millis);
-							}
-							if (!writable) {
-								throw new SocketTimeoutException("send buffer was full for " + writeTimeout + "ms");
+							long millis = !DEBUG ? 0 : System.currentTimeMillis();
+							try {
+								key.selector().select(writeTimeout);
+								if (DEBUG) {
+									millis = System.currentTimeMillis() - millis;
+									log("> " + (!key.isValid() ? "invalid" : key.isWritable()) + " " + millis);
+								}
+								if (!key.isValid()) {
+									throw new EOFException();
+								}
+								if (!key.isWritable()) {
+									throw new SocketTimeoutException("send buffer was full for " + writeTimeout + "ms");
+								}
+							} catch (ClosedSelectorException | CancelledKeyException e) {
+								EOFException ee = new EOFException();
+								ee.initCause(e);
+								throw ee;
 							}
 						}
 					}
