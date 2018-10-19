@@ -94,14 +94,11 @@ public class NioSocket implements AutoCloseable {
 							throw ee;
 						}
 					}
-					ByteBuffer buffer = ByteBuffer.wrap(b);
-					buffer.position(off);
-					buffer.limit(off + len);
-					int read = channel.read(buffer);
+					int read = channel.read(ByteBuffer.wrap(b, off, len));
 					if (DEBUG) {
 						log("< " + read);
 					}
-					if(read == 0 && readTimeout > 0) {
+					if (read == 0 && readTimeout > 0) {
 						throw new SocketTimeoutException("recv buffer was empty for " + readTimeout + "ms");
 					}
 					return read;

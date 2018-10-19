@@ -153,34 +153,43 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
 	    int posCrLf = off;
 	    loop:
 	    while (true) {
+		    assert end <= buf.length;
+
 		    for (; posCrLf < end - 1; posCrLf++) {
 			    if (buf[posCrLf] == '\r' && buf[posCrLf + 1] == '\n') {
-				    line = new String(buf, off, posCrLf-off, encoding);
-			    	off = posCrLf + 2;
+				    line = new String(buf, off, posCrLf - off, encoding);
+				    off = posCrLf + 2;
 				    break loop;
 			    }
 		    }
 
 		    // ensure free capacity
-		    if (end == buf.length) {
-		    	if(off == 0) {
+		    if (off == end) {
+		    	// reset if empty
+		    	off = end = posCrLf = 0;
+		    } else if (end == buf.length) {
+			    if (off == 0) {
 				    // enlarge buffer
 				    int newLength = buf.length * 2;
 				    if (newLength > BUFFER_LIMIT) {
 					    throw new IllegalStateException();
 				    }
 				    buf = Arrays.copyOfRange(buf, 0, newLength);
-			    }else {
+			    } else {
 				    // move to the left
 				    end -= off;  // new end after moving (aka length)
 				    posCrLf -= off;
-		    		System.arraycopy(buf, off, buf, 0, end);
-		    		off = 0;
+				    System.arraycopy(buf, off, buf, 0, end);
+				    off = 0;
 			    }
 		    }
 		    assert end < buf.length;
 
-		    end += scanner.read(buf, end, buf.length - end);
+		    int read = scanner.read(buf, end, buf.length - end);
+		    if (read < 0) {
+			    return null;
+		    }
+		    end += read;
 	    }
 
         if (trace != null)
