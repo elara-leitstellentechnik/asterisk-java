@@ -1,9 +1,8 @@
 package org.asteriskjava.util.internal;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -12,9 +11,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Scanner;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * @author sere
@@ -22,15 +19,26 @@ import java.util.regex.Pattern;
  */
 public class NioSocketTest {
 	public static void main(String[] args) throws IOException {
-		NioSocket socket = new NioSocket(1000, 1000, 1000);
-		socket.connect(new InetSocketAddress("entwicklervm01", 8000));
+		try (NioSocket socket = new NioSocket(1000, 1000, 10000)) {
+			socket.connect(new InetSocketAddress("entwicklervm01", 8000));
 
-		InputStream in = socket.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-		Scanner scanner = new Scanner(reader);
-		scanner.useDelimiter(Pattern.compile("\r\n"));
-		for (; ; ) {
-			reader.readLine();
+			InputStream in = socket.getInputStream();
+			OutputStream out = socket.getOutputStream();
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+//		Scanner scanner = new Scanner(reader);
+//		scanner.useDelimiter(Pattern.compile("\r\n"));
+			byte[] buf = new byte[512];
+			for (; ; ) {
+				int len = in.read(buf);
+				System.out.print(len + ":\t");
+				if (len >= 0) {
+					System.out.println(new String(buf, 0, len, StandardCharsets.US_ASCII));
+					out.write(buf, 0, len);
+					out.flush();
+				} else {
+					break;
+				}
+			}
 		}
 	}
 
@@ -90,9 +98,9 @@ public class NioSocketTest {
 				SocketChannel channel = (SocketChannel) key.channel();
 
 				System.out.println("Channel: "
-					+ (key.isReadable() ? "r" : "-")
-					+ (key.isWritable() ? "w" : "-")
-					+ (key.isConnectable() ? "c" : "-")
+						+ (key.isReadable() ? "r" : "-")
+						+ (key.isWritable() ? "w" : "-")
+						+ (key.isConnectable() ? "c" : "-")
 				);
 
 				// Attempt a connection
