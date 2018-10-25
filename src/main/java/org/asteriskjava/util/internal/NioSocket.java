@@ -11,8 +11,6 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
-import java.nio.channels.CancelledKeyException;
-import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -72,6 +70,7 @@ public class NioSocket implements AutoCloseable {
 			public int read(byte[] b, int off, int len) throws IOException {
 				try {
 					long millis = System.currentTimeMillis();
+					int read;
 					try {
 						key.selector().select(readTimeout);
 						if (DEBUG) {
@@ -85,7 +84,8 @@ public class NioSocket implements AutoCloseable {
 								throw new EOFException();
 							}
 						}
-					} catch (ClosedSelectorException | CancelledKeyException e) {
+						read = channel.read(ByteBuffer.wrap(b, off, len));
+					} catch (IllegalStateException e) {
 						if (selectorRead.isOpen()) {
 							return -1;
 						} else {
@@ -94,7 +94,6 @@ public class NioSocket implements AutoCloseable {
 							throw ee;
 						}
 					}
-					int read = channel.read(ByteBuffer.wrap(b, off, len));
 					if (DEBUG) {
 						log("< " + read);
 					}
@@ -127,14 +126,14 @@ public class NioSocket implements AutoCloseable {
 					buffer.position(off);
 					buffer.limit(off + len);
 					while (buffer.hasRemaining()) {
-						int write = channel.write(buffer);
-						if (DEBUG) {
-							log("> " + write);
-						}
-						if (write == 0) {
-							// nothing written? => wait for channel!
-							long millis = !DEBUG ? 0 : System.currentTimeMillis();
-							try {
+						try {
+							int write = channel.write(buffer);
+							if (DEBUG) {
+								log("> " + write);
+							}
+							if (write == 0) {
+								// nothing written? => wait for channel!
+								long millis = !DEBUG ? 0 : System.currentTimeMillis();
 								key.selector().select(writeTimeout);
 								if (DEBUG) {
 									millis = System.currentTimeMillis() - millis;
@@ -146,11 +145,11 @@ public class NioSocket implements AutoCloseable {
 								if (!key.isWritable()) {
 									throw new SocketTimeoutException("send buffer was full for " + writeTimeout + "ms");
 								}
-							} catch (ClosedSelectorException | CancelledKeyException e) {
-								EOFException ee = new EOFException();
-								ee.initCause(e);
-								throw ee;
 							}
+						} catch (IllegalStateException e) {
+							EOFException ee = new EOFException();
+							ee.initCause(e);
+							throw ee;
 						}
 					}
 				} catch (IOException e) {
