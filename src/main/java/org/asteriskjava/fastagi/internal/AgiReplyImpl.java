@@ -18,10 +18,13 @@ package org.asteriskjava.fastagi.internal;
 
 import org.asteriskjava.fastagi.reply.AgiReply;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 /**
  * Default implementation of the AgiReply interface.
@@ -89,7 +92,7 @@ public class AgiReplyImpl implements AgiReply
         this();
         if (lines != null)
         {
-            this.lines = new ArrayList<String>(lines);
+            this.lines = new ArrayList<>(lines);
             if (!lines.isEmpty())
             {
                 firstLine = lines.get(0);
@@ -97,16 +100,19 @@ public class AgiReplyImpl implements AgiReply
         }
     }
 
+    @Override
     public String getFirstLine()
     {
         return firstLine;
     }
 
+    @Override
     public List<String> getLines()
     {
         return lines;
     }
 
+    @Override
     public int getResultCode()
     {
         String result;
@@ -127,6 +133,7 @@ public class AgiReplyImpl implements AgiReply
         }
     }
 
+    @Override
     public char getResultCodeAsChar()
     {
         int resultCode;
@@ -140,6 +147,7 @@ public class AgiReplyImpl implements AgiReply
         return (char) resultCode;
     }
 
+    @Override
     public String getResult()
     {
         if (result != null)
@@ -157,6 +165,7 @@ public class AgiReplyImpl implements AgiReply
         return result;
     }
 
+    @Override
     public int getStatus()
     {
         if (status != null)
@@ -178,6 +187,7 @@ public class AgiReplyImpl implements AgiReply
         return -1;
     }
 
+    @Override
     public String getAttribute(String name)
     {
         if (getStatus() != SC_SUCCESS)
@@ -200,7 +210,7 @@ public class AgiReplyImpl implements AgiReply
             return attributes;
         }
 
-        attributes = new HashMap<String, String>();
+        attributes = new HashMap<>();
 
         final Matcher matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
         if (matcher.find())
@@ -214,7 +224,7 @@ public class AgiReplyImpl implements AgiReply
     {
         StringBuilder keyBuilder = new StringBuilder();
         StringBuilder valueBuilder = new StringBuilder();
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         boolean inKey = true;
         boolean inQuotes = false;
@@ -227,7 +237,7 @@ public class AgiReplyImpl implements AgiReply
                 inKey = false;
                 inQuotes = false;
             }
-            else if ((c == ' ' && !inKey && !inQuotes))
+            else if (c == ' ' && !inKey && !inQuotes)
             {
                 map.put(keyBuilder.toString().toLowerCase(Locale.ENGLISH), valueBuilder.toString());
                 keyBuilder.delete(0, keyBuilder.length());
@@ -270,6 +280,7 @@ public class AgiReplyImpl implements AgiReply
 
     private boolean extraCreated;
 
+    @Override
     public String getExtra()
     {
         if (getStatus() != SC_SUCCESS)
@@ -291,6 +302,7 @@ public class AgiReplyImpl implements AgiReply
         return extra;
     }
 
+    @Override
     public String getSynopsis()
     {
         if (getStatus() != SC_INVALID_COMMAND_SYNTAX)
@@ -317,9 +329,10 @@ public class AgiReplyImpl implements AgiReply
      * Returns the usage of the command sent if Asterisk expected a different
      * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
      *
-     * @return the usage of the command sent, <code>null</code> if there were
-     *         no syntax errors.
+     * @return the usage of the command sent, <code>null</code> if there were no
+     *         syntax errors.
      */
+    @Override
     public String getUsage()
     {
         if (usage == null)

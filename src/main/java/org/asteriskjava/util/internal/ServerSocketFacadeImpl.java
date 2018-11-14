@@ -16,19 +16,19 @@
  */
 package org.asteriskjava.util.internal;
 
+import org.asteriskjava.util.ServerSocketFacade;
+import org.asteriskjava.util.SocketConnectionFacade;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.asteriskjava.util.ServerSocketFacade;
-import org.asteriskjava.util.SocketConnectionFacade;
-
 
 /**
  * Default implementation of the ServerSocketFacade interface using standard
  * java.io classes (ServerSocket in this case).
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -42,6 +42,7 @@ public class ServerSocketFacadeImpl implements ServerSocketFacade
         this.serverSocket = new ServerSocket(port, backlog, bindAddress);
     }
 
+    @Override
     public SocketConnectionFacade accept() throws IOException
     {
         Socket socket;
@@ -51,6 +52,7 @@ public class ServerSocketFacadeImpl implements ServerSocketFacade
         return new SocketConnectionFacadeImpl(socket);
     }
 
+    @Override
     public void close() throws IOException
     {
         serverSocket.close();

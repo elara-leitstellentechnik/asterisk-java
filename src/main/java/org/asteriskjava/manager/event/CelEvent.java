@@ -1,11 +1,11 @@
 package org.asteriskjava.manager.event;
 /**
  * Raised when a Channel Event Log is generated for a channel.
- *
  * https://wiki.asterisk.org/wiki/display/AST/Asterisk+13+ManagerEvent_CEL
  */
 public class CelEvent extends ManagerEvent
 {
+    private static final long serialVersionUID = 1L;
     public static final String CEL_EVENT_CHAN_START = "CHAN_START";
     public static final String CEL_EVENT_CHAN_END = "CHAN_END";
     public static final String CEL_EVENT_ANSWER = "ANSWER";
@@ -26,13 +26,9 @@ public class CelEvent extends ManagerEvent
 
     private String eventName;
     private String accountCode;
-    private String callerIDnum;
-    private String callerIDname;
     private String callerIDani;
     private String callerIDrdnis;
     private String callerIDdnid;
-    private String exten;
-    private String context;
     private String application;
     private String appData;
     private String eventTime;
@@ -70,26 +66,6 @@ public class CelEvent extends ManagerEvent
         this.accountCode = accountCode;
     }
 
-    public String getCallerIDnum()
-    {
-        return callerIDnum;
-    }
-
-    public void setCallerIDnum(String callerIDnum)
-    {
-        this.callerIDnum = callerIDnum;
-    }
-
-    public String getCallerIDname()
-    {
-        return callerIDname;
-    }
-
-    public void setCallerIDname(String callerIDname)
-    {
-        this.callerIDname = callerIDname;
-    }
-
     public String getCallerIDani()
     {
         return callerIDani;
@@ -118,26 +94,6 @@ public class CelEvent extends ManagerEvent
     public void setCallerIDdnid(String callerIDdnid)
     {
         this.callerIDdnid = callerIDdnid;
-    }
-
-    public String getExten()
-    {
-        return exten;
-    }
-
-    public void setExten(String exten)
-    {
-        this.exten = exten;
-    }
-
-    public String getContext()
-    {
-        return context;
-    }
-
-    public void setContext(String context)
-    {
-        this.context = context;
     }
 
     public String getApplication()

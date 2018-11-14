@@ -29,11 +29,8 @@ public class JoinEvent extends QueueEvent
      */
     static final long serialVersionUID = 0L;
 
-    protected String callerIdNum;
-    protected String callerIdName;
+    private String callerId;
     protected Integer position;
-    protected String connectedlinename;
-    protected String connectedlinenum;
 
     public JoinEvent(Object source)
     {
@@ -49,7 +46,7 @@ public class JoinEvent extends QueueEvent
      */
     @Deprecated public String getCallerId()
     {
-        return callerIdNum;
+        return callerId;
     }
 
     /**
@@ -59,7 +56,7 @@ public class JoinEvent extends QueueEvent
      */
     public void setCallerId(String callerId)
     {
-        this.callerIdNum = callerId;
+        this.callerId = callerId;
     }
 
     /**
@@ -78,35 +75,4 @@ public class JoinEvent extends QueueEvent
         this.position = position;
     }
 
-    /**
-     * Returns the Caller*ID name of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-    public String getConnectedlinename()
-    {
-        return connectedlinename;
-    }
-
-    public void setConnectedlinename(String connectedlinename)
-    {
-        this.connectedlinename = connectedlinename;
-    }
-
-    /**
-     * Returns the Caller*ID number of the channel connected if set.
-     * If the channel has no caller id set "unknown" is returned.
-     *
-     * @since 1.0.0
-     */
-    public String getConnectedlinenum()
-    {
-        return connectedlinenum;
-    }
-
-    public void setConnectedlinenum(String connectedlinenum)
-    {
-        this.connectedlinenum = connectedlinenum;
-    }
 }

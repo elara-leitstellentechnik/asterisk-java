@@ -10,3 +10,5 @@ target
 classes
 /bin
 build/
+/.settings/
+/.metadata/

@@ -50,6 +50,7 @@ public class ShowDialplanAction extends AbstractManagerAction implements EventGe
         return "ShowDialplan";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return ShowDialplanCompleteEvent.class;

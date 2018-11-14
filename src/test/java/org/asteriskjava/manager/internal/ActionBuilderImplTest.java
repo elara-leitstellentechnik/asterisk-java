@@ -20,9 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.AbstractManagerAction;
 import org.asteriskjava.manager.action.AgentsAction;
@@ -32,6 +29,9 @@ import org.asteriskjava.manager.action.UpdateConfigAction;
 import org.asteriskjava.manager.action.UserEventAction;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ActionBuilderImplTest
 {
@@ -94,7 +94,7 @@ public class ActionBuilderImplTest
         assertTrue("Action contains actionCompleteEventClass property", actual.indexOf("actioncompleteeventclass:") == -1);
         assertTrue("Missing trailing CRNL CRNL", actual.endsWith("\r\n\r\n"));
     }
-    
+
     @Test
     public void testBuildUpdateConfigAction()
     {
@@ -106,12 +106,12 @@ public class ActionBuilderImplTest
         action.addCommand(UpdateConfigAction.ACTION_NEWCAT, "testcategory", null, null, null);
 
         String actual = actionBuilder.buildAction(action);
-        
+
         assertTrue("Action name missing", actual.indexOf("action: UpdateConfig") >= 0);
         assertTrue("Source filename missing", actual.indexOf("srcfilename: sourcefile.conf") >= 0);
         assertTrue("Destination filename missing", actual.indexOf("dstfilename: destfile.conf") >= 0);
         assertTrue("Correct reload setting missing", actual.indexOf("reload: Yes") >= 0);
-        
+
         assertFalse("Action must have zero-padded 6 digit numbering", actual.indexOf("Action-0:") >= 0);
         assertFalse("UpdateConfig actions must not have more than one 'action' header", actual.indexOf("action: Action") >= 0);
         assertTrue("Action missing category testcategory - " + actual, actual.indexOf("Cat-000000: testcategory") >= 0);
@@ -261,8 +261,8 @@ public class ActionBuilderImplTest
     @Test
     public void testDetermineSetterName()
     {
-        assertEquals("setProperty1", actionBuilder.determineSetterName("getProperty1"));
-        assertEquals("setProperty1", actionBuilder.determineSetterName("isProperty1"));
+        assertEquals("setProperty1", ActionBuilderImpl.determineSetterName("getProperty1"));
+        assertEquals("setProperty1", ActionBuilderImpl.determineSetterName("isProperty1"));
     }
 
     @Test
@@ -278,9 +278,9 @@ public class ActionBuilderImplTest
     @Test
     public void testDetermineFieldName()
     {
-        assertEquals("property1", actionBuilder.determineFieldName("getProperty1"));
-        assertEquals("property1", actionBuilder.determineFieldName("isProperty1"));
-        assertEquals("property1", actionBuilder.determineFieldName("setProperty1"));
+        assertEquals("property1", ActionBuilderImpl.determineFieldName("getProperty1"));
+        assertEquals("property1", ActionBuilderImpl.determineFieldName("isProperty1"));
+        assertEquals("property1", ActionBuilderImpl.determineFieldName("setProperty1"));
     }
 
     @Test

@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A NewStateEvent is triggered when the state of a channel has changed.<p>
  * It is implemented in <code>channel.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -29,20 +29,10 @@ public class NewStateEvent extends AbstractChannelStateEvent
      * Serializable version identifier.
      */
     static final long serialVersionUID = -0L;
-    private String language;
 
     public NewStateEvent(Object source)
     {
         super(source);
     }
-    
-    public String getLanguage()
-    {
-    	return language;
-    }
-    
-    public void setLanguage(String language)
-    {
-    	this.language = language;
-    }
+
 }

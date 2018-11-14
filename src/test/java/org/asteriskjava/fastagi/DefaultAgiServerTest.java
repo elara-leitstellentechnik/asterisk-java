@@ -22,13 +22,13 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.asteriskjava.util.ServerSocketFacade;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class DefaultAgiServerTest
 {
@@ -37,7 +37,7 @@ public class DefaultAgiServerTest
     private SocketConnectionFacade socket;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         serverSocket = new MockedServerSocketFacade();
         server = new MockedDefaultAgiServer();
@@ -100,6 +100,7 @@ public class DefaultAgiServerTest
         public int acceptCalls = 0;
         public int closeCalls = 0;
 
+        @Override
         public SocketConnectionFacade accept() throws IOException
         {
             acceptCalls++;
@@ -116,12 +117,10 @@ public class DefaultAgiServerTest
             {
                 return socket;
             }
-            else
-            {
-                throw new IOException("Provoked IOException");
-            }
+            throw new IOException("Provoked IOException");
         }
 
+        @Override
         public void close() throws IOException
         {
             closeCalls++;

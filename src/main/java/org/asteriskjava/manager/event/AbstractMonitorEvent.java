@@ -29,6 +29,8 @@ public abstract class AbstractMonitorEvent extends ManagerEvent
 	private static final long serialVersionUID = 1L;
 	private String channel;
     private String uniqueId;
+	private String linkedId;
+	private String language;
 
     /**
      * @param source
@@ -67,4 +69,24 @@ public abstract class AbstractMonitorEvent extends ManagerEvent
     {
         this.uniqueId = uniqueId;
     }
+
+	public final String getLinkedId()
+	{
+		return linkedId;
+	}
+
+	public final void setLinkedId(String linkedId)
+	{
+		this.linkedId = linkedId;
+	}
+
+	public final String getLanguage()
+	{
+		return language;
+	}
+
+	public final void setLanguage(String language)
+	{
+		this.language = language;
+	}
 }

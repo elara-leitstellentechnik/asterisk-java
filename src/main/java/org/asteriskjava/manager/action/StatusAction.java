@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.manager.action;
 
-import org.asteriskjava.manager.event.StatusCompleteEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.manager.event.StatusCompleteEvent;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The StatusAction requests the state of all active channels. Alternativly (as of Asterisk 1.6)
@@ -72,6 +72,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
         return "Status";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return StatusCompleteEvent.class;
@@ -111,7 +112,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
      * Available since Asterisk 1.6.
      *
      * @param variables comma separated list of variables to return for each reported channel.
-     * @see org.asteriskjava.manager.event.StatusEvent#getVariables() 
+     * @see org.asteriskjava.manager.event.StatusEvent#getVariables()
      * @since 1.0.0
      */
     public void setVariables(String variables)
@@ -136,7 +137,7 @@ public class StatusAction extends AbstractManagerAction implements EventGenerati
         }
 
         Iterator<String> iter = variables.iterator();
-        StringBuffer buffer = new StringBuffer(iter.next());
+        StringBuilder buffer = new StringBuilder(iter.next());
         while (iter.hasNext())
         {
             buffer.append(",").append(iter.next());

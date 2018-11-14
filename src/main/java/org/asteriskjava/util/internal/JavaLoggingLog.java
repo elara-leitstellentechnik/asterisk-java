@@ -17,17 +17,17 @@
 
 package org.asteriskjava.util.internal;
 
+import org.asteriskjava.util.Log;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.asteriskjava.util.Log;
-
 /**
- * Implementation of {@link Log} that maps to the <strong>Logger</strong> of
- * the java.util.logging package.
+ * Implementation of {@link Log} that maps to the <strong>Logger</strong> of the
+ * java.util.logging package.
  * <p>
  * Kindly donated by Sun's Steve Drach.
- * 
+ *
  * @author drach
  */
 public class JavaLoggingLog implements Log
@@ -40,14 +40,15 @@ public class JavaLoggingLog implements Log
     /**
      * Creates a new JavaLoggingLog obtained from java.util.logging for the
      * given class.
-     * 
+     *
      * @param clazz the class to log for.
      */
-    public JavaLoggingLog(Class<?> clazz)
+    public JavaLoggingLog(Class< ? > clazz)
     {
         log = Logger.getLogger(clazz.getName());
     }
 
+    @Override
     public void debug(Object obj)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -62,6 +63,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void info(Object obj)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -76,6 +78,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void warn(Object obj)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -90,6 +93,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void warn(Object obj, Throwable ex)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -104,6 +108,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void error(Object obj)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -118,6 +123,7 @@ public class JavaLoggingLog implements Log
         }
     }
 
+    @Override
     public void error(Object obj, Throwable ex)
     {
         StackTraceElement ste = getInvokerSTE();
@@ -134,7 +140,7 @@ public class JavaLoggingLog implements Log
 
     private StackTraceElement getInvokerSTE()
     {
-        StackTraceElement stack[] = (new Throwable()).getStackTrace();
+        StackTraceElement[] stack = (new Throwable()).getStackTrace();
 
         if (stack.length > 2)
         {
@@ -142,6 +148,27 @@ public class JavaLoggingLog implements Log
         }
 
         return null;
+    }
+
+    @Override
+    public boolean isDebugEnabled()
+    {
+        return log.isLoggable(Level.FINE);
+    }
+
+    @Override
+    public void debug(Object e, Throwable e2)
+    {
+        StackTraceElement ste = getInvokerSTE();
+
+        if (ste != null)
+        {
+            log.logp(Level.FINE, ste.getClassName(), ste.getMethodName(), e.toString(), e2);
+        }
+        else
+        {
+            log.log(Level.FINE, e.toString(), e2);
+        }
     }
 
 }

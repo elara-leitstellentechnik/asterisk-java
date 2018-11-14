@@ -1,9 +1,9 @@
 package org.asteriskjava.live.internal;
 
-import java.util.Date;
-
 import org.asteriskjava.live.AsteriskQueueEntry;
 import org.asteriskjava.live.QueueEntryState;
+
+import java.util.Date;
 
 /**
  * Default implementation of the AsteriskQueueEntry interface.
@@ -38,26 +38,31 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
         this.reportedPosition = reportedPosition;
     }
 
+    @Override
     public String getChannelName()
     {
         return channel.getName();
     }
 
+    @Override
     public AsteriskQueueImpl getQueue()
     {
         return queue;
     }
 
+    @Override
     public AsteriskChannelImpl getChannel()
     {
         return channel;
     }
 
+    @Override
     public Date getDateJoined()
     {
         return dateJoined;
     }
 
+    @Override
     public Date getDateLeft()
     {
         return dateLeft;
@@ -80,6 +85,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
         firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 
+    @Override
     public QueueEntryState getState()
     {
         return state;
@@ -111,6 +117,7 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
      *
      * @return the position of the entry in the respective queue, starting at 1
      */
+    @Override
     public int getPosition()
     {
         return position;
@@ -133,10 +140,10 @@ class AsteriskQueueEntryImpl extends AbstractLiveObject implements AsteriskQueue
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         int systemHashcode;
 
-        sb = new StringBuffer("AsteriskQueueEntry[");
+        sb = new StringBuilder("AsteriskQueueEntry[");
 
         synchronized (this)
         {

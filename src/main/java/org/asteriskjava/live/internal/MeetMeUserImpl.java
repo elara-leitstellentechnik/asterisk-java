@@ -16,12 +16,12 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.Date;
-
 import org.asteriskjava.live.ManagerCommunicationException;
 import org.asteriskjava.live.MeetMeUser;
 import org.asteriskjava.live.MeetMeUserState;
 import org.asteriskjava.manager.action.CommandAction;
+
+import java.util.Date;
 
 class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 {
@@ -51,26 +51,31 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         this.state = MeetMeUserState.JOINED;
     }
 
+    @Override
     public MeetMeRoomImpl getRoom()
     {
         return room;
     }
 
+    @Override
     public Integer getUserNumber()
     {
         return userNumber;
     }
 
+    @Override
     public AsteriskChannelImpl getChannel()
     {
         return channel;
     }
 
+    @Override
     public Date getDateJoined()
     {
         return dateJoined;
     }
 
+    @Override
     public Date getDateLeft()
     {
         return dateLeft;
@@ -78,7 +83,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
     /**
      * Sets the status to {@link MeetMeUserState#LEFT} and dateLeft to the given date.
-     * 
+     *
      * @param dateLeft the date this user left the room.
      */
     void left(Date dateLeft)
@@ -93,11 +98,13 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         firePropertyChange(PROPERTY_STATE, oldState, state);
     }
 
+    @Override
     public MeetMeUserState getState()
     {
         return state;
     }
 
+    @Override
     public boolean isTalking()
     {
         return talking;
@@ -110,6 +117,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
         firePropertyChange(PROPERTY_TALKING, oldTalking, talking);
     }
 
+    @Override
     public boolean isMuted()
     {
         return muted;
@@ -124,16 +132,19 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
     // action methods
 
+    @Override
     public void kick() throws ManagerCommunicationException
     {
         sendMeetMeUserCommand(KICK_COMMAND);
     }
 
+    @Override
     public void mute() throws ManagerCommunicationException
     {
         sendMeetMeUserCommand(MUTE_COMMAND);
     }
 
+    @Override
     public void unmute() throws ManagerCommunicationException
     {
         sendMeetMeUserCommand(UNMUTE_COMMAND);
@@ -141,7 +152,7 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
     private void sendMeetMeUserCommand(String command) throws ManagerCommunicationException
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(COMMAND_PREFIX);
         sb.append(" ");
         sb.append(command);
@@ -152,14 +163,14 @@ class MeetMeUserImpl extends AbstractLiveObject implements MeetMeUser
 
         server.sendAction(new CommandAction(sb.toString()));
     }
-    
+
     @Override
    public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         int systemHashcode;
 
-        sb = new StringBuffer("MeetMeUser[");
+        sb = new StringBuilder("MeetMeUser[");
 
         synchronized (this)
         {

@@ -2,11 +2,11 @@ package org.asteriskjava.manager.event;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.TimeZone;
-
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.TimeZone;
 
 public class CdrEventTest
 {

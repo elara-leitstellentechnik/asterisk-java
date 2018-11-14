@@ -18,7 +18,7 @@ package org.asteriskjava.fastagi;
 
 /**
  * Test script for use with the ResourceBundleMappingStrategyTest.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -29,6 +29,7 @@ public class HelloAgiScript implements AgiScript
 
     }
 
+    @Override
     public void service(AgiRequest request, AgiChannel channel) throws AgiException
     {
         channel.streamFile("tt-monkeysintro");

@@ -53,14 +53,14 @@ public class CallDetailRecordImpl implements CallDetailRecord
 
     static
     {
-        DISPOSITION_MAP = new HashMap<String, Disposition>();
+        DISPOSITION_MAP = new HashMap<>();
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_ANSWERED, Disposition.ANSWERED);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_BUSY, Disposition.BUSY);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_FAILED, Disposition.FAILED);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_NO_ANSWER, Disposition.NO_ANSWER);
         DISPOSITION_MAP.put(CdrEvent.DISPOSITION_UNKNOWN, Disposition.UNKNOWN);
 
-        AMA_FLAGS_MAP = new HashMap<String, AmaFlags>();
+        AMA_FLAGS_MAP = new HashMap<>();
         AMA_FLAGS_MAP.put(CdrEvent.AMA_FLAG_BILLING, AmaFlags.BILLING);
         AMA_FLAGS_MAP.put(CdrEvent.AMA_FLAG_DOCUMENTATION, AmaFlags.DOCUMENTATION);
         AMA_FLAGS_MAP.put(CdrEvent.AMA_FLAG_OMIT, AmaFlags.OMIT);
@@ -103,76 +103,91 @@ public class CallDetailRecordImpl implements CallDetailRecord
         userField = cdrEvent.getUserField();
     }
 
+    @Override
     public AsteriskChannel getChannel()
     {
         return channel;
     }
 
+    @Override
     public AsteriskChannel getDestinationChannel()
     {
         return destinationChannel;
     }
 
+    @Override
     public String getAccountCode()
     {
         return accountCode;
     }
 
+    @Override
     public AmaFlags getAmaFlags()
     {
         return amaFlags;
     }
 
+    @Override
     public Date getAnswerDate()
     {
         return answerDate;
     }
 
+    @Override
     public Integer getBillableSeconds()
     {
         return billableSeconds;
     }
 
+    @Override
     public String getDestinationContext()
     {
         return destinationContext;
     }
 
+    @Override
     public String getDestinationExtension()
     {
         return destinationExtension;
     }
 
+    @Override
     public Disposition getDisposition()
     {
         return disposition;
     }
 
+    @Override
     public Integer getDuration()
     {
         return duration;
     }
 
+    @Override
     public Date getEndDate()
     {
         return endDate;
     }
 
+    @Override
     public String getLastApplication()
     {
         return lastApplication;
     }
 
+    @Override
     public String getLastAppData()
     {
         return lastAppData;
     }
 
+    @Override
     public Date getStartDate()
     {
         return startDate;
     }
 
+    @Override
     public String getUserField()
     {
         return userField;

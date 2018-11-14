@@ -28,7 +28,12 @@ import org.asteriskjava.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Default implementation of the ActionBuilder interface.
@@ -38,6 +43,7 @@ import java.util.*;
  */
 class ActionBuilderImpl implements ActionBuilder
 {
+
     private static final String LINE_SEPARATOR = "\r\n";
     private static final String ATTRIBUTES_PROPERTY_NAME = "attributes";
 
@@ -46,6 +52,7 @@ class ActionBuilderImpl implements ActionBuilder
      */
     private final Log logger = LogFactory.getLog(getClass());
     private AsteriskVersion targetVersion;
+    private final Set<String> membersToIgnore = new HashSet<>();
 
     /**
      * Creates a new ActionBuilder for Asterisk 1.0.
@@ -53,22 +60,34 @@ class ActionBuilderImpl implements ActionBuilder
     ActionBuilderImpl()
     {
         this.targetVersion = AsteriskVersion.ASTERISK_1_0;
+
+        /*
+         * When using the Reflection API to get all of the getters for building
+         * actions to send, we ignore some of the getters
+         */
+        this.membersToIgnore.add("class");
+        this.membersToIgnore.add("action");
+        this.membersToIgnore.add("actionid");
+        this.membersToIgnore.add(ATTRIBUTES_PROPERTY_NAME);
     }
 
+    @Override
     public void setTargetVersion(AsteriskVersion targetVersion)
     {
         this.targetVersion = targetVersion;
     }
 
+    @Override
     public String buildAction(final ManagerAction action)
     {
         return buildAction(action, null);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public String buildAction(final ManagerAction action, final String internalActionId)
     {
-        CheckedStringBuffer sb = new CheckedStringBuffer();
+        CheckedStringBuilder sb = new CheckedStringBuilder();
 
         sb.append("action: ");
         sb.append(action.getAction());
@@ -86,15 +105,7 @@ class ActionBuilderImpl implements ActionBuilder
             sb.appendLineSeparator();
         }
 
-        /*
-         * When using the Reflection API to get all of the getters for building
-         * actions to send, we ignore some of the getters
-         */
-        Set<String> ignore = new HashSet<String>();
-        ignore.add("class");
-        ignore.add("action");
-        ignore.add("actionid");
-        ignore.add(ATTRIBUTES_PROPERTY_NAME);
+        Map<String, Method> getters;
 
         // if this is a user event action, we need to grab the internal event,
         // otherwise do below as normal
@@ -103,20 +114,22 @@ class ActionBuilderImpl implements ActionBuilder
             UserEvent userEvent = ((UserEventAction) action).getUserEvent();
             appendUserEvent(sb, userEvent);
 
+            getters = ReflectionUtil.getGetters(userEvent.getClass());
+
             // eventually we may want to add more Map keys for events to ignore
             // when appending
-            appendGetters(sb, userEvent, ignore);
+            appendGetters(sb, userEvent, getters);
         }
         else
         {
-            appendGetters(sb, action, ignore);
+            getters = ReflectionUtil.getGetters(action.getClass());
+
+            appendGetters(sb, action, getters);
         }
 
         // actions that have the special getAttributes method will
         // have their Map appended without a singular key or separator
-        Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
-        
-        if(getters.containsKey(ATTRIBUTES_PROPERTY_NAME))
+        if (getters.containsKey(ATTRIBUTES_PROPERTY_NAME))
         {
             Method getter = getters.get(ATTRIBUTES_PROPERTY_NAME);
             Object value = null;
@@ -128,23 +141,23 @@ class ActionBuilderImpl implements ActionBuilder
             {
                 logger.error("Unable to retrieve property '" + ATTRIBUTES_PROPERTY_NAME + "' of " + action.getClass(), ex);
             }
-            
-            if(value instanceof Map)
+
+            if (value instanceof Map)
             {
-                Map<Object,Object> attributes = (Map<Object, Object>)value;
+                Map<Object, Object> attributes = (Map<Object, Object>) value;
                 for (Map.Entry<Object, Object> entry : attributes.entrySet())
                 {
                     appendString(sb, entry.getKey() == null ? "null" : entry.getKey().toString(),
                             entry.getValue() == null ? "null" : entry.getValue().toString());
-                }   
+                }
             }
         }
-        
+
         sb.appendLineSeparator();
         return sb.toString();
     }
 
-    private void appendMap(CheckedStringBuffer sb, String key, Map<String, String> values)
+    private void appendMap(CheckedStringBuilder sb, String key, Map<String, String> values)
     {
         String singularKey;
 
@@ -168,7 +181,26 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private void appendMap10(CheckedStringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendList(CheckedStringBuilder sb, String key, List<String> values)
+    {
+        String singularKey;
+
+        // strip plural s (i.e. use "variable: " instead of "variables: "
+        if (key.endsWith("s"))
+        {
+            singularKey = key.substring(0, key.length() - 1);
+        }
+        else
+        {
+            singularKey = key;
+        }
+	    for (String value : values)
+	    {
+		    appendString(sb, singularKey, value);
+	    }
+    }
+
+    private void appendMap10(CheckedStringBuilder sb, String singularKey, Map<String, String> values)
     {
         Iterator<Map.Entry<String, String>> entryIterator;
 
@@ -195,7 +227,7 @@ class ActionBuilderImpl implements ActionBuilder
         sb.appendLineSeparator();
     }
 
-    private void appendMap12(CheckedStringBuffer sb, String singularKey, Map<String, String> values)
+    private void appendMap12(CheckedStringBuilder sb, String singularKey, Map<String, String> values)
     {
         for (Map.Entry<String, String> entry : values.entrySet())
         {
@@ -205,14 +237,35 @@ class ActionBuilderImpl implements ActionBuilder
             sb.append("=");
             if (entry.getValue() != null)
             {
-                sb.append(entry.getValue());
+                if (entry.getKey().equalsIgnoreCase("Content"))
+                {
+                    String sp[] = entry.getValue().split("\n");
+                    if (sp.length > 0)
+                    {
+                        sb.append(sp[0]);
+                        for (int i = 1; i < sp.length; i++)
+                        {
+                            sb.append(LINE_SEPARATOR);
+                            sb.append(singularKey);
+                            sb.append(": ");
+                            sb.append(entry.getKey());
+                            sb.append("=");
+                            sb.append(sp[i]);
+                        }
+                    }
+
+                }
+                else
+                {
+                    sb.append(entry.getValue());
+                }
             }
 
             sb.appendLineSeparator();
         }
     }
 
-    private void appendString(CheckedStringBuffer sb, String key, String value)
+    private void appendString(CheckedStringBuilder sb, String key, String value)
     {
         sb.append(key);
         sb.append(": ");
@@ -220,7 +273,7 @@ class ActionBuilderImpl implements ActionBuilder
         sb.appendLineSeparator();
     }
 
-    private void appendUserEvent(CheckedStringBuffer sb, UserEvent event)
+    private void appendUserEvent(CheckedStringBuilder sb, UserEvent event)
     {
         Class<?> clazz = event.getClass();
 
@@ -236,9 +289,8 @@ class ActionBuilderImpl implements ActionBuilder
     }
 
     @SuppressWarnings("unchecked")
-    private void appendGetters(CheckedStringBuffer sb, Object action, Set<String> membersToIgnore)
+    private void appendGetters(CheckedStringBuilder sb, Object action, Map<String, Method> getters)
     {
-        Map<String, Method> getters = ReflectionUtil.getGetters(action.getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())
         {
             final String name = entry.getKey();
@@ -270,6 +322,10 @@ class ActionBuilderImpl implements ActionBuilder
             {
                 appendMap(sb, mappedName, (Map<String, String>) value);
             }
+            else if (value instanceof List)
+            {
+                appendList(sb, mappedName, (List<String>) value);
+            }
             else if (value instanceof String)
             {
                 appendString(sb, mappedName, (String) value);
@@ -281,12 +337,14 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    private String mapToAsterisk(Method getter)
+    private static String mapToAsterisk(Method getter)
     {
         AsteriskMapping annotation;
 
         // check annotation of getter method
-        annotation = getter.getAnnotation(AsteriskMapping.class);
+        annotation
+            = getter.getAnnotation(AsteriskMapping.class
+            );
         if (annotation != null)
         {
             return annotation.value();
@@ -297,7 +355,9 @@ class ActionBuilderImpl implements ActionBuilder
         try
         {
             Method setter = getter.getDeclaringClass().getDeclaredMethod(setterName, getter.getReturnType());
-            annotation = setter.getAnnotation(AsteriskMapping.class);
+            annotation
+                = setter.getAnnotation(AsteriskMapping.class
+                );
             if (annotation != null)
             {
                 return annotation.value();
@@ -313,7 +373,9 @@ class ActionBuilderImpl implements ActionBuilder
         try
         {
             Field field = getter.getDeclaringClass().getDeclaredField(fieldName);
-            annotation = field.getAnnotation(AsteriskMapping.class);
+            annotation
+                = field.getAnnotation(AsteriskMapping.class
+                );
             if (annotation != null)
             {
                 return annotation.value();
@@ -327,7 +389,7 @@ class ActionBuilderImpl implements ActionBuilder
         return fieldName.toLowerCase(Locale.US);
     }
 
-    String determineSetterName(String getterName)
+    static String determineSetterName(String getterName)
     {
         if (getterName.startsWith("get"))
         {
@@ -343,7 +405,7 @@ class ActionBuilderImpl implements ActionBuilder
         }
     }
 
-    String determineFieldName(String accessorName)
+    static String determineFieldName(String accessorName)
     {
         if (accessorName.startsWith("get"))
         {
@@ -369,21 +431,21 @@ class ActionBuilderImpl implements ActionBuilder
      * @param s the string to convert.
      * @return the converted string.
      */
-    String lcFirst(String s)
+    private static String lcFirst(String s)
     {
-        if (s == null || s.length() < 1)
+        if (s == null || s.isEmpty())
         {
             return s;
         }
 
-        char first = s.charAt(0);
-        return Character.toLowerCase(first) + s.substring(1);
+        return Character.toLowerCase(s.charAt(0))
+                + (s.length() == 1 ? "" : s.substring(1));
     }
 
-    private static class CheckedStringBuffer {
-        private final StringBuffer sb = new StringBuffer();
+    private static class CheckedStringBuilder {
+        private final StringBuilder sb = new StringBuilder();
 
-        private CheckedStringBuffer append(String string) {
+        private CheckedStringBuilder append(String string) {
             if(StringUtils.containsAny(string, '\0', '\n')) {
                 throw new IllegalArgumentException("Forbidden character \\0 or \\n in Action");
             }
@@ -396,7 +458,7 @@ class ActionBuilderImpl implements ActionBuilder
             return sb.toString();
         }
 
-        private CheckedStringBuffer appendLineSeparator() {
+        private CheckedStringBuilder appendLineSeparator() {
             sb.append(LINE_SEPARATOR);
             return this;
         }

@@ -2,12 +2,12 @@ package org.asteriskjava.util;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
-import java.util.TimeZone;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtilTest
 {
@@ -15,14 +15,14 @@ public class DateUtilTest
     final String dateString = "2006-05-19 11:54:48";
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
     }
 
     @After
-    public void tearDown() throws Exception
+    public void tearDown()
     {
         TimeZone.setDefault(defaultTimeZone);
     }

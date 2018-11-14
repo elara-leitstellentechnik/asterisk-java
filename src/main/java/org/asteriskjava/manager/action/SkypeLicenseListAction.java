@@ -54,6 +54,7 @@ public class SkypeLicenseListAction extends AbstractManagerAction implements Eve
         return "SkypeLicenseList";
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return SkypeBuddyListCompleteEvent.class;

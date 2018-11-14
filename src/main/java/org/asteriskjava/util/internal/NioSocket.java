@@ -18,7 +18,7 @@ import java.nio.channels.SocketChannel;
 public class NioSocket implements AutoCloseable {
 
 	private static final Log LOGGER = LogFactory.getLog(NioSocket.class);
-	private static final boolean DEBUG = true; // FIXME: LOGGER.isDebugEnabled();
+	private static final boolean DEBUG = LOGGER.isDebugEnabled();
 
 	private final int connectTimeout;
 

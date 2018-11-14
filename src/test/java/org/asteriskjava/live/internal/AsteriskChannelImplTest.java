@@ -2,13 +2,13 @@ package org.asteriskjava.live.internal;
 
 import static org.junit.Assert.assertEquals;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.asteriskjava.live.ChannelState;
 import org.asteriskjava.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class AsteriskChannelImplTest
 {
@@ -29,6 +29,7 @@ public class AsteriskChannelImplTest
     {
         channel.addPropertyChangeListener(new PropertyChangeListener()
         {
+            @Override
             public void propertyChange(PropertyChangeEvent evt)
             {
                 assertEquals("wrong propertyName", "state", evt.getPropertyName());

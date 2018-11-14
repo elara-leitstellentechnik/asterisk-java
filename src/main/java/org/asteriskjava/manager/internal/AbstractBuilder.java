@@ -6,30 +6,40 @@ import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
 
+import javafx.util.Pair;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Abstract base class for reflection based builders. 
+ * Abstract base class for reflection based builders.
  */
 abstract class AbstractBuilder
 {
     protected final Log logger = LogFactory.getLog(getClass());
+	private static HashMap<Class<?>, Map<String, Method>> settersCache = new HashMap<>();
+	private static HashSet<Pair<String, String>> warns = new HashSet<>();
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     protected void setAttributes(Object target, Map<String, Object> attributes, Set<String> ignoredAttributes)
     {
         Map<String, Method> setters;
 
-        setters = ReflectionUtil.getSetters(target.getClass());
+        setters = settersCache.get(target.getClass());
+	    if (setters == null) {
+		    setters = ReflectionUtil.getSetters(target.getClass());
+		    settersCache.put(target.getClass(), setters);
+	    }
         for (Map.Entry<String, Object> entry : attributes.entrySet())
         {
             Object value;
-            final Class<?> dataType;
+            final Class< ? > dataType;
             Method setter;
             String setterName;
 
@@ -48,37 +58,32 @@ abstract class AbstractBuilder
             if ("source".equals(setterName))
             {
                 setterName = "src";
-            } 
+            }
             else if ("class".equals(setterName))
             {
-            	setterName = "clazz";
-            }
-
-            /*
-             * The class property needs to be renamed. It is used in MusicOnHoldEvent.
-             */
-            if ("class".equals(setterName))
-            {
-                setterName = "classname";
+                setterName = "clazz";
             }
 
             setter = setters.get(setterName);
 
-            if (setter == null && !setterName.endsWith("s")) // no exact match => try plural
+            if (setter == null && !setterName.endsWith("s")) // no exact match
+                                                             // => try plural
             {
                 setter = setters.get(setterName + "s");
                 // but only for maps
-                if (setter != null && ! (setter.getParameterTypes()[0].isAssignableFrom(Map.class)))
+                if (setter != null && !(setter.getParameterTypes()[0].isAssignableFrom(Map.class)))
                 {
                     setter = null;
                 }
             }
 
-            // it seems silly to warn if it's a user event -- maybe it was intentional
-            if (setter == null && !(target instanceof UserEvent))
+	        // it seems silly to warn if it's a user event -- maybe it was
+            // intentional
+            if (setter == null && !(target instanceof UserEvent) && warns.add(new Pair<>(target.getClass().getName(), entry.getKey())))
             {
                 logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
-                        + target.getClass().getName() + ": no setter. Please report at https://github.com/asterisk-java/asterisk-java/issues");
+                        + target.getClass().getName()
+                        + ": no setter. Please report at https://github.com/asterisk-java/asterisk-java/issues");
             }
 
             if (setter == null)
@@ -97,7 +102,17 @@ abstract class AbstractBuilder
                 value = entry.getValue();
                 if (AstUtil.isNull(value))
                 {
+
                     value = null;
+                }
+                if (value instanceof List) {
+                    StringBuilder strBuff = new StringBuilder();
+                    for (String tmp : (List<String>) value) {
+                        if (tmp != null && tmp.length() != 0) {
+                            strBuff.append(tmp).append('\n');
+                        }
+                    }
+                    value = strBuff.toString();
                 }
             }
             else if (dataType.isAssignableFrom(Map.class))
@@ -116,17 +131,22 @@ abstract class AbstractBuilder
                     value = null;
                 }
             }
-            else
+	        else if (AstUtil.isNull(entry.getValue()))
+	        {
+		        value = null;
+	        }
+	        else
             {
                 try
                 {
-                    Constructor<?> constructor = dataType.getConstructor(new Class[]{String.class});
+                    Constructor< ? > constructor = dataType.getConstructor(String.class);
                     value = constructor.newInstance(entry.getValue());
                 }
                 catch (Exception e)
                 {
-                    logger.error("Unable to convert value '" + entry.getValue() + "' of property '" + entry.getKey() + "' on "
-                            + target.getClass().getName() + " to required type " + dataType, e);
+                    logger.error("Unable to convert value: Called the constructor of " + dataType + " with value '"
+                            + entry.getValue() + "' for the attribute '" + entry.getKey() + "'\n of event type "
+                            + target.getClass().getName() + " with resulting error: " + e.getMessage(), e);
                     continue;
                 }
             }
@@ -150,7 +170,7 @@ abstract class AbstractBuilder
             return null;
         }
 
-        final Map<String, String> map = new LinkedHashMap<String, String>();
+        final Map<String, String> map = new LinkedHashMap<>();
         for (String line : lines)
         {
             final int index = line.indexOf('=');

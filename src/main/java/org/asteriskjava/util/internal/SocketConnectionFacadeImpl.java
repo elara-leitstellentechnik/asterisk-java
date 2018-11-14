@@ -48,40 +48,81 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     public static final Pattern NL_PATTERN = Pattern.compile("\n");
 	private NioSocket nioSocket;
     private Socket socket;
-	private Charset encoding;
+    private Charset encoding;
     private InputStream scanner;
     private BufferedWriter writer;
     private Trace trace;
 
 	/**
-     * Creates a new instance for use with the Manager API that uses CRNL ("\r\n") as line delimiter.
+	 * Creates a new instance for use with the Manager API that uses CRNL ("\r\n") as line delimiter.
      *
-     * @param host        the foreign host to connect to.
-     * @param port        the foreign port to connect to.
-     * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
-     * @param timeout     0 incidcates default
+     * @param host the foreign host to connect to.
+     * @param port the foreign port to connect to.
+     * @param ssl <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout 0 incidcates default
      * @param readTimeout see {@link Socket#setSoTimeout(int)}
-     * @param encoding    the encoding used for transmission of strings
      * @throws IOException if the connection cannot be established.
      */
-    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding) throws IOException
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout) throws IOException
+    {
+        this(host, port, ssl, timeout, readTimeout, StandardCharsets.UTF_8, CRNL_PATTERN);
+    }
+
+    /**
+     * Creates a new instance for use with the Manager API that uses the given
+     * encoding and CRNL ("\r\n") as line delimiter.
+     *
+     * @param host the foreign host to connect to.
+     * @param port the foreign port to connect to.
+     * @param ssl <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout 0 incidcates default
+     * @param readTimeout see {@link Socket#setSoTimeout(int)}
+     * @param encoding the encoding used for transmission of strings (all
+     *            connections should use the same encoding)
+     * @throws IOException if the connection cannot be established.
+     */
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding)
+            throws IOException
     {
         this(host, port, ssl, timeout, readTimeout, encoding, CRNL_PATTERN);
     }
 
     /**
-     * Creates a new instance for use with the Manager API that uses the given line delimiter.
+     * Creates a new instance for use with the Manager API that uses UTF-8 as
+     * encoding and the given line delimiter.
      *
-     * @param host        the foreign host to connect to.
-     * @param port        the foreign port to connect to.
-     * @param ssl         <code>true</code> to use SSL, <code>false</code> otherwise.
-     * @param timeout     0 incidcates default
+     * @param host the foreign host to connect to.
+     * @param port the foreign port to connect to.
+     * @param ssl <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout 0 incidcates default
      * @param readTimeout see {@link Socket#setSoTimeout(int)}
-     * @param encoding    the encoding used for transmission of strings
-     * @param lineDelimiter a {@link Pattern} for matching the line delimiter for the socket
+     * @param lineDelimiter a {@link Pattern} for matching the line delimiter
+     *            for the socket
      * @throws IOException if the connection cannot be established.
      */
-    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding, Pattern lineDelimiter) throws IOException
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout,
+            Pattern lineDelimiter) throws IOException
+    {
+        this(host, port, ssl, timeout, readTimeout, StandardCharsets.UTF_8, lineDelimiter);
+    }
+
+    /**
+     * Creates a new instance for use with the Manager API that uses the given
+     * encoding and line delimiter.
+     *
+     * @param host the foreign host to connect to.
+     * @param port the foreign port to connect to.
+     * @param ssl <code>true</code> to use SSL, <code>false</code> otherwise.
+     * @param timeout 0 incidcates default
+     * @param readTimeout see {@link Socket#setSoTimeout(int)}
+     * @param encoding the encoding used for transmission of strings (all
+     *            connections should use the same encoding)
+     * @param lineDelimiter a {@link Pattern} for matching the line delimiter
+     *            for the socket
+     * @throws IOException if the connection cannot be established.
+     */
+    public SocketConnectionFacadeImpl(String host, int port, boolean ssl, int timeout, int readTimeout, Charset encoding,
+            Pattern lineDelimiter) throws IOException
     {
 	    Socket socket;
 
@@ -102,19 +143,20 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
     }
 
     /**
-     * Creates a new instance for use with FastAGI that uses NL ("\n") as line delimiter.
+     * Creates a new instance for use with FastAGI that uses NL ("\n") as line
+     * delimiter.
      *
      * @param socket the underlying socket.
      * @throws IOException if the connection cannot be initialized.
      */
-    SocketConnectionFacadeImpl(Socket socket) throws IOException {
-	    socket.setSoTimeout(MAX_SOCKET_READ_TIMEOUT_MILLIS);
-	    initialize(socket, StandardCharsets.UTF_8, NL_PATTERN, socket.getInputStream(), socket.getOutputStream());
+    SocketConnectionFacadeImpl(Socket socket) throws IOException
+    {
+        socket.setSoTimeout(MAX_SOCKET_READ_TIMEOUT_MILLIS);
+        initialize(socket, StandardCharsets.UTF_8, NL_PATTERN, socket.getInputStream(), socket.getOutputStream());
     }
 
-	/** 70 mi = 70 * 60 * 1000 */
-	private static final int MAX_SOCKET_READ_TIMEOUT_MILLIS = 4200000;
-
+    /** 70 mi = 70 * 60 * 1000 */
+    private static final int MAX_SOCKET_READ_TIMEOUT_MILLIS = 4200000;
 
     private void initialize(Socket socket, Charset encoding, Pattern pattern, InputStream inputStream, OutputStream outputStream) throws IOException
     {
@@ -199,6 +241,7 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
         return line;
     }
 
+    @Override
     public void write(String s) throws IOException
     {
         writer.write(s);
@@ -223,8 +266,9 @@ public class SocketConnectionFacadeImpl implements SocketConnectionFacade
         socket.close();
 	    scanner.close();
         // close the trace only if it was activated (the object is not null)
-        if (trace != null){
-        	trace.close();
+        if (trace != null)
+        {
+            trace.close();
         }
     }
 

@@ -28,7 +28,7 @@ import org.asteriskjava.manager.event.ResponseEvent;
  * Since Asterisk 1.2 a QueueStatusCompleteEvent is sent to denote the end of
  * the generated dump.<p>
  * This action is implemented in <code>apps/app_queue.c</code>
- * 
+ *
  * @see org.asteriskjava.manager.event.QueueParamsEvent
  * @see org.asteriskjava.manager.event.QueueMemberEvent
  * @see org.asteriskjava.manager.event.QueueEntryEvent
@@ -67,7 +67,7 @@ public class QueueStatusAction extends AbstractManagerAction
 
     /**
      * Returns the queue filter.
-     * 
+     *
      * @return the queue filter.
      * @since 0.2
      */
@@ -79,7 +79,7 @@ public class QueueStatusAction extends AbstractManagerAction
     /**
      * Sets the queue filter. If set QueueParamEvents are only generated for the
      * given queue name.
-     * 
+     *
      * @param queue the queue filter.
      * @since 0.2
      */
@@ -90,7 +90,7 @@ public class QueueStatusAction extends AbstractManagerAction
 
     /**
      * Returns the member filter.
-     * 
+     *
      * @return the member filter.
      * @since 0.2
      */
@@ -102,7 +102,7 @@ public class QueueStatusAction extends AbstractManagerAction
     /**
      * Sets the member filter. If set QueueMemberEvents are only generated for the
      * given member name.
-     * 
+     *
      * @param member the member filter.
      * @since 0.2
      */
@@ -111,6 +111,7 @@ public class QueueStatusAction extends AbstractManagerAction
         this.member = member;
     }
 
+    @Override
     public Class<? extends ResponseEvent> getActionCompleteEventClass()
     {
         return QueueStatusCompleteEvent.class;

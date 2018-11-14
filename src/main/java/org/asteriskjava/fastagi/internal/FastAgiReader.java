@@ -16,20 +16,21 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.asteriskjava.fastagi.AgiException;
 import org.asteriskjava.fastagi.AgiHangupException;
 import org.asteriskjava.fastagi.AgiNetworkException;
+import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Default implementation of the AgiReader implementation.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -42,13 +43,14 @@ class FastAgiReader implements AgiReader
         this.socket = socket;
     }
 
+    @Override
     public AgiRequest readRequest() throws AgiException
     {
         AgiRequestImpl request;
         String line;
         List<String> lines;
 
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
 
         try
         {
@@ -76,13 +78,14 @@ class FastAgiReader implements AgiReader
         return request;
     }
 
+    @Override
     public AgiReply readReply() throws AgiException
     {
         AgiReply reply;
         List<String> lines;
         String line;
 
-        lines = new ArrayList<String>();
+        lines = new ArrayList<>();
 
         try
         {
@@ -100,7 +103,7 @@ class FastAgiReader implements AgiReader
         }
 
         // TODO Asterisk 1.6 sends "HANGUP" when the channel is hung up.
-        //System.out.println(line);
+        // System.out.println(line);
         if (line.startsWith("HANGUP"))
         {
             if (line.length() > 6)
@@ -140,11 +143,8 @@ class FastAgiReader implements AgiReader
         // Special handling for gosub, see AJ-257
         if (reply.getStatus() == AgiReply.SC_TRYING)
         {
-        	return readReply();
+            return readReply();
         }
-        else
-        {
-        	return reply;
-        }
+        return reply;
     }
 }

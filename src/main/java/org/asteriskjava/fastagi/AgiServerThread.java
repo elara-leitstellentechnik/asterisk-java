@@ -16,11 +16,11 @@
  */
 package org.asteriskjava.fastagi;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Runs an AgiServer in a separate Thread.
@@ -30,7 +30,7 @@ import org.asteriskjava.util.LogFactory;
  * <p>
  * By default the thread used by this class is marked as daemon thread, that
  * means it will be destroyed when the last user thread has finished.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -59,7 +59,7 @@ public class AgiServerThread
 
     /**
      * Creates a new AgiServerThread that runs the given {@link AgiServer}.
-     * 
+     *
      * @param agiServer the AgiServer to run.
      */
     public AgiServerThread(AgiServer agiServer)
@@ -73,10 +73,10 @@ public class AgiServerThread
      * <p>
      * This property must be set before starting the AgiServerThread by calling
      * startup.
-     * 
+     *
      * @param agiServer the AgiServer to run.
      */
-    public void setAgiServer(AgiServer agiServer)
+    public synchronized void setAgiServer(AgiServer agiServer)
     {
         this.agiServer = agiServer;
     }
@@ -85,7 +85,7 @@ public class AgiServerThread
      * Marks the thread as either a daemon thread or a user thread.
      * <p>
      * Default is <code>true</code>.
-     * 
+     *
      * @param daemon if <code>false</code>, marks the thread as a user
      *            thread.
      * @see Thread#setDaemon(boolean)
@@ -102,7 +102,7 @@ public class AgiServerThread
      * Note: The AgiServerThread is designed to handle one AgiServer instance at
      * a time so calling this method twice without stopping the AgiServer in
      * between will result in a RuntimeException.
-     * 
+     *
      * @throws IllegalStateException if the mandatory property agiServer has not
      *             been set or the AgiServer had already been started.
      * @throws RuntimeException if the AgiServer can't be started due to IO
@@ -131,6 +131,7 @@ public class AgiServerThread
 
         t = new Thread(new Runnable()
         {
+            @Override
             public void run()
             {
                 try
@@ -155,7 +156,7 @@ public class AgiServerThread
      * <p>
      * The AgiServer must have been started by calling {@link #startup()} before
      * you can stop it.
-     * 
+     *
      * @see AgiServer#shutdown()
      * @throws IllegalStateException if the mandatory property agiServer has not
      *             been set or the AgiServer had already been shut down.
@@ -186,6 +187,7 @@ public class AgiServerThread
 
     class AgiThreadUncaughtExceptionHanlder implements UncaughtExceptionHandler
     {
+        @Override
         public void uncaughtException(Thread t, Throwable e)
         {
             logger.error("Uncaught exception in AgiServerThread", e);

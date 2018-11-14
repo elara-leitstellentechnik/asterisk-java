@@ -18,12 +18,12 @@ package org.asteriskjava.live.internal;
 
 import static org.junit.Assert.assertEquals;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.asteriskjava.live.QueueMemberState;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * @author Patrick Breucking
@@ -54,7 +54,7 @@ public class AsteriskQueueMemberImplTest
     }
 
     @Test
-    public void testQueueMemberEvents() throws Exception
+    public void testQueueMemberEvents()
     {
         /*
          * Test should generate a new member like queueMember = new
@@ -82,6 +82,7 @@ public class AsteriskQueueMemberImplTest
         assertEquals(QueueMemberState.DEVICE_UNKNOWN, queueMember.getState());
         queueMember.addPropertyChangeListener(new PropertyChangeListener()
         {
+            @Override
             public void propertyChange(PropertyChangeEvent evt)
             {
                 assertEquals("wrong propertyName", "state", evt.getPropertyName());

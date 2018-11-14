@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.nio.CharBuffer;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.nio.CharBuffer;
 
 public class ConfigFileParserTest
 {
@@ -154,7 +154,7 @@ public class ConfigFileParserTest
         }
     }
 
-    public void XtestReadConfig() throws Exception
+    public void XtestReadConfig()
     {
         configFileReader.readFile("/etc/asterisk/sip2.conf");
 

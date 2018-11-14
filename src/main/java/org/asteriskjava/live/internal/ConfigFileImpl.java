@@ -18,8 +18,8 @@ package org.asteriskjava.live.internal;
 
 import org.asteriskjava.config.ConfigFile;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ConfigFile implementation based on the config actions of the Manager API.
@@ -39,21 +39,25 @@ public class ConfigFileImpl implements ConfigFile
         this.categories = categories;
     }
 
+    @Override
     public String getFilename()
     {
         return filename;
     }
 
+    @Override
     public Map<String, List<String>> getCategories()
     {
         return categories;
     }
 
+    @Override
     public String getValue(String category, String key)
     {
         throw new UnsupportedOperationException("Not yet inmplemented");
     }
 
+    @Override
     public List<String> getValues(String category, String key)
     {
         throw new UnsupportedOperationException("Not yet inmplemented");

@@ -16,12 +16,11 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-
-import org.asteriskjava.manager.internal.ManagerReader;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.manager.event.ManagerEvent;
+import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
+
+import java.io.IOException;
 
 public class ManagerReaderMock implements ManagerReader
 {
@@ -34,38 +33,51 @@ public class ManagerReaderMock implements ManagerReader
 
     }
 
-    public void registerEventClass(Class<? extends ManagerEvent> event)
+    @Override
+    public void registerEventClass(Class< ? extends ManagerEvent> event)
     {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void setSocket(SocketConnectionFacade socket)
     {
         setSocketCalls++;
     }
 
-    public void expectResponseClass(String actionId, Class<? extends ManagerResponse> responseClass)
+    @Override
+    public void expectResponseClass(String actionId, Class< ? extends ManagerResponse> responseClass)
     {
-        
+
     }
 
+    @Override
     public void die()
     {
         dieCalls++;
     }
 
+    @Override
     public boolean isDead()
     {
         return false;
     }
-    
+
+    @Override
     public void run()
     {
         runCalls++;
     }
 
+    @Override
     public IOException getTerminationException()
     {
         return null;
+    }
+
+    @Override
+    public void deregisterEventClass(Class< ? extends ManagerEvent> eventClass)
+    {
+
     }
 }

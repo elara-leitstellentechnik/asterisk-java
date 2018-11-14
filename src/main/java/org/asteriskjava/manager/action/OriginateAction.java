@@ -18,22 +18,32 @@ package org.asteriskjava.manager.action;
 
 import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
+import org.asteriskjava.util.Log;
+import org.asteriskjava.util.LogFactory;
 
-import java.util.*;
-
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * The OriginateAction generates an outgoing call to the extension in the given
  * context with the given priority or to a given application with optional
- * parameters.<p>
+ * parameters.
+ * <p>
  * If you want to connect to an extension use the properties context, exten and
  * priority. If you want to connect to an application use the properties
  * application and data if needed. Note that no call detail record will be
  * written when directly connecting to an application, so it may be better to
- * connect to an extension that starts the application you wish to connect to.<p>
+ * connect to an extension that starts the application you wish to connect to.
+ * <p>
  * The response to this action is sent when the channel has been answered and
  * asterisk starts connecting it to the given extension. So be careful not to
- * choose a too short timeout when waiting for the response.<p>
+ * choose a too short timeout when waiting for the response.
+ * <p>
  * If you set async to <code>true</code> Asterisk reports an OriginateSuccess-
  * and OriginateFailureEvents. The action id of these events equals the action
  * id of this OriginateAction.
@@ -44,6 +54,9 @@ import java.util.*;
  */
 public class OriginateAction extends AbstractManagerAction implements EventGeneratingAction
 {
+
+    private final Log logger = LogFactory.getLog(getClass());
+
     /**
      * Serializable version identifier
      */
@@ -62,6 +75,11 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     private String data;
     private Boolean async;
     private String codecs;
+    private Boolean earlyMedia;
+
+    // starting at ten saves on a formatter.
+    private int headerCounter = 10;
+    private Set<String> preventDuplicateSipHeaders = new HashSet<>();
 
     /**
      * Returns the name of this action, i.e. "Originate".
@@ -85,7 +103,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the account code to use for the originated call.<p>
+     * Sets the account code to use for the originated call.
+     * <p>
      * The account code is included in the call detail record generated for this
      * call and will be used for billing.
      *
@@ -105,7 +124,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the caller id to set on the outgoing channel.<p>
+     * Sets the caller id to set on the outgoing channel.
+     * <p>
      * This includes both the Caller*Id Number and Caller*Id Name in the form
      * "Jon Doe &lt;1234&gt;".
      *
@@ -117,7 +137,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Returns the calling presentation for the outgoing channel.<p>
+     * Returns the calling presentation for the outgoing channel.
+     * <p>
      * This property is only available on BRIstuffed Asterisk servers.
      *
      * @return the calling presentation for the outgoing channel.
@@ -129,15 +150,21 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the calling presentation for the outgoing channel.<p>
-     * The number is an octet and the only bits you need worry about are bits 1,2,6 and 7.<p>
+     * Sets the calling presentation for the outgoing channel.
+     * <p>
+     * The number is an octet and the only bits you need worry about are bits
+     * 1,2,6 and 7.
+     * <p>
      * Bits 1 and 2 define the screening indicator and bits 6 and 7 define the
-     * presentation indicator.<p>
-     * In essence, it says, 'Is the person who has been called allowed to see the callers number?'
-     * (presentation) and 'What authority was used to verify that this is a genuine number?'
-     * (screening).<p>
+     * presentation indicator.
+     * <p>
+     * In essence, it says, 'Is the person who has been called allowed to see
+     * the callers number?' (presentation) and 'What authority was used to
+     * verify that this is a genuine number?' (screening).
+     * <p>
      * <br>
      * Presentation indicator (Bits 6 and 7):
+     *
      * <pre>
      * Bits Meaning
      *  7 6
@@ -146,7 +173,9 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *  1 0 Number not available due to interworking
      *  1 1 Reserved
      * </pre>
+     *
      * Screening indicator (Bits 1 and 2):
+     *
      * <pre>
      * Bits Meaning
      *  2 1
@@ -155,13 +184,16 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      *  1 0 User-provided, verified and failed
      *  1 1 Network provided
      * </pre>
+     *
      * Examples for some general settings:
+     *
      * <pre>
      * Presentation Allowed, Network Provided: 3 (00000011)
      * Presentation Restricted, User-provided, not screened: 32 (00100000)
      * Presentation Restricted, User-provided, verified, and passed: 33 (00100001)
      * Presentation Restricted, Network Provided: 35 (00100011)
      * </pre>
+     *
      * This property is only available on BRIstuffed Asterisk servers.
      *
      * @param callingPres the calling presentation for the outgoing channel.
@@ -180,7 +212,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the name of the channel to connect to the outgoing call.<p>
+     * Sets the name of the channel to connect to the outgoing call.
+     * <p>
      * This property is mandatory.
      */
     public void setChannel(String channel)
@@ -197,7 +230,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the name of the context of the extension to connect to.<p>
+     * Sets the name of the context of the extension to connect to.
+     * <p>
      * If you set the context you also have to set the exten and priority
      * properties.
      */
@@ -215,7 +249,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the extension to connect to.<p>
+     * Sets the extension to connect to.
+     * <p>
      * If you set the extension you also have to set the context and priority
      * properties.
      */
@@ -282,42 +317,78 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the timeout (in milliseconds) for the origination.<p>
+     * Sets the timeout (in milliseconds) for the origination.
+     * <p>
      * The channel must be answered within this time, otherwise the origination
-     * is considered to have failed and an OriginateFailureEvent is generated.<p>
+     * is considered to have failed and an OriginateFailureEvent is generated.
+     * <p>
      * If not set, Asterisk assumes a default value of 30000 meaning 30 seconds.
      *
      * @param timeout the timeout in milliseconds
      * @deprecated use {@link #setTimeout(Long)} instead.
      */
-    @Deprecated public void setTimeout(Integer timeout)
+    @Deprecated
+    public void setTimeout(Integer timeout)
     {
-        this.timeout = timeout.longValue();
+        if (timeout != null)
+        {
+            if (timeout < 1000)
+            {
+                logger.error("A timeout of 1000 will cause the originate to almost cretainly fail!");
+            }
+            if (timeout < 10000)
+            {
+                logger.warn(
+                        "A timeout of less than 10000 will cause the originate to fail if not answered within 10 seconds!");
+            }
+            this.timeout = timeout.longValue();
+        }
+        else
+        {
+            this.timeout = null;
+        }
     }
 
     /**
-     * Sets the timeout (in milliseconds) for the origination.<p>
+     * Sets the timeout (in milliseconds) for the origination.
+     * <p>
      * The channel must be answered within this time, otherwise the origination
-     * is considered to have failed and an OriginateFailureEvent is generated.<p>
+     * is considered to have failed and an OriginateFailureEvent is generated.
+     * <p>
      * If not set, Asterisk assumes a default value of 30000 meaning 30 seconds.
      *
      * @param timeout the timeout in milliseconds
      */
     public void setTimeout(Long timeout)
     {
+        if (timeout != null)
+        {
+            if (timeout < 1000)
+            {
+                logger.error("A timeout of 1000 will cause the originate to almost cretainly fail!");
+            }
+            if (timeout < 10000)
+            {
+                logger.warn(
+                        "A timeout of less than 100000 will cause the originate to fail if not answered within 10 seconds!");
+            }
+        }
         this.timeout = timeout;
     }
 
     /**
-     * Sets the variables to set on the originated call.<p>
+     * Sets the variables to set on the originated call.
+     * <p>
      * Variable assignments are of the form "VARNAME=VALUE". You can specify
-     * multiple variable assignments separated by the '|' character.<p>
+     * multiple variable assignments separated by the '|' character.
+     * <p>
      * Example: "VAR1=abc|VAR2=def" sets the channel variables VAR1 to "abc" and
      * VAR2 to "def".
      *
      * @deprecated use {@link #setVariables(Map)} instead.
      */
-    @Deprecated public void setVariable(String variable)
+    @Deprecated
+    public void setVariable(String variable)
     {
         final StringTokenizer st;
 
@@ -328,7 +399,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         }
 
         st = new StringTokenizer(variable, "|");
-        variables = new LinkedHashMap<String, String>();
+        variables = new LinkedHashMap<>();
         while (st.hasMoreTokens())
         {
             String[] keyValue;
@@ -348,7 +419,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     /**
      * Sets an variable on the originated call.
      *
-     * @param name  the name of the variable to set.
+     * @param name the name of the variable to set.
      * @param value the value of the variable to set.
      * @since 0.3
      */
@@ -356,7 +427,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     {
         if (variables == null)
         {
-            variables = new LinkedHashMap<String, String>();
+            variables = new LinkedHashMap<>();
         }
 
         variables.put(name, value);
@@ -365,8 +436,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     /**
      * Returns the variables to set on the originated call.
      *
-     * @return a Map containing the variable names as key and their
-     *         values as value.
+     * @return a Map containing the variable names as key and their values as
+     *         value.
      * @since 0.2
      */
     public Map<String, String> getVariables()
@@ -378,12 +449,19 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * Sets the variables to set on the originated call.
      *
      * @param variables a Map containing the variable names as key and their
-     *                  values as value.
+     *            values as value.
      * @since 0.2
      */
     public void setVariables(Map<String, String> variables)
     {
-        this.variables = variables;
+        if (this.variables != null)
+        {
+            this.variables.putAll(variables);
+        }
+        else
+        {
+            this.variables = variables;
+        }
     }
 
     /**
@@ -404,6 +482,20 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
+     * @param earlyMedia the earlyMedia to set
+     */
+    public void setEarlyMedia(Boolean earlyMedia) {
+        this.earlyMedia = earlyMedia;
+    }
+
+    /**
+     * @return the earlyMedia
+     */
+    public Boolean getEarlyMedia() {
+        return earlyMedia;
+    }
+
+    /**
      * Returns the codecs to use for the call.
      *
      * @return the codecs to use for the call.
@@ -415,7 +507,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the codecs to use for the call. For example "alaw, ulaw, h264".<p>
+     * Sets the codecs to use for the call. For example "alaw, ulaw, h264".
+     * <p>
      * Available since Asterisk 1.6.
      *
      * @param codecs comma separated list of codecs to use for the call.
@@ -427,7 +520,8 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     }
 
     /**
-     * Sets the codecs to use for the call.<p>
+     * Sets the codecs to use for the call.
+     * <p>
      * Available since Asterisk 1.6.
      *
      * @param codecs list of codecs to use for the call.
@@ -442,7 +536,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         }
 
         Iterator<String> iter = codecs.iterator();
-        StringBuffer buffer = new StringBuffer(iter.next());
+        StringBuilder buffer = new StringBuilder(iter.next());
         while (iter.hasNext())
         {
             buffer.append(",").append(iter.next());
@@ -450,8 +544,27 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         this.codecs = buffer.toString();
     }
 
-    public Class<? extends ResponseEvent> getActionCompleteEventClass()
+    @Override
+    public Class< ? extends ResponseEvent> getActionCompleteEventClass()
     {
         return OriginateResponseEvent.class;
     }
+
+    public void addSipHeader(VariableInheritance inheritance, String header)
+    {
+        if (!preventDuplicateSipHeaders.contains(header))
+        {
+            setVariable(inheritance.getPrefix() + "SIPADDHEADER" + (headerCounter++), header);
+            preventDuplicateSipHeaders.add(header);
+            if (headerCounter > 50)
+            {
+                logger.warn("I think only 50 headers are allowed by asterisk?");
+            }
+        }
+        else
+        {
+            logger.error("Already added the sip header " + header);
+        }
+    }
+
 }

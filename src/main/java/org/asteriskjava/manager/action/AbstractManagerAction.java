@@ -16,15 +16,15 @@
  */
 package org.asteriskjava.manager.action;
 
+import org.asteriskjava.util.ReflectionUtil;
+
 import java.lang.reflect.Method;
 import java.util.Map;
-
-import org.asteriskjava.util.ReflectionUtil;
 
 /**
  * This class implements the ManagerAction interface and can serve as base class
  * for your concrete Action implementations.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -38,13 +38,16 @@ public abstract class AbstractManagerAction implements ManagerAction
 
     private String actionId;
 
+    @Override
     public abstract String getAction();
 
+    @Override
     public String getActionId()
     {
         return actionId;
     }
 
+    @Override
     public void setActionId(String actionId)
     {
         this.actionId = actionId;
@@ -53,10 +56,10 @@ public abstract class AbstractManagerAction implements ManagerAction
     @Override
     public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
         Map<String, Method> getters;
 
-        sb = new StringBuffer(getClass().getName() + "[");
+        sb = new StringBuilder(getClass().getName() + "[");
         sb.append("action='").append(getAction()).append("',");
         getters = ReflectionUtil.getGetters(getClass());
         for (Map.Entry<String, Method> entry : getters.entrySet())

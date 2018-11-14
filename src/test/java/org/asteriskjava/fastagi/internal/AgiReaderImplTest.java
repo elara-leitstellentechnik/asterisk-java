@@ -23,14 +23,15 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.net.InetAddress;
-
 import org.asteriskjava.fastagi.AgiHangupException;
+import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.InetAddress;
 
 public class AgiReaderImplTest
 {
@@ -38,7 +39,7 @@ public class AgiReaderImplTest
     private SocketConnectionFacade socket;
 
     @Before
-    public void setUp() throws Exception
+    public void setUp()
     {
         this.socket = createMock(SocketConnectionFacade.class);
         this.agiReader = new FastAgiReader(socket);

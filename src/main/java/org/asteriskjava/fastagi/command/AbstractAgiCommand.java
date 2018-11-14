@@ -19,9 +19,9 @@ package org.asteriskjava.fastagi.command;
 import java.io.Serializable;
 
 /**
- * Abstract base class that provides some convenience methods for 
+ * Abstract base class that provides some convenience methods for
  * implementing AgiCommand classes.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -32,12 +32,13 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
      */
     private static final long serialVersionUID = 3257849874518456633L;
 
+    @Override
     public abstract String buildCommand();
 
     /**
      * Escapes and quotes a given String according to the rules set by
      * Asterisk's AGI.
-     * 
+     *
      * @param s the String to escape and quote
      * @return the transformed String
      */
@@ -80,9 +81,9 @@ public abstract class AbstractAgiCommand implements Serializable, AgiCommand
     @Override
     public String toString()
     {
-        StringBuffer sb;
+        StringBuilder sb;
 
-        sb = new StringBuffer(getClass().getName()).append("[");
+        sb = new StringBuilder(getClass().getName()).append("[");
         sb.append("command='").append(buildCommand()).append("', ");
         sb.append("systemHashcode=").append(System.identityHashCode(this)).append("]");
 

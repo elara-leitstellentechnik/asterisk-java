@@ -16,8 +16,6 @@
  */
 package org.asteriskjava.manager.internal;
 
-import java.io.IOException;
-
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.action.ChallengeAction;
 import org.asteriskjava.manager.action.LoginAction;
@@ -29,6 +27,8 @@ import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.SocketConnectionFacade;
+
+import java.io.IOException;
 
 public class ManagerWriterMock implements ManagerWriter
 {
@@ -52,6 +52,7 @@ public class ManagerWriterMock implements ManagerWriter
     {
     }
 
+    @Override
     public void setTargetVersion(AsteriskVersion version)
     {
     }
@@ -81,12 +82,14 @@ public class ManagerWriterMock implements ManagerWriter
         this.sendProtocolIdentifierReceivedEvent = sendConnectEvent;
     }
 
+    @Override
     public void setSocket(SocketConnectionFacade socket)
     {
         if (sendProtocolIdentifierReceivedEvent)
         {
             Thread future = new Thread(new Runnable()
             {
+                @Override
                 public void run()
                 {
                     try
@@ -108,6 +111,7 @@ public class ManagerWriterMock implements ManagerWriter
         }
     }
 
+    @Override
     public void sendAction(ManagerAction action, String internalActionId) throws IOException
     {
         if (action instanceof ChallengeAction)
@@ -208,6 +212,7 @@ public class ManagerWriterMock implements ManagerWriter
     {
         Thread future = new Thread(new Runnable()
         {
+            @Override
             public void run()
             {
                 try

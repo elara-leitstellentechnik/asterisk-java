@@ -24,14 +24,19 @@ import org.asteriskjava.util.LogFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * Default implementation of the AGIRequest interface.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -63,7 +68,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Creates a new AGIRequestImpl.
-     * 
+     *
      * @param environment the first lines as received from Asterisk containing
      *            the environment.
      */
@@ -75,7 +80,8 @@ public class AgiRequestImpl implements AgiRequest
     /**
      * Creates a new AgiRequestImpl based on a preparsed map of parameters.
      *
-     * @param request a map representing the AGI request. Keys must not contain the "agi_" or "ogi_" prefix.
+     * @param request a map representing the AGI request. Keys must not contain
+     *            the "agi_" or "ogi_" prefix.
      * @since 1.0.0
      */
     private AgiRequestImpl(final Map<String, String> request)
@@ -95,12 +101,14 @@ public class AgiRequestImpl implements AgiRequest
     }
 
     /**
-     * Builds a map containing variable names as key (with the "agi_" or "ogi_" prefix
-     * stripped) and the corresponding values.<p>
+     * Builds a map containing variable names as key (with the "agi_" or "ogi_"
+     * prefix stripped) and the corresponding values.
+     * <p>
      * Syntactically invalid and empty variables are skipped.
-     * 
+     *
      * @param lines the environment to transform.
-     * @return a map with the variables set corresponding to the given environment.
+     * @return a map with the variables set corresponding to the given
+     *         environment.
      * @throws IllegalArgumentException if lines is <code>null</code>
      */
     private static Map<String, String> buildMap(final Collection<String> lines) throws IllegalArgumentException
@@ -112,7 +120,7 @@ public class AgiRequestImpl implements AgiRequest
             throw new IllegalArgumentException("Environment must not be null.");
         }
 
-        map = new HashMap<String, String>();
+        map = new HashMap<>();
 
         for (String line : lines)
         {
@@ -152,6 +160,7 @@ public class AgiRequestImpl implements AgiRequest
         return map;
     }
 
+    @Override
     public Map<String, String> getRequest()
     {
         return request;
@@ -159,9 +168,10 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the name of the script to execute.
-     * 
+     *
      * @return the name of the script to execute.
      */
+    @Override
     public synchronized String getScript()
     {
         return script;
@@ -170,10 +180,11 @@ public class AgiRequestImpl implements AgiRequest
     /**
      * Returns the full URL of the request in the form
      * agi://host[:port][/script].
-     * 
+     *
      * @return the full URL of the request in the form
      *         agi://host[:port][/script].
      */
+    @Override
     public String getRequestURL()
     {
         return request.get("request");
@@ -181,9 +192,10 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the name of the channel.
-     * 
+     *
      * @return the name of the channel.
      */
+    @Override
     public String getChannel()
     {
         return request.get("channel");
@@ -191,29 +203,35 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Returns the unqiue id of the channel.
-     * 
+     *
      * @return the unqiue id of the channel.
      */
+    @Override
     public String getUniqueId()
     {
         return request.get("uniqueid");
     }
 
+    @Override
     public String getType()
     {
         return request.get("type");
     }
 
+    @Override
     public String getLanguage()
     {
         return request.get("language");
     }
 
-    @Deprecated public String getCallerId()
+    @Override
+    @Deprecated
+    public String getCallerId()
     {
         return getCallerIdNumber();
     }
 
+    @Override
     public String getCallerIdNumber()
     {
         String callerIdName;
@@ -231,13 +249,11 @@ public class AgiRequestImpl implements AgiRequest
 
             return callerId;
         }
-        else
-        {
-            // Asterisk 1.0
-            return getCallerId10();
-        }
+        // Asterisk 1.0
+        return getCallerId10();
     }
 
+    @Override
     public String getCallerIdName()
     {
         String callerIdName;
@@ -253,16 +269,13 @@ public class AgiRequestImpl implements AgiRequest
 
             return callerIdName;
         }
-        else
-        {
-            // Asterisk 1.0
-            return getCallerIdName10();
-        }
+        // Asterisk 1.0
+        return getCallerIdName10();
     }
 
     /**
      * Returns the Caller*ID number using Asterisk 1.0 logic.
-     * 
+     *
      * @return the Caller*ID number
      */
     private synchronized String getCallerId10()
@@ -280,15 +293,12 @@ public class AgiRequestImpl implements AgiRequest
         {
             return parsedCallerId[0];
         }
-        else
-        {
-            return parsedCallerId[1];
-        }
+        return parsedCallerId[1];
     }
 
     /**
      * Returns the Caller*ID name using Asterisk 1.0 logic.
-     * 
+     *
      * @return the Caller*ID name
      */
     private synchronized String getCallerIdName10()
@@ -302,44 +312,49 @@ public class AgiRequestImpl implements AgiRequest
         return AstUtil.parseCallerId(rawCallerId)[0];
     }
 
+    @Override
     public String getDnid()
     {
         String dnid;
-        
+
         dnid = request.get("dnid");
-        
+
         if (dnid == null || "unknown".equals(dnid))
         {
             return null;
         }
-        
-        return dnid; 
+
+        return dnid;
     }
 
+    @Override
     public String getRdnis()
     {
         String rdnis;
-        
+
         rdnis = request.get("rdnis");
-        
+
         if (rdnis == null || "unknown".equals(rdnis))
         {
             return null;
         }
-        
-        return rdnis; 
+
+        return rdnis;
     }
 
+    @Override
     public String getContext()
     {
         return request.get("context");
     }
 
+    @Override
     public String getExtension()
     {
         return request.get("extension");
     }
 
+    @Override
     public Integer getPriority()
     {
         if (request.get("priority") != null)
@@ -349,6 +364,7 @@ public class AgiRequestImpl implements AgiRequest
         return null;
     }
 
+    @Override
     public Boolean getEnhanced()
     {
         if (request.get("enhanced") != null)
@@ -357,19 +373,18 @@ public class AgiRequestImpl implements AgiRequest
             {
                 return Boolean.TRUE;
             }
-            else
-            {
-                return Boolean.FALSE;
-            }
+            return Boolean.FALSE;
         }
         return null;
     }
 
+    @Override
     public String getAccountCode()
     {
         return request.get("accountcode");
     }
 
+    @Override
     public Integer getCallingAni2()
     {
         if (request.get("callingani2") == null)
@@ -387,13 +402,14 @@ public class AgiRequestImpl implements AgiRequest
         }
     }
 
+    @Override
     public Integer getCallingPres()
     {
         if (request.get("callingpres") == null)
         {
             return null;
         }
-        
+
         try
         {
             return Integer.valueOf(request.get("callingpres"));
@@ -404,13 +420,14 @@ public class AgiRequestImpl implements AgiRequest
         }
     }
 
+    @Override
     public Integer getCallingTns()
     {
         if (request.get("callingtns") == null)
         {
             return null;
         }
-        
+
         try
         {
             return Integer.valueOf(request.get("callingtns"));
@@ -421,13 +438,14 @@ public class AgiRequestImpl implements AgiRequest
         }
     }
 
+    @Override
     public Integer getCallingTon()
     {
         if (request.get("callington") == null)
         {
             return null;
         }
-        
+
         try
         {
             return Integer.valueOf(request.get("callington"));
@@ -438,6 +456,7 @@ public class AgiRequestImpl implements AgiRequest
         }
     }
 
+    @Override
     public String getParameter(String name)
     {
         String[] values;
@@ -452,6 +471,7 @@ public class AgiRequestImpl implements AgiRequest
         return values[0];
     }
 
+    @Override
     public synchronized String[] getParameterValues(String name)
     {
         if (getParameterMap().isEmpty())
@@ -463,6 +483,7 @@ public class AgiRequestImpl implements AgiRequest
         return values == null ? new String[0] : values;
     }
 
+    @Override
     public synchronized Map<String, String[]> getParameterMap()
     {
         if (parameterMap == null)
@@ -474,7 +495,7 @@ public class AgiRequestImpl implements AgiRequest
 
     /**
      * Parses the given parameter string and caches the result.
-     * 
+     *
      * @param s the parameter string to parse
      * @return a Map made up of parameter names their values
      */
@@ -484,8 +505,8 @@ public class AgiRequestImpl implements AgiRequest
         Map<String, String[]> result;
         StringTokenizer st;
 
-        parameterMap = new HashMap<String, List<String>>();
-        result = new HashMap<String, String[]>();
+        parameterMap = new HashMap<>();
+        result = new HashMap<>();
 
         if (s == null)
         {
@@ -532,7 +553,7 @@ public class AgiRequestImpl implements AgiRequest
 
             if (parameterMap.get(name) == null)
             {
-                values = new ArrayList<String>();
+                values = new ArrayList<>();
                 values.add(value);
                 parameterMap.put(name, values);
             }
@@ -554,6 +575,7 @@ public class AgiRequestImpl implements AgiRequest
         return result;
     }
 
+    @Override
     public synchronized String[] getArguments()
     {
         if (arguments != null)
@@ -561,16 +583,16 @@ public class AgiRequestImpl implements AgiRequest
             return arguments.clone();
         }
 
-        final Map<Integer, String> map = new HashMap<Integer, String>();
+        final Map<Integer, String> map = new HashMap<>();
         int maxIndex = 0;
         for (Map.Entry<String, String> entry : request.entrySet())
         {
-            if (! entry.getKey().startsWith("arg_"))
+            if (!entry.getKey().startsWith("arg_"))
             {
                 continue;
             }
 
-            int index = Integer.valueOf(entry.getKey().substring(4));
+            int index = Integer.parseInt(entry.getKey().substring(4));
             if (index > maxIndex)
             {
                 maxIndex = index;
@@ -583,10 +605,11 @@ public class AgiRequestImpl implements AgiRequest
         {
             arguments[i] = map.get(i + 1);
         }
-        
+
         return arguments.clone();
     }
 
+    @Override
     public InetAddress getLocalAddress()
     {
         return localAddress;
@@ -597,6 +620,7 @@ public class AgiRequestImpl implements AgiRequest
         this.localAddress = localAddress;
     }
 
+    @Override
     public int getLocalPort()
     {
         return localPort;
@@ -607,6 +631,7 @@ public class AgiRequestImpl implements AgiRequest
         this.localPort = localPort;
     }
 
+    @Override
     public InetAddress getRemoteAddress()
     {
         return remoteAddress;
@@ -617,6 +642,7 @@ public class AgiRequestImpl implements AgiRequest
         this.remoteAddress = remoteAddress;
     }
 
+    @Override
     public int getRemotePort()
     {
         return remotePort;
@@ -628,11 +654,11 @@ public class AgiRequestImpl implements AgiRequest
     }
 
     @Override
-   public String toString()
+    public String toString()
     {
-        StringBuffer sb;
+    	StringBuilder sb;
 
-        sb = new StringBuffer("AgiRequest[");
+        sb = new StringBuilder("AgiRequest[");
         sb.append("script='").append(getScript()).append("',");
         sb.append("requestURL='").append(getRequestURL()).append("',");
         sb.append("channel='").append(getChannel()).append("',");

@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * ...
  * connection.addEventListener(new ManagerEventListenerProxy(myListener));
  * </pre>
- * 
+ *
  * @author srt
  * @author fink
  * @since 0.3
@@ -40,7 +40,7 @@ public class ManagerEventListenerProxy implements ManagerEventListener {
     /**
      * Creates a new ManagerEventListenerProxy that notifies the given target
      * asynchronously when new events are received.
-     * 
+     *
      * @param target the target listener to invoke.
      * @see Executors#newSingleThreadExecutor(ThreadFactory)
      */
@@ -67,6 +67,10 @@ public class ManagerEventListenerProxy implements ManagerEventListener {
     }
 
 		public static class Access {
+		    private Access() {
+
+		    }
+
 			public static int getThreadQueueSize (ManagerEventListenerProxy proxy) {
 				return proxy.executor.getQueue().size();
 			}

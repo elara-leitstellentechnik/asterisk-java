@@ -16,14 +16,14 @@
  */
 package org.asteriskjava.manager;
 
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.Set;
-import java.util.HashSet;
-
 import org.asteriskjava.manager.action.PingAction;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A Thread that pings the Asterisk server at a given interval.
@@ -31,7 +31,7 @@ import org.asteriskjava.util.LogFactory;
  * traffic.
  * <p>
  * Since 1.0.0 PingThread supports mutliple connections so do don't have to
- * start multiple threads to keep several connections alive. 
+ * start multiple threads to keep several connections alive.
  *
  * @author srt
  * @version $Id$
@@ -61,7 +61,7 @@ public class PingThread extends Thread
     public PingThread()
     {
         super();
-        this.connections = new HashSet<ManagerConnection>();
+        this.connections = new HashSet<>();
         this.die = false;
         long id = idCounter.getAndIncrement();
         setName("Asterisk-Java Ping-" + id);
