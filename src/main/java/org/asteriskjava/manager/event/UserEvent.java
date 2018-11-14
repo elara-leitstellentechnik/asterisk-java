@@ -78,6 +78,8 @@ public abstract class UserEvent extends ManagerEvent
      */
     private String uniqueId;
 
+    private String actionId;
+
     public UserEvent(Object source)
     {
         super(source);
@@ -121,5 +123,15 @@ public abstract class UserEvent extends ManagerEvent
     public void setUniqueId(String uniqueId)
     {
         this.uniqueId = uniqueId;
+    }
+
+    public String getActionId()
+    {
+        return actionId;
+    }
+
+    public void setActionId(String actionId)
+    {
+        this.actionId = actionId;
     }
 }
