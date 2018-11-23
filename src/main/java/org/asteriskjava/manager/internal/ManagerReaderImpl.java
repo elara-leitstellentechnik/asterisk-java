@@ -19,7 +19,6 @@ package org.asteriskjava.manager.internal;
 import org.asteriskjava.manager.event.DisconnectEvent;
 import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.ProtocolIdentifierReceivedEvent;
-import org.asteriskjava.manager.internal.backwardsCompatibility.BackwardsCompatibilityForManagerEvents;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
@@ -90,12 +89,6 @@ public class ManagerReaderImpl implements ManagerReader
      * Exception that caused this reader to terminate if any.
      */
     private IOException terminationException;
-
-    /**
-     * set of classes able to take newer versions of ManagerEvents and emit
-     * older style manager Events
-     */
-    BackwardsCompatibilityForManagerEvents compatibility = new BackwardsCompatibilityForManagerEvents();
 
     /**
      * Creates a new ManagerReaderImpl.
@@ -233,19 +226,6 @@ public class ManagerReaderImpl implements ManagerReader
                         if (event != null)
                         {
                             dispatcher.dispatchEvent(event);
-
-                            // Backwards compatibility for bridge events.
-                            // Asterisk 13 uses BridgeCreate,
-                            // BridgeEnter, BridgeLeave and BridgeDestroy
-                            // events.
-                            // So here we track active bridges and simulate
-                            // BridgeEvent's for them allowing legacy code to
-                            // still work with BridgeEvent's
-                            ManagerEvent secondaryEvent = compatibility.handleEvent(event);
-                            if (secondaryEvent != null)
-                            {
-                                dispatcher.dispatchEvent(secondaryEvent);
-                            }
                         }
                         else
                         {
