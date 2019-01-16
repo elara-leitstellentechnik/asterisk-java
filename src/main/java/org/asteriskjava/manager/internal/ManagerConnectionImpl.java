@@ -1344,6 +1344,12 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
                 && !"Asterisk Call Manager/4.0.1".equals(identifier) // since Asterisk 15.1
                 && !"Asterisk Call Manager/4.0.2".equals(identifier) // since Asterisk 15.2
 
+			    && !"Asterisk Call Manager/4.0.3".equals(identifier) // Asterisk
+			                                                         // 15
+
+			    && !"Asterisk Call Manager/5.0.0".equals(identifier) // Asterisk
+			                                                         // 16
+
                 && !"OpenPBX Call Manager/1.0".equals(identifier) && !"CallWeaver Call Manager/1.0".equals(identifier)
                 && !(identifier != null && identifier.startsWith("Asterisk Call Manager Proxy/")))
         {
