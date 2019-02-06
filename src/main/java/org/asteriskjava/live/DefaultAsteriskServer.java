@@ -16,17 +16,16 @@
  */
 package org.asteriskjava.live;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.action.OriginateAction;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Default implementation of the AsteriskServer interface.
@@ -255,11 +254,6 @@ public class DefaultAsteriskServer implements AsteriskServer
     public boolean isModuleLoaded(String module) throws ManagerCommunicationException
     {
         return this.impl.isModuleLoaded(module);
-    }
-
-    public ConfigFile getConfig(String filename) throws ManagerCommunicationException
-    {
-        return this.impl.getConfig(filename);
     }
 
     public void reloadAllModules() throws ManagerCommunicationException

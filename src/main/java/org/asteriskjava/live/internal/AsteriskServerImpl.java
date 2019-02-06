@@ -16,22 +16,7 @@
  */
 package org.asteriskjava.live.internal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.AsteriskAgent;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
@@ -56,7 +41,6 @@ import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.DbGetAction;
 import org.asteriskjava.manager.action.DbPutAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.GetConfigAction;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.MailboxCountAction;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -107,7 +91,6 @@ import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.manager.event.VarSetEvent;
 import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.GetConfigResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -116,6 +99,19 @@ import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.DateUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Default implementation of the {@link AsteriskServer} interface.
@@ -828,44 +824,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    public ConfigFile getConfig(String filename) throws ManagerCommunicationException
-    {
-        final ManagerResponse response;
-        final GetConfigResponse getConfigResponse;
-
-        initializeIfNeeded();
-        response = sendAction(new GetConfigAction(filename));
-        if (!(response instanceof GetConfigResponse))
-        {
-            throw new ManagerCommunicationException("Response to GetConfigAction(\"" + filename
-                    + "\") was not a CommandResponse but " + response, null);
-        }
-
-        getConfigResponse = (GetConfigResponse) response;
-
-        final Map<Integer, String> categoryMap = getConfigResponse.getCategories();
-        final Map<String, List<String>> categories = new LinkedHashMap<String, List<String>>();
-        for (Map.Entry<Integer, String> categoryEntry : categoryMap.entrySet())
-        {
-            final List<String> lines;
-            final Map<Integer, String> lineMap = getConfigResponse.getLines(categoryEntry.getKey());
-
-            if (lineMap == null)
-            {
-                lines = new ArrayList<String>();
-            }
-            else
-            {
-                lines = new ArrayList<String>(lineMap.values());
-            }
-
-            categories.put(categoryEntry.getValue(), lines);
-        }
-
-        return new ConfigFileImpl(filename, categories);
-    }
-
-    @Override
+	@Override
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         initializeIfNeeded();
