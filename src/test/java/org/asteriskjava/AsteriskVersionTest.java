@@ -8,11 +8,15 @@ public class AsteriskVersionTest
 {
 
     @Test
+    public void testUnknown()
+    {
+        assertTrue(AsteriskVersion.getDetermineVersionFromString("").equals(AsteriskVersion.UNKNOWN_VERSION));
+    }
+
+    @Test
     public void test1_4()
     {
-        // we just default to 1.4 - to further understand why, see
-        // ManagerConnectionImpl.determineVersion
-        assertTrue(AsteriskVersion.getDetermineVersionFromString("").equals(AsteriskVersion.ASTERISK_1_4));
+        assertTrue(AsteriskVersion.getDetermineVersionFromString("Asterisk 1.4.44").equals(AsteriskVersion.ASTERISK_1_4));
     }
 
     @Test
@@ -62,6 +66,12 @@ public class AsteriskVersionTest
     public void test15()
     {
         assertTrue(AsteriskVersion.getDetermineVersionFromString("Asterisk 15.1.0").equals(AsteriskVersion.ASTERISK_15));
+    }
+
+    @Test
+    public void test16()
+    {
+        assertTrue(AsteriskVersion.getDetermineVersionFromString("Asterisk 16.1.1").equals(AsteriskVersion.ASTERISK_16));
     }
 
 }

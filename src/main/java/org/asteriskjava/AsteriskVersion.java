@@ -37,6 +37,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
     private static final String VERSION_PATTERN_10 = "^\\s*Asterisk ((SVN-branch|GIT)-)?10[-. ].*";
     private static final String VERSION_PATTERN_1_8 = "^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.8[-. ].*";
     private static final String VERSION_PATTERN_1_6 = "^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.6[-. ].*";
+    private static final String VERSION_PATTERN_1_4 = "^\\s*Asterisk ((SVN-branch|GIT)-)?1\\.4[-. ].*";
     private final int version;
     private final String versionString;
     private final Pattern patterns[];
@@ -59,7 +60,7 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
      *
      * @since 0.3
      */
-    public static final AsteriskVersion ASTERISK_1_4 = new AsteriskVersion(140, "Asterisk 1.4");
+    public static final AsteriskVersion ASTERISK_1_4 = new AsteriskVersion(140, "Asterisk 1.4", VERSION_PATTERN_1_4);
 
     /**
      * Represents the Asterisk 1.6 series.
@@ -124,8 +125,10 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
 	 */
 	public static final AsteriskVersion ASTERISK_16 = new AsteriskVersion(1600, "Asterisk 16", VERSION_PATTERN_16);
 
+    public static final AsteriskVersion UNKNOWN_VERSION = new AsteriskVersion(Integer.MAX_VALUE, "Asterisk ?");
+
 	private static final AsteriskVersion knownVersions[] = new AsteriskVersion[]{ASTERISK_16, ASTERISK_15, ASTERISK_14, ASTERISK_13,
-            ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6};
+            ASTERISK_12, ASTERISK_11, ASTERISK_10, ASTERISK_1_8, ASTERISK_1_6, ASTERISK_1_4};
 
     /**
      * Serial version identifier.
@@ -219,8 +222,6 @@ public class AsteriskVersion implements Comparable<AsteriskVersion>, Serializabl
             }
         }
 
-        // we just default to 1.4 - to further understand why, see
-        // ManagerConnectionImpl.determineVersion
-        return AsteriskVersion.ASTERISK_1_4;
+        return UNKNOWN_VERSION;
     }
 }

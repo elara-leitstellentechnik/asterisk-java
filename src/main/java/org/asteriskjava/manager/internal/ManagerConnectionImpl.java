@@ -92,7 +92,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     private static final AtomicLong idCounter = new AtomicLong(0);
 
     // current debian stable version, as of 03/07/2018
-    private static final AsteriskVersion DEFAULT_ASTERISK_VERSION = AsteriskVersion.ASTERISK_13;
+    private static final AsteriskVersion DEFAULT_ASTERISK_VERSION = AsteriskVersion.UNKNOWN_VERSION;
 
     /**
      * Instance logger.
