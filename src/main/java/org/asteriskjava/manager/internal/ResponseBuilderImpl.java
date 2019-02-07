@@ -84,7 +84,7 @@ class ResponseBuilderImpl extends AbstractBuilder implements ResponseBuilder
             	if(attributes.get(OUTPUT_RESPONSE_KEY) instanceof List){
 	            	for(String tmp : (List<String>)attributes.get(OUTPUT_RESPONSE_KEY)){
 	            		if(tmp != null && tmp.length() != 0){
-	            			result.add(tmp.trim());
+	            			result.add(tmp);
 	            		}
 	            	}
             	}else{
