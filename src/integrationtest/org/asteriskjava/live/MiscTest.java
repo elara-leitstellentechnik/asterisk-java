@@ -5,8 +5,6 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.config.ConfigFile;
-
 /**
  * @author srt
  * @version $Id$
@@ -27,16 +25,6 @@ public class MiscTest extends AsteriskServerTestCase
     public void testGetVoicemailboxes() throws Exception
     {
         System.err.println("mailboxes: " + server.getVoicemailboxes());
-    }
-
-    public void testGetConfig() throws Exception
-    {
-        ConfigFile config;
-
-        config = server.getConfig("voicemail.conf");
-        assertEquals("voicemail.conf", config.getFilename());
-
-        System.err.println(config.getCategories());
     }
 
 }

@@ -17,7 +17,6 @@
 package org.asteriskjava.live.internal;
 
 import org.asteriskjava.AsteriskVersion;
-import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.AsteriskAgent;
 import org.asteriskjava.live.AsteriskChannel;
 import org.asteriskjava.live.AsteriskQueue;
@@ -42,7 +41,6 @@ import org.asteriskjava.manager.action.CommandAction;
 import org.asteriskjava.manager.action.DbGetAction;
 import org.asteriskjava.manager.action.DbPutAction;
 import org.asteriskjava.manager.action.EventGeneratingAction;
-import org.asteriskjava.manager.action.GetConfigAction;
 import org.asteriskjava.manager.action.GetVarAction;
 import org.asteriskjava.manager.action.MailboxCountAction;
 import org.asteriskjava.manager.action.ManagerAction;
@@ -93,7 +91,6 @@ import org.asteriskjava.manager.event.ResponseEvent;
 import org.asteriskjava.manager.event.UnparkedCallEvent;
 import org.asteriskjava.manager.event.VarSetEvent;
 import org.asteriskjava.manager.response.CommandResponse;
-import org.asteriskjava.manager.response.GetConfigResponse;
 import org.asteriskjava.manager.response.MailboxCountResponse;
 import org.asteriskjava.manager.response.ManagerError;
 import org.asteriskjava.manager.response.ManagerResponse;
@@ -108,7 +105,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -879,45 +875,7 @@ public class AsteriskServerImpl implements AsteriskServer, ManagerEventListener
         }
     }
 
-    @Override
-    public ConfigFile getConfig(String filename) throws ManagerCommunicationException
-    {
-        final ManagerResponse response;
-        final GetConfigResponse getConfigResponse;
-
-        initializeIfNeeded();
-        response = sendAction(new GetConfigAction(filename));
-        if (!(response instanceof GetConfigResponse))
-        {
-            throw new ManagerCommunicationException(
-                    "Response to GetConfigAction(\"" + filename + "\") was not a CommandResponse but " + response, null);
-        }
-
-        getConfigResponse = (GetConfigResponse) response;
-
-        final Map<Integer, String> categoryMap = getConfigResponse.getCategories();
-        final Map<String, List<String>> categories = new LinkedHashMap<>();
-        for (Map.Entry<Integer, String> categoryEntry : categoryMap.entrySet())
-        {
-            final List<String> lines;
-            final Map<Integer, String> lineMap = getConfigResponse.getLines(categoryEntry.getKey());
-
-            if (lineMap == null)
-            {
-                lines = new ArrayList<>();
-            }
-            else
-            {
-                lines = new ArrayList<>(lineMap.values());
-            }
-
-            categories.put(categoryEntry.getValue(), lines);
-        }
-
-        return new ConfigFileImpl(filename, categories);
-    }
-
-    @Override
+	@Override
     public void addAsteriskServerListener(AsteriskServerListener listener) throws ManagerCommunicationException
     {
         initializeIfNeeded();

@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerEventListener;
 import org.asteriskjava.manager.action.OriginateAction;
@@ -461,15 +460,6 @@ public interface AsteriskServer
      * @since 1.0.0
      */
     void reloadAllModules() throws ManagerCommunicationException;
-
-    /**
-     * Reads the given Asterisk configuration file.
-     *
-     * @param filename the filename, for example "voicemail.conf".
-     * @return the configuration file.
-     * @throws ManagerCommunicationException if the command can't be executed.
-     */
-    ConfigFile getConfig(String filename) throws ManagerCommunicationException;
 
     /**
      * Adds a listener to this AsteriskServer.<br>

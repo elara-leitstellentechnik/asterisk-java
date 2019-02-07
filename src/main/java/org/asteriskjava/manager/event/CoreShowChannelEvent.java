@@ -40,10 +40,9 @@ public class CoreShowChannelEvent extends ResponseEvent
     private String duration;
     private String accountcode;
     private String bridgedChannel;
-    private String bridgeid;
+    private String bridgeduniqueid;
     private String linkedid;
     private String language;
-
 
     public CoreShowChannelEvent(Object source)
     {
@@ -125,28 +124,28 @@ public class CoreShowChannelEvent extends ResponseEvent
     @Deprecated
     public String getBridgeduniqueid()
     {
-        return bridgeid;
+        return bridgeduniqueid;
     }
 
     @Deprecated
     public void setBridgeduniqueid(String bridgeduniqueid)
     {
-        this.bridgeid = bridgeduniqueid;
+        this.bridgeduniqueid = bridgeduniqueid;
     }
 
     /**
-     * Returns the Bridged UniqueID Case params name return "bridgeid"
+     * Returns the Bridged UniqueID
      *
      * @return uniqueid
      */
     public String getBridgeid()
     {
-        return bridgeid;
+        return bridgeduniqueid;
     }
 
-    public void setBridgeid(String bridgeid)
+    public void setBridgeid(String bridgeduniqueid)
     {
-        this.bridgeid = bridgeid;
+        this.bridgeduniqueid = bridgeduniqueid;
     }
 
     /**

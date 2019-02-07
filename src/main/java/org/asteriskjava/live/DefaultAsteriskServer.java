@@ -16,7 +16,6 @@
  */
 package org.asteriskjava.live;
 
-import org.asteriskjava.config.ConfigFile;
 import org.asteriskjava.live.internal.AsteriskServerImpl;
 import org.asteriskjava.manager.DefaultManagerConnection;
 import org.asteriskjava.manager.ManagerConnection;
@@ -282,14 +281,8 @@ public class DefaultAsteriskServer implements AsteriskServer
         return this.impl.isModuleLoaded(module);
     }
 
-    @Override
-    public ConfigFile getConfig(String filename) throws ManagerCommunicationException
-    {
-        return this.impl.getConfig(filename);
-    }
-
-    @Override
-    public void reloadAllModules() throws ManagerCommunicationException
+	@Override
+	public void reloadAllModules() throws ManagerCommunicationException
     {
         this.impl.reloadAllModules();
     }
