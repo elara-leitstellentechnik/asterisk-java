@@ -1,12 +1,11 @@
 package org.asteriskjava.manager.internal;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.asteriskjava.manager.event.UserEvent;
 import org.asteriskjava.util.AstUtil;
 import org.asteriskjava.util.Log;
 import org.asteriskjava.util.LogFactory;
 import org.asteriskjava.util.ReflectionUtil;
-
-import javafx.util.Pair;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -79,7 +78,7 @@ abstract class AbstractBuilder
 
 	        // it seems silly to warn if it's a user event -- maybe it was
             // intentional
-            if (setter == null && !(target instanceof UserEvent) && warns.add(new Pair<>(target.getClass().getName(), entry.getKey())))
+            if (setter == null && !(target instanceof UserEvent) && warns.add(Pair.of(target.getClass().getName(), entry.getKey())))
             {
                 logger.warn("Unable to set property '" + entry.getKey() + "' to '" + entry.getValue() + "' on "
                         + target.getClass().getName()
