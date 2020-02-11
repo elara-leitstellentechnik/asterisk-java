@@ -11,27 +11,9 @@ public abstract class AbstractConfbridgeEvent extends AbstractChannelEvent
     private String bridgeCreator;
     private String conference;
 
-    String admin;
-
     public AbstractConfbridgeEvent(Object source)
     {
         super(source);
-    }
-
-    /**
-     * @return the admin
-     */
-    public String getAdmin()
-    {
-        return admin;
-    }
-
-    /**
-     * @param admin the admin to set
-     */
-    public void setAdmin(String admin)
-    {
-        this.admin = admin;
     }
 
     /**
@@ -149,5 +131,5 @@ public abstract class AbstractConfbridgeEvent extends AbstractChannelEvent
     {
         return conference;
     }
-    
+
 }

@@ -12,11 +12,45 @@ public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent
      * Serializable version identifier
      */
     private static final long serialVersionUID = 1L;
-    
-    public ConfbridgeJoinEvent(Object source)
+
+    private Boolean admin;
+    private Boolean muted;
+
+	public ConfbridgeJoinEvent(Object source)
     {
         super(source);
     }
 
-    
+	/**
+	 * @return the admin
+	 */
+	public Boolean getAdmin()
+	{
+		return admin;
+	}
+
+	/**
+	 * @param admin the admin to set
+	 */
+	public void setAdmin(Boolean admin)
+	{
+		this.admin = admin;
+	}
+
+	/**
+	 * @return the muted
+	 */
+	public Boolean getMuted()
+	{
+		return muted;
+	}
+
+	/**
+	 * @param muted the muted to set
+	 */
+	public void setMuted(Boolean muted)
+	{
+		this.muted = muted;
+	}
+
 }
