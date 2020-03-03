@@ -84,6 +84,19 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
     private String    transfereeExten;
     private String    transfereePriority;
     private String    transfereeUniqueid;
+    private String    transferTargetChannel;
+    private String    transferTargetChannelState;
+    private String    transferTargetChannelStateDesc;
+    private String    transferTargetCallerIDNum;
+    private String    transferTargetCallerIDName;
+    private String    transferTargetConnectedLineNum;
+    private String    transferTargetConnectedLineName;
+    private String    transferTargetLanguage;
+    private String    transferTargetAccountCode;
+    private String    transferTargetContext;
+    private String    transferTargetExten;
+    private String    transferTargetPriority;
+    private String    transferTargetUniqueid;
 
     private String  transfereeLinkedId;
     private String  transfereeLanguage;
@@ -93,7 +106,7 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
     private String  result;
     private String  secondTransfererLinkedId;
     private String  origTransfererLanguage;
-    
+
     public AttendedTransferEvent(Object source)
     {
         super(source);
@@ -877,6 +890,136 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
         this.transfereeLanguage = transfereeLanguage;
     }
 
+    public String getTransferTargetChannel()
+    {
+        return transferTargetChannel;
+    }
+
+    public void setTransferTargetChannel(String transferTargetChannel)
+    {
+        this.transferTargetChannel = transferTargetChannel;
+    }
+
+    public String getTransferTargetChannelState()
+    {
+        return transferTargetChannelState;
+    }
+
+    public void setTransferTargetChannelState(String transferTargetChannelState)
+    {
+        this.transferTargetChannelState = transferTargetChannelState;
+    }
+
+    public String getTransferTargetChannelStateDesc()
+    {
+        return transferTargetChannelStateDesc;
+    }
+
+    public void setTransferTargetChannelStateDesc(String transferTargetChannelStateDesc)
+    {
+        this.transferTargetChannelStateDesc = transferTargetChannelStateDesc;
+    }
+
+    public String getTransferTargetCallerIDNum()
+    {
+        return transferTargetCallerIDNum;
+    }
+
+    public void setTransferTargetCallerIDNum(String transferTargetCallerIDNum)
+    {
+        this.transferTargetCallerIDNum = transferTargetCallerIDNum;
+    }
+
+    public String getTransferTargetCallerIDName()
+    {
+        return transferTargetCallerIDName;
+    }
+
+    public void setTransferTargetCallerIDName(String transferTargetCallerIDName)
+    {
+        this.transferTargetCallerIDName = transferTargetCallerIDName;
+    }
+
+    public String getTransferTargetConnectedLineNum()
+    {
+        return transferTargetConnectedLineNum;
+    }
+
+    public void setTransferTargetConnectedLineNum(String transferTargetConnectedLineNum)
+    {
+        this.transferTargetConnectedLineNum = transferTargetConnectedLineNum;
+    }
+
+    public String getTransferTargetConnectedLineName()
+    {
+        return transferTargetConnectedLineName;
+    }
+
+    public void setTransferTargetConnectedLineName(String transferTargetConnectedLineName)
+    {
+        this.transferTargetConnectedLineName = transferTargetConnectedLineName;
+    }
+
+    public String getTransferTargetAccountCode()
+    {
+        return transferTargetAccountCode;
+    }
+
+    public void setTransferTargetAccountCode(String transferTargetAccountCode)
+    {
+        this.transferTargetAccountCode = transferTargetAccountCode;
+    }
+
+    public String getTransferTargetContext()
+    {
+        return transferTargetContext;
+    }
+
+    public void setTransferTargetContext(String transferTargetContext)
+    {
+        this.transferTargetContext = transferTargetContext;
+    }
+
+    public String getTransferTargetExten()
+    {
+        return transferTargetExten;
+    }
+
+    public void setTransferTargetExten(String transferTargetExten)
+    {
+        this.transferTargetExten = transferTargetExten;
+    }
+
+    public String getTransferTargetPriority()
+    {
+        return transferTargetPriority;
+    }
+
+    public void setTransferTargetPriority(String transferTargetPriority)
+    {
+        this.transferTargetPriority = transferTargetPriority;
+    }
+
+    public String getTransferTargetUniqueid()
+    {
+        return transferTargetUniqueid;
+    }
+
+    public void setTransferTargetUniqueid(String transferTargetUniqueid)
+    {
+        this.transferTargetUniqueid = transferTargetUniqueid;
+    }
+
+    public String getTransferTargetLanguage()
+    {
+        return transferTargetLanguage;
+    }
+
+    public void setTransferTargetLanguage(String transferTargetLanguage)
+    {
+        this.transferTargetLanguage = transferTargetLanguage;
+    }
+
     public String getOrigTransfererLinkedId()
     {
         return origTransfererLinkedId;
@@ -936,5 +1079,5 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
     {
         this.origTransfererLanguage = origTransfererLanguage;
     }
-    
+
 }
