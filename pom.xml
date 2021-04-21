@@ -95,7 +95,7 @@
 	</mailingLists>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<maven.server.url>http://elara-nexus3/repository/asgard</maven.server.url>
+	    <maven.server.url>https://elara-nexus3.elara-gmbh.de/repository/asgard</maven.server.url>
         <git.server.url>ssh://git@elara-gitlab:8022/internal/asterisk-java.git</git.server.url>
     </properties>
 	<build>
