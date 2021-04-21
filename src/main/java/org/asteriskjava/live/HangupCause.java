@@ -121,11 +121,12 @@ public enum HangupCause
     {
         if (causes == null)
         {
-            causes = new HashMap<>();
+            Map<Integer, HangupCause> causes = new HashMap<>();
             for (HangupCause cause : values())
             {
                 causes.put(cause.code, cause);
             }
+            HangupCause.causes = causes;
         }
 
         return causes.get(code);
