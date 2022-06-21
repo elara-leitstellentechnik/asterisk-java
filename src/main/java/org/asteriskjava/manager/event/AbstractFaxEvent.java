@@ -19,36 +19,17 @@ package org.asteriskjava.manager.event;
 /**
  * An AbstractFaxEvent is a base class for fax related events
  */
-public class AbstractFaxEvent extends ManagerEvent
+public class AbstractFaxEvent extends AbstractChannelEvent
 {
     /**
      * Serial version identifier.
      */
     private static final long serialVersionUID = -1L;
-    private String channel;
     private Integer faxSession;
 
     public AbstractFaxEvent(Object source)
     {
         super(source);
-    }
-
-
-    /**
-     * @return the channel
-     */
-    public String getChannel()
-    {
-        return channel;
-    }
-
-
-    /**
-     * @param channel the channel to set
-     */
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
     }
 
 

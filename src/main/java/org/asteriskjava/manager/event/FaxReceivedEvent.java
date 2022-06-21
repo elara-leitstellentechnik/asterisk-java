@@ -24,7 +24,7 @@ package org.asteriskjava.manager.event;
  * See http://soft-switch.org/installing-spandsp.html for details.
  * <p>
  * Implemented in <code>apps/app_rxfax.c</code>.
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -36,7 +36,6 @@ public class FaxReceivedEvent extends AbstractFaxEvent
      */
     private static final long serialVersionUID = 1L;
 
-    private String callerId;
     private String remoteStationId;
     private String localStationId;
     private Integer pagesTransferred;
@@ -50,29 +49,8 @@ public class FaxReceivedEvent extends AbstractFaxEvent
     }
 
     /**
-     * Returns the Caller*ID of the calling party or an empty string if none is
-     * available.
-     * 
-     * @return the Caller*ID of the calling party.
-     */
-    public String getCallerId()
-    {
-        return callerId;
-    }
-
-    /**
-     * Sets the Caller*ID of the calling party.
-     * 
-     * @param callerId the Caller*ID of the calling party.
-     */
-    public void setCallerId(String callerId)
-    {
-        this.callerId = callerId;
-    }
-
-    /**
      * Retruns the identifier of the remote fax station.
-     * 
+     *
      * @return the identifier of the remote fax station.
      */
     public String getRemoteStationId()
@@ -82,7 +60,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Sets the identifier of the remote fax station.
-     * 
+     *
      * @param remoteStationId the identifier of the remote fax station.
      */
     public void setRemoteStationId(String remoteStationId)
@@ -92,7 +70,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Returns the identifier of the local fax station.
-     * 
+     *
      * @return the identifier of the local fax station.
      */
     public String getLocalStationId()
@@ -102,7 +80,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Sets the identifier of the local fax station.
-     * 
+     *
      * @param localStationId the identifier of the local fax station.
      */
     public void setLocalStationId(String localStationId)
@@ -112,7 +90,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Returns the number of pages transferred.
-     * 
+     *
      * @return the number of pages transferred.
      */
     public Integer getPagesTransferred()
@@ -122,7 +100,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Sets the number of pages transferred.
-     * 
+     *
      * @param pagesTransferred the number of pages transferred.
      */
     public void setPagesTransferred(Integer pagesTransferred)
@@ -132,7 +110,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Returns the row resolution of the received fax.
-     * 
+     *
      * @return the row resolution of the received fax.
      */
     public Integer getResolution()
@@ -142,7 +120,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Sets the row resolution of the received fax.
-     * 
+     *
      * @param resolution the row resolution of the received fax.
      */
     public void setResolution(Integer resolution)
@@ -152,7 +130,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Returns the transfer rate in bits/s.
-     * 
+     *
      * @return the transfer rate in bits/s.
      */
     public Integer getTransferRate()
@@ -162,7 +140,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Sets the transfer rate in bits/s.
-     * 
+     *
      * @param transferRate the transfer rate in bits/s.
      */
     public void setTransferRate(Integer transferRate)
@@ -173,7 +151,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
     /**
      * Returns the filename of the received fax including its full path on the
      * Asterisk server.
-     * 
+     *
      * @return the filename of the received fax
      */
     public String getFilename()
@@ -183,7 +161,7 @@ public class FaxReceivedEvent extends AbstractFaxEvent
 
     /**
      * Sets the filename of the received fax.
-     * 
+     *
      * @param filename the filename of the received fax
      */
     public void setFilename(String filename)

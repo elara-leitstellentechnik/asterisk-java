@@ -3,11 +3,9 @@ package org.asteriskjava.manager.event;
 /**
  * A ReceiveFaxEvent is an event of Digium's Fax For Asterisk add-on.
  */
-public class ReceiveFaxEvent extends ManagerEvent
+public class ReceiveFaxEvent extends AbstractFaxEvent
 {
     private static final long serialVersionUID = 0L;
-    private String channel;
-    private String callerId;
     private String remoteStationId;
     private String localStationId;
     private Integer pagesTransferred;
@@ -18,26 +16,6 @@ public class ReceiveFaxEvent extends ManagerEvent
     public ReceiveFaxEvent(Object source)
     {
         super(source);
-    }
-
-    public String getChannel()
-    {
-        return channel;
-    }
-
-    public void setChannel(String channel)
-    {
-        this.channel = channel;
-    }
-
-    public String getCallerId()
-    {
-        return callerId;
-    }
-
-    public void setCallerId(String callerId)
-    {
-        this.callerId = callerId;
     }
 
     public String getRemoteStationId()

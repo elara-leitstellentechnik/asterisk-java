@@ -26,7 +26,6 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
      */
     private static final long serialVersionUID = -1L;
     private String status;
-    private String callerId;
     private String localStationId;
     private String fileName;
 
@@ -54,23 +53,6 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
         this.status = status;
     }
 
-
-    /**
-     * @return the callerId
-     */
-    public String getCallerId()
-    {
-        return callerId;
-    }
-
-
-    /**
-     * @param callerId the callerId to set
-     */
-    public void setCallerId(String callerId)
-    {
-        this.callerId = callerId;
-    }
 
 
     /**

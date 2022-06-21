@@ -53,7 +53,6 @@ public class FaxStatusEvent extends AbstractFaxEvent
     private Integer dcnCount;
     private String remoteStationId;
     private String localStationId;
-    private String callerId;
     private String status;
     private String operation;
 
@@ -509,22 +508,6 @@ public class FaxStatusEvent extends AbstractFaxEvent
     public void setLocalStationId(String localStationId)
     {
         this.localStationId = localStationId;
-    }
-
-    /**
-     * @return the callerId
-     */
-    public String getCallerId()
-    {
-        return callerId;
-    }
-
-    /**
-     * @param callerId the callerId to set
-     */
-    public void setCallerId(String callerid)
-    {
-        this.callerId = callerid;
     }
 
     /**

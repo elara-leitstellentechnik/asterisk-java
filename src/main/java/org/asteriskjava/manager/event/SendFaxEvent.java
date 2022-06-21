@@ -25,7 +25,6 @@ public class SendFaxEvent extends AbstractFaxEvent
      * Serial version identifier.
      */
     private static final long serialVersionUID = -1L;
-    private String callerId;
     private String localStationId;
     private String remoteStationId;
     private String pagesTransferred;
@@ -37,24 +36,6 @@ public class SendFaxEvent extends AbstractFaxEvent
     public SendFaxEvent(Object source)
     {
         super(source);
-    }
-
-
-    /**
-     * @return the callerId
-     */
-    public String getCallerId()
-    {
-        return callerId;
-    }
-
-
-    /**
-     * @param callerId the callerId to set
-     */
-    public void setCallerId(String callerId)
-    {
-        this.callerId = callerId;
     }
 
 
