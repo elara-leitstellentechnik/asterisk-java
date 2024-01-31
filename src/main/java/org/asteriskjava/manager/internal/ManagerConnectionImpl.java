@@ -1301,7 +1301,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 		        	{
 			        // when we receive a DisconnectEvent while not connected we
 			        // ignore it and do not send it to clients
+/*
 			        return;
+*/
 		        }
 	        }
         }
