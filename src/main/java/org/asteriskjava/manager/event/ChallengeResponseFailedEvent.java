@@ -18,11 +18,7 @@ public class ChallengeResponseFailedEvent extends ManagerEvent
     private String remoteaddress;
     private String localaddress;
 
-    /**
-     * @param source
-     */
-	public ChallengeResponseFailedEvent(Object source) {
-		super(source);
+	public ChallengeResponseFailedEvent() {
 	}
 
     public String getSeverity()
@@ -42,8 +38,8 @@ public class ChallengeResponseFailedEvent extends ManagerEvent
     {
         this.eventversion = eventversion;
     }
-   
-    
+
+
     public String getService()
     {
         return service;

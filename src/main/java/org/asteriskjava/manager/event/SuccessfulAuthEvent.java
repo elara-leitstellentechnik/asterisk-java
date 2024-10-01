@@ -6,7 +6,7 @@ package org.asteriskjava.manager.event;
 public class SuccessfulAuthEvent extends ManagerEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String severity;
@@ -20,9 +20,9 @@ public class SuccessfulAuthEvent extends ManagerEvent
 	private String localAddress;
 	private String sessionId;
 
-	public SuccessfulAuthEvent(Object source)
+	public SuccessfulAuthEvent()
 	{
-		super(source);
+		super();
 	}
 
 	public String getSeverity()

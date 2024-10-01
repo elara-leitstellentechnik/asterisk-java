@@ -19,10 +19,10 @@ package org.asteriskjava.manager.event;
 /**
  * A DahdiShowChannelsCompleteEvent is triggered after the state of all Dahdi channels has been reported
  * in response to a DahdiShowChannelsAction.
- * 
+ *
  * @see org.asteriskjava.manager.action.DahdiShowChannelsAction
  * @see org.asteriskjava.manager.event.DahdiShowChannelsEvent
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -44,13 +44,9 @@ public class DongleShowDevicesCompleteEvent extends ResponseEvent
     public void setItems(Integer items) {
         this.items = items;
     }
-    
-    /**
-     * @param source
-     */
-    public DongleShowDevicesCompleteEvent(Object source)
+
+    public DongleShowDevicesCompleteEvent()
     {
-        super(source);
     }
 
       /**

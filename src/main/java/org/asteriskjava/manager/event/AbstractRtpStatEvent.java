@@ -31,9 +31,8 @@ public abstract class AbstractRtpStatEvent extends ManagerEvent
     private Long lostPackets;
     private Double jitter;
 
-    public AbstractRtpStatEvent(Object source)
+    public AbstractRtpStatEvent()
     {
-        super(source);
     }
 
     /**

@@ -10,12 +10,8 @@ public class ConfbridgeListCompleteEvent extends ResponseEvent
     private String eventList;
     private String listItems;
 
-    /**
-     * @param source
-     */
-    public ConfbridgeListCompleteEvent(Object source)
+    public ConfbridgeListCompleteEvent()
     {
-        super(source);
     }
 
     /**

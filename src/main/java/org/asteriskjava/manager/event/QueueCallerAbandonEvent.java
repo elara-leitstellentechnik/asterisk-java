@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_queue.c</code>
  * <p>
  * Available since Asterisk 1.4.
- * 
+ *
  * @author martins
  */
 public class QueueCallerAbandonEvent extends QueueEvent
@@ -38,15 +38,11 @@ public class QueueCallerAbandonEvent extends QueueEvent
     private Integer holdTime;
     private String linkedId;
     private String language;
-    
+
     private String accountcode;
-    
-    /**
-     * @param source
-     */
-    public QueueCallerAbandonEvent(Object source)
+
+    public QueueCallerAbandonEvent()
     {
-        super(source);
     }
 
     /**

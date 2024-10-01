@@ -38,12 +38,9 @@ public class QueueMemberPenaltyEvent extends ManagerEvent
 
     /**
      * Creates a new instance.
-     *
-     * @param source
      */
-    public QueueMemberPenaltyEvent(Object source)
+    public QueueMemberPenaltyEvent()
     {
-        super(source);
     }
 
     /**

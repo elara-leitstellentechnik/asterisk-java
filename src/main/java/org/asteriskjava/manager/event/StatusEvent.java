@@ -58,9 +58,8 @@ public class StatusEvent extends ResponseEvent
     private String connectedlinename;
     private String connectedlinenum;
 
-    public StatusEvent(Object source)
+    public StatusEvent()
     {
-        super(source);
     }
 
     /**

@@ -6,9 +6,8 @@ public class DongleStatusEvent extends ManagerEvent
   private String device;
   private String status;
 
-  public DongleStatusEvent(Object source)
+  public DongleStatusEvent()
   {
-    super(source);
   }
 
   public String getDevice() {
@@ -27,6 +26,6 @@ public class DongleStatusEvent extends ManagerEvent
         this.status = status;
     }
 
-  
+
 
 }

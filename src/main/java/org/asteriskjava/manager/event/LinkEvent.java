@@ -36,9 +36,8 @@ package org.asteriskjava.manager.event;
      */
     static final long serialVersionUID = -4023240534975776225L;
 
-    public LinkEvent(Object source)
+    public LinkEvent()
     {
-        super(source);
         setBridgeState(BRIDGE_STATE_LINK);
     }
 }

@@ -13,9 +13,8 @@ public class ReceiveFaxEvent extends AbstractFaxEvent
     private Integer transferRate;
     private String fileName;
 
-    public ReceiveFaxEvent(Object source)
+    public ReceiveFaxEvent()
     {
-        super(source);
     }
 
     public String getRemoteStationId()

@@ -3,7 +3,7 @@ package org.asteriskjava.manager.event;
 public class DeviceStateChangeEvent extends ManagerEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String state;
@@ -29,8 +29,8 @@ public class DeviceStateChangeEvent extends ManagerEvent
 		this.device = device;
 	}
 
-	public DeviceStateChangeEvent(Object source)
+	public DeviceStateChangeEvent()
 	{
-		super(source);
+		super();
 	}
 }

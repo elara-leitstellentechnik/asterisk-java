@@ -51,9 +51,8 @@ public abstract class AbstractParkedCallEvent extends ResponseEvent
     private Long parkingTimeout;
     private Long parkingDuration;
 
-    protected AbstractParkedCallEvent(Object source)
+    protected AbstractParkedCallEvent()
     {
-        super(source);
     }
 
     /**

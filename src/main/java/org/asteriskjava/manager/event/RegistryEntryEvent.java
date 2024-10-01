@@ -28,7 +28,7 @@ package org.asteriskjava.manager.event;
 public class RegistryEntryEvent extends ResponseEvent
 {
     /**
-    * 
+    *
     */
    private static final long serialVersionUID = -7158046719541054868L;
    private Integer port;
@@ -40,12 +40,9 @@ public class RegistryEntryEvent extends ResponseEvent
 
     /**
      * Creates a new instance.
-     *
-     * @param source
      */
-    public RegistryEntryEvent(Object source)
+    public RegistryEntryEvent()
     {
-        super(source);
     }
 
     /**

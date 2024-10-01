@@ -65,12 +65,9 @@ public class PeerEntryEvent extends ResponseEvent
 
     /**
      * Creates a new instance.
-     *
-     * @param source
      */
-    public PeerEntryEvent(Object source)
+    public PeerEntryEvent()
     {
-        super(source);
     }
 
     /**

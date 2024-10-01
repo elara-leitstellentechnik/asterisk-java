@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>res/res_features.c</code>
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -35,11 +35,7 @@ public class ParkedCallGiveUpEvent extends AbstractUnParkedEvent
      */
     private static final long serialVersionUID = -7437833328723536814L;
 
-    /**
-     * @param source
-     */
-    public ParkedCallGiveUpEvent(Object source)
+    public ParkedCallGiveUpEvent()
     {
-        super(source);
     }
 }

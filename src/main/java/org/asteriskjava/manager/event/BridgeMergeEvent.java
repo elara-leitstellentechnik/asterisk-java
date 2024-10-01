@@ -5,22 +5,21 @@ public class BridgeMergeEvent extends ManagerEvent
 
     private static final long serialVersionUID = 1L;
 
-    public BridgeMergeEvent(Object source)
+    public BridgeMergeEvent()
     {
-        super(source);
     }
-    
-    private Integer fromBridgeNumChannels; 
-    private Integer toBridgeNumChannels; 
-    private String fromBridgeName; 
+
+    private Integer fromBridgeNumChannels;
+    private Integer toBridgeNumChannels;
+    private String fromBridgeName;
     private String fromBridgeUniqueId;
-    private String fromBridgeCreator; 
-    private String toBridgeName; 
-    private String fromBridgeTechnology; 
-    private String toBridgeUniqueId; 
-    private String toBridgeTechnology; 
-    private String fromBridgeType; 
-    private String toBridgeType; 
+    private String fromBridgeCreator;
+    private String toBridgeName;
+    private String fromBridgeTechnology;
+    private String toBridgeUniqueId;
+    private String toBridgeTechnology;
+    private String fromBridgeType;
+    private String toBridgeType;
     private String toBridgeCreator;
 
     public Integer getFromBridgeNumChannels()
@@ -119,6 +118,6 @@ public class BridgeMergeEvent extends ManagerEvent
     {
         this.toBridgeCreator = toBridgeCreator;
     }
-    
-    
+
+
 }

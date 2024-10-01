@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A DisconnectEvent is triggered when the connection to the asterisk server is lost.<p>
  * It is a pseudo event not directly related to an Asterisk generated event.
- * 
+ *
  * @author srt
  * @version $Id$
  * @see org.asteriskjava.manager.event.ConnectEvent
@@ -31,11 +31,8 @@ public class DisconnectEvent extends ManagerEvent
      */
     private static final long serialVersionUID = 3689355411862206518L;
 
-    /**
-     * @param source
-     */
-    public DisconnectEvent(Object source)
+    public DisconnectEvent()
     {
-        super(source);
+        super();
     }
 }

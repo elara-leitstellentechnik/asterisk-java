@@ -22,7 +22,7 @@ import org.asteriskjava.manager.event.ManagerEvent;
 
 /**
  * Transforms maps of attributes to instances of ManagerEvent.
- * 
+ *
  * @see org.asteriskjava.manager.event.ManagerEvent
  * @author srt
  * @version $Id$
@@ -38,7 +38,7 @@ interface EventBuilder
      * <p>
      * The event class must be a concrete class with a default constructor (one
      * that takes no arguments).
-     * 
+     *
      * @param clazz the event class to register, must extend
      *            {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class
@@ -48,13 +48,12 @@ interface EventBuilder
     /**
      * Builds the event based on the given map of attributes and the registered
      * event classes.
-     * 
-     * @param source source attribute for the event
+     *
      * @param attributes map containing event attributes
      * @return a concrete instance of ManagerEvent or <code>null</code> if no
      *         event class was registered for the event type.
      */
-    ManagerEvent buildEvent(Object source, Map<String, Object> attributes);
+    ManagerEvent buildEvent(Map<String, Object> attributes);
 
     void deregisterEventClass(Class< ? extends ManagerEvent> eventClass);
 }

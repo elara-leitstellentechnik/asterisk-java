@@ -56,9 +56,8 @@ public class FaxStatusEvent extends AbstractFaxEvent
     private String status;
     private String operation;
 
-    public FaxStatusEvent(Object source)
+    public FaxStatusEvent()
     {
-        super(source);
     }
 
 

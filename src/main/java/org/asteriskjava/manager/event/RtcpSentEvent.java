@@ -59,10 +59,9 @@ public class RtcpSentEvent extends AbstractRtcpEvent
     private Integer report0iaJitter;
     private Integer report0HighestSequence;
     private String accountCode;
-    
-    public RtcpSentEvent(Object source)
+
+    public RtcpSentEvent()
     {
-        super(source);
     }
 
     /**
@@ -123,8 +122,8 @@ public class RtcpSentEvent extends AbstractRtcpEvent
             this.pt = Long.parseLong(ptString);
         }
     }
-    
-    
+
+
     /**
      * Returns the IP address the RTCP message has been sent to.
      *

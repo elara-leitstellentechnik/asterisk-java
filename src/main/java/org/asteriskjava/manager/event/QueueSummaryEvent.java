@@ -30,9 +30,8 @@ public class QueueSummaryEvent extends ResponseEvent
     private Integer talkTime;
     private Integer longestHoldTime;
 
-    public QueueSummaryEvent(Object source)
+    public QueueSummaryEvent()
     {
-        super(source);
     }
 
     /**

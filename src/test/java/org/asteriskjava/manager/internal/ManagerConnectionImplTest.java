@@ -488,7 +488,7 @@ public class ManagerConnectionImplTest
         DisconnectEvent disconnectEvent;
 
         replay(mockSocket);
-        disconnectEvent = new DisconnectEvent(this);
+        disconnectEvent = new DisconnectEvent();
 
         // fake successful login
         mc.setState(ManagerConnectionState.CONNECTED);
@@ -520,7 +520,7 @@ public class ManagerConnectionImplTest
         DisconnectEvent disconnectEvent;
 
         replay(mockSocket);
-        disconnectEvent = new DisconnectEvent(this);
+        disconnectEvent = new DisconnectEvent();
 
         // fake successful login
         mc.setState(ManagerConnectionState.CONNECTED);
@@ -555,7 +555,7 @@ public class ManagerConnectionImplTest
 
         mockSocket.close();
         replay(mockSocket);
-        disconnectEvent = new DisconnectEvent(this);
+        disconnectEvent = new DisconnectEvent();
 
         // fake successful login
         mc.setState(ManagerConnectionState.CONNECTED);
@@ -592,7 +592,7 @@ public class ManagerConnectionImplTest
         final List<Integer> list;
 
         // verify that event handlers are called in the correct order
-        event = new NewChannelEvent(this);
+        event = new NewChannelEvent();
         list = createMock(List.class);
         for (int i = 0; i < count; i++)
         {
@@ -689,7 +689,7 @@ public class ManagerConnectionImplTest
         }
 
         @Override
-        protected ManagerReader createReader(Dispatcher d, Object source)
+        protected ManagerReader createReader(Dispatcher d)
         {
             createReaderCalls++;
             return mockReader;

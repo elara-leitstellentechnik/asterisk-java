@@ -34,9 +34,8 @@ public class HangupEvent extends AbstractChannelStateEvent
     private String causeTxt;
     private String connectedlinenum;
 
-    public HangupEvent(Object source)
+    public HangupEvent()
     {
-        super(source);
     }
 
     /**

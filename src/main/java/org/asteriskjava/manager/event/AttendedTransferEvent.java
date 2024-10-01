@@ -107,9 +107,8 @@ public class AttendedTransferEvent extends AbstractBridgeEvent {
     private String  secondTransfererLinkedId;
     private String  origTransfererLanguage;
 
-    public AttendedTransferEvent(Object source)
+    public AttendedTransferEvent()
     {
-        super(source);
     }
 
     public String getOrigTransfererChannel()

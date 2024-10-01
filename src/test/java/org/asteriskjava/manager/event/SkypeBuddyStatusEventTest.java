@@ -12,7 +12,7 @@ public class SkypeBuddyStatusEventTest
     @Before
     public void setUp()
     {
-        event = new SkypeBuddyStatusEvent(this);
+        event = new SkypeBuddyStatusEvent();
         event.setBuddy("Skype/user@the.buddy");
     }
 

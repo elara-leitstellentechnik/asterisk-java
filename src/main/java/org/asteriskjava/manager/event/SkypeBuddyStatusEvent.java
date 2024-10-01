@@ -1,6 +1,6 @@
 /*
  *  Copyright 2004-2006 Stefan Reuter
- *  
+ *
  *  amended 2010 - Allan Wylie
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,9 +63,8 @@ public class SkypeBuddyStatusEvent extends ManagerEvent
     private String buddyStatus;
 
 
-    public SkypeBuddyStatusEvent(Object source)
+    public SkypeBuddyStatusEvent()
     {
-        super(source);
     }
 
     /**

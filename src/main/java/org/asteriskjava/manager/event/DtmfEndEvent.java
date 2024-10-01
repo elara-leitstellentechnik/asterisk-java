@@ -6,14 +6,13 @@ package org.asteriskjava.manager.event;
 public class DtmfEndEvent extends DtmfEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer durationMs;
 
-	public DtmfEndEvent(Object source)
+	public DtmfEndEvent()
 	{
-		super(source);
 		setBegin(false);
 		setEnd(true);
 	}

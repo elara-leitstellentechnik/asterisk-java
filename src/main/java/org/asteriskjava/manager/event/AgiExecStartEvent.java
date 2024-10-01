@@ -6,13 +6,12 @@ package org.asteriskjava.manager.event;
 public class AgiExecStartEvent extends AgiExecEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public AgiExecStartEvent(Object source)
+	public AgiExecStartEvent()
 	{
-		super(source);
 		setSubEvent(SUB_EVENT_START);
 	}
 }

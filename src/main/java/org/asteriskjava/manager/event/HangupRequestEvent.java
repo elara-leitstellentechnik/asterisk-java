@@ -30,9 +30,8 @@ public class HangupRequestEvent extends AbstractChannelEvent
 
     private Integer cause;
 
-    public HangupRequestEvent(Object source)
+    public HangupRequestEvent()
     {
-        super(source);
     }
 
     /**

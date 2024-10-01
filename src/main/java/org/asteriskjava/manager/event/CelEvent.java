@@ -41,9 +41,8 @@ public class CelEvent extends ManagerEvent
     private String extra;
     private String channel;
 
-    public CelEvent(Object source)
+    public CelEvent()
     {
-        super(source);
     }
 
     public String getEventName()

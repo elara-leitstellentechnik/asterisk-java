@@ -44,15 +44,11 @@ public class ChannelUpdateEvent extends ManagerEvent
     private String iax2CallNoRemote;
     private String iax2Peer;
 
-    /**
-     * @param source
-     */
-    public ChannelUpdateEvent(Object source)
+        public ChannelUpdateEvent()
     {
-        super(source);
     }
 
-    
+
     /**
      * Returns the type of channel, that is "IAX2" for an IAX2
      * channel or "SIP" for a SIP channel.<br>

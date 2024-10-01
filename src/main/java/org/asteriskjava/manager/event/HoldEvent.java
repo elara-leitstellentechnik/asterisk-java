@@ -40,15 +40,12 @@ public class HoldEvent extends AbstractHoldEvent
     private static final long serialVersionUID = 0L;
 
     private String musicClass;
-    
+
     /**
      * Creates a new HoldEvent.
-     *
-     * @param source
      */
-    public HoldEvent(Object source)
+    public HoldEvent()
     {
-        super(source);
         /*
          * Asterisk prior to 1.6 and after 11 uses Hold and Unhold events
          * instead of the status So we set the status to true in the Hold event
@@ -67,5 +64,5 @@ public class HoldEvent extends AbstractHoldEvent
     {
         this.musicClass = musicClass;
     }
-    
+
 }

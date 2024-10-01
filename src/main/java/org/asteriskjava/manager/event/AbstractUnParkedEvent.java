@@ -39,12 +39,8 @@ public class AbstractUnParkedEvent extends AbstractParkedCallEvent
     private String parkerPriority;
     private String parkerUniqueid;
 
-    /**
-     * @param source
-     */
-    public AbstractUnParkedEvent(Object source)
+    public AbstractUnParkedEvent()
     {
-        super(source);
     }
 
     public String getParkerChannel()

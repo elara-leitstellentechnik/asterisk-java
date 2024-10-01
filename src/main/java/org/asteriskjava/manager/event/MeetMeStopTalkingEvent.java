@@ -39,9 +39,8 @@ package org.asteriskjava.manager.event;
      */
     private static final long serialVersionUID = 1L;
 
-    public MeetMeStopTalkingEvent(Object source)
+    public MeetMeStopTalkingEvent()
     {
-        super(source);
         this.status = Boolean.FALSE;
     }
 }

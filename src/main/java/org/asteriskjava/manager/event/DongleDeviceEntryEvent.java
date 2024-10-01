@@ -4,7 +4,7 @@ public class DongleDeviceEntryEvent extends ResponseEvent
 {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String Device;
@@ -65,9 +65,8 @@ public class DongleDeviceEntryEvent extends ResponseEvent
     private String Releasing;
     private String Initializing;
 
-    public DongleDeviceEntryEvent(Object source)
+    public DongleDeviceEntryEvent()
     {
-        super(source);
     }
 
     public String getDevice()

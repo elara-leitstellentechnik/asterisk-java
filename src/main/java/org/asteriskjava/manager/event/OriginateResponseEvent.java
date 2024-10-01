@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * Response to an OriginateAction.
- * 
+ *
  * @see org.asteriskjava.manager.action.OriginateAction
  * @author srt
  * @version $Id$
@@ -36,17 +36,13 @@ public class OriginateResponseEvent extends ResponseEvent
     private String data;
     private String application;
 
-    /**
-     * @param source
-     */
-    public OriginateResponseEvent(Object source)
+    public OriginateResponseEvent()
     {
-        super(source);
     }
 
     /**
      * Returns the result of the corresponding Originate action.
-     * 
+     *
      * @return "Success" or "Failure"
      */
     public String getResponse()
@@ -56,14 +52,14 @@ public class OriginateResponseEvent extends ResponseEvent
 
     /**
      * Sets the result of the corresponding Originate action.
-     * 
+     *
      * @param response "Success" or "Failure"
      */
     public void setResponse(String response)
     {
         this.response = response;
     }
-    
+
     public boolean isSuccess()
     {
         return "Success".equalsIgnoreCase(response);
@@ -97,7 +93,7 @@ public class OriginateResponseEvent extends ResponseEvent
 
     /**
      * Returns the unique id of the originated channel.
-     * 
+     *
      * @return the unique id of the originated channel or "&lt;null&gt;" if none
      *         is available.
      */

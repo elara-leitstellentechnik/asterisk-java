@@ -36,9 +36,8 @@ public abstract class AbstractAgentEvent extends ManagerEvent
     private String memberName;
     private Map<String, String> variables;
 
-    protected AbstractAgentEvent(Object source)
+    protected AbstractAgentEvent()
     {
-        super(source);
     }
 
     /**

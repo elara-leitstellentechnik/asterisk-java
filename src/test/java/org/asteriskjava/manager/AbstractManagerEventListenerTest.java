@@ -14,7 +14,7 @@ public class AbstractManagerEventListenerTest {
         EventListener listener = new EventListener();
 
         //when
-        listener.onManagerEvent(new JoinEvent(this));
+        listener.onManagerEvent(new JoinEvent());
 
         //then
         assertTrue(listener.joinEventHandled);
@@ -26,7 +26,7 @@ public class AbstractManagerEventListenerTest {
         EventListener listener = new EventListener();
 
         //when
-        listener.onManagerEvent(new LeaveEvent(this));
+        listener.onManagerEvent(new LeaveEvent());
 
         //then
         assertTrue(listener.leaveEventHandled);

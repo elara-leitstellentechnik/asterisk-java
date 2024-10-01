@@ -248,9 +248,9 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
 
     // the following two methods can be overriden when running test cases to
     // return a mock object
-    protected ManagerReader createReader(Dispatcher dispatcher, Object source)
+    protected ManagerReader createReader(Dispatcher dispatcher)
     {
-        return new ManagerReaderImpl(dispatcher, source);
+        return new ManagerReaderImpl(dispatcher);
     }
 
     protected ManagerWriter createWriter()
@@ -448,7 +448,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         if (reader == null)
         {
-            reader = createReader(this, this);
+            reader = createReader(this);
         }
 
         reader.registerEventClass(userEventClass);
@@ -655,7 +655,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         }
 
         // generate pseudo event indicating a successful login
-        ConnectEvent connectEvent = new ConnectEvent(this);
+        ConnectEvent connectEvent = new ConnectEvent();
         connectEvent.setProtocolIdentifier(getProtocolIdentifier());
         connectEvent.setDateReceived(DateUtil.getDate());
         // TODO could this cause a deadlock?
@@ -749,7 +749,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
         if (reader == null)
         {
             logger.debug("Creating reader for " + hostname + ":" + port);
-            reader = createReader(this, this);
+            reader = createReader(this);
         }
 
         if (writer == null)
@@ -1652,7 +1652,7 @@ public class ManagerConnectionImpl implements ManagerConnection, Dispatcher
     {
         if (reader == null)
         {
-            reader = createReader(this, this);
+            reader = createReader(this);
         }
 
         reader.deregisterEventClass(eventClass);

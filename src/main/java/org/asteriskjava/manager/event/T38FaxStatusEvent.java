@@ -40,9 +40,8 @@ public class T38FaxStatusEvent extends AbstractFaxEvent
     private Integer minimumJitterSpace;
     private Integer unrecoverablePackets;
 
-    public T38FaxStatusEvent(Object source)
+    public T38FaxStatusEvent()
     {
-        super(source);
     }
 
 

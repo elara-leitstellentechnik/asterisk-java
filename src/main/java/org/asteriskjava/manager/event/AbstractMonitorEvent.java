@@ -32,12 +32,8 @@ public abstract class AbstractMonitorEvent extends ManagerEvent
 	private String linkedId;
 	private String language;
 
-    /**
-     * @param source
-     */
-    protected AbstractMonitorEvent(Object source)
+    protected AbstractMonitorEvent()
     {
-        super(source);
     }
 
     /**

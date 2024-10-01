@@ -25,9 +25,8 @@ public class ListDialplanEvent extends ResponseEvent
     private String appData;
     private String registrar;
 
-    public ListDialplanEvent(Object source)
+    public ListDialplanEvent()
     {
-        super(source);
     }
 
     /**
@@ -121,7 +120,7 @@ public class ListDialplanEvent extends ResponseEvent
     /**
      * Returns the registrar that registered this priority.<p>
      * Typical values are "features" for the parkedcalls context, "pbx_config" for priorities
-     * defined in <code>extensions.conf</code> or "app_dial" for the 
+     * defined in <code>extensions.conf</code> or "app_dial" for the
      * app_dial_gosub_virtual_context context.
      *
      * @return the registrar that registered this priority.

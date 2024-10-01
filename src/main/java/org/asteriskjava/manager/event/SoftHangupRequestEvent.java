@@ -30,9 +30,8 @@ public class SoftHangupRequestEvent extends AbstractChannelEvent
 
     private Integer cause;
 
-    public SoftHangupRequestEvent(Object source)
+    public SoftHangupRequestEvent()
     {
-        super(source);
     }
 
     /**

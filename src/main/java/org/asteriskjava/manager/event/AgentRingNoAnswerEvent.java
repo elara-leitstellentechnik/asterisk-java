@@ -46,18 +46,17 @@ public class AgentRingNoAnswerEvent extends AbstractAgentEvent
     private String destChannel;
     private String destChannelState;
     private String iface;
-    
+
     private String destAccountCode;
     private String language;
     private String destLanguage;
     private String linkedId;
     private String destLinkedId;
-    
+
     private String accountcode;
-    
-    public AgentRingNoAnswerEvent(Object source)
+
+    public AgentRingNoAnswerEvent()
     {
-        super(source);
     }
 
     /**
@@ -326,6 +325,6 @@ public class AgentRingNoAnswerEvent extends AbstractAgentEvent
 	{
 		this.accountcode = accountcode;
 	}
-    
-    
+
+
 }

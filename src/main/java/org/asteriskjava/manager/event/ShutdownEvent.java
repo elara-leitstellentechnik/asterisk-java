@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A ShutdownEvent is triggered when the asterisk server is shut down or restarted.<p>
  * It is implemented in <code>asterisk.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -33,12 +33,8 @@ public class ShutdownEvent extends ManagerEvent
     private Boolean restart = Boolean.FALSE;
     private String shutdown;
 
-    /**
-     * @param source
-     */
-    public ShutdownEvent(Object source)
+        public ShutdownEvent()
     {
-        super(source);
     }
 
     /**

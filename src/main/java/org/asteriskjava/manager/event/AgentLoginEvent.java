@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * An AgentLoginEvent is triggered when an agent is successfully logged in using AgentLogin.<p>
  * It is implemented in <code>channels/chan_agent.c</code>
- * 
+ *
  * @see org.asteriskjava.manager.event.AgentLogoffEvent
  * @author srt
  * @version $Id$
@@ -34,12 +34,8 @@ public class AgentLoginEvent extends ManagerEvent
     private String channel;
     private String uniqueId;
 
-    /**
-     * @param source
-     */
-    public AgentLoginEvent(Object source)
+        public AgentLoginEvent()
     {
-        super(source);
     }
 
     /**
@@ -60,7 +56,7 @@ public class AgentLoginEvent extends ManagerEvent
 
     /**
      * Returns the name of the channel associated with the logged in agent.
-     * 
+     *
      * @deprecated use {@link #getChannel()} instead.
      */
     @Deprecated public String getLoginChan()
@@ -70,7 +66,7 @@ public class AgentLoginEvent extends ManagerEvent
 
     /**
      * Returns the name of the channel associated with the logged in agent.
-     * 
+     *
      * @return the name of the channel associated with the logged in agent.
      * @since 0.3
      */
@@ -81,7 +77,7 @@ public class AgentLoginEvent extends ManagerEvent
 
     /**
      * Sets the name of the channel associated with the logged in agent.
-     * 
+     *
      * @param channel the name of the channel associated with the logged in agent.
      * @since 0.3
      */
@@ -92,7 +88,7 @@ public class AgentLoginEvent extends ManagerEvent
 
     /**
      * Returns the unique id of the channel associated with the logged in agent.
-     * 
+     *
      * @return the unique id of the channel associated with the logged in agent.
      */
     public String getUniqueId()
@@ -102,7 +98,7 @@ public class AgentLoginEvent extends ManagerEvent
 
     /**
      * Sets the unique id of the channel associated with the logged in agent.
-     * 
+     *
      * @param uniqueId the unique id of the channel associated with the logged in agent.
      */
     public void setUniqueId(String uniqueId)

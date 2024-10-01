@@ -30,9 +30,8 @@ public class SendFaxStatusEvent extends AbstractFaxEvent
     private String fileName;
 
 
-    public SendFaxStatusEvent(Object source)
+    public SendFaxStatusEvent()
     {
-        super(source);
     }
 
 

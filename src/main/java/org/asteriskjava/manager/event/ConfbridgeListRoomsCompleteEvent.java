@@ -10,9 +10,8 @@ public class ConfbridgeListRoomsCompleteEvent extends ResponseEvent
     private String eventList;
     private String listItems;
 
-    public ConfbridgeListRoomsCompleteEvent(Object source)
+    public ConfbridgeListRoomsCompleteEvent()
     {
-        super(source);
     }
 
     /**

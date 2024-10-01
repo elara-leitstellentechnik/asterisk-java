@@ -18,9 +18,8 @@ public class ConfbridgeListEvent extends ResponseEvent
     private Boolean markedUser;
     private String channel;
 
-    public ConfbridgeListEvent(Object source)
+    public ConfbridgeListEvent()
     {
-        super(source);
     }
 
     /**
@@ -41,7 +40,7 @@ public class ConfbridgeListEvent extends ResponseEvent
     public String getConference()
     {
         return conference;
-    }   
+    }
 
     /**
      * Sets the role of the caller in the list admin = yes or no of the conference.

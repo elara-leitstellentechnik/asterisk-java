@@ -32,8 +32,7 @@ public class SkypeLicenseListCompleteEvent extends ResponseEvent
      */
     private static final long serialVersionUID = 1L;
 
-    public SkypeLicenseListCompleteEvent(Object source)
+    public SkypeLicenseListCompleteEvent()
     {
-        super(source);
     }
 }

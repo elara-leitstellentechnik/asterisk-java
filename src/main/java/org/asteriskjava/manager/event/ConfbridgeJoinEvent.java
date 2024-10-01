@@ -16,9 +16,8 @@ public class ConfbridgeJoinEvent extends AbstractConfbridgeEvent
     private Boolean admin;
     private Boolean muted;
 
-	public ConfbridgeJoinEvent(Object source)
+	public ConfbridgeJoinEvent()
     {
-        super(source);
     }
 
 	/**

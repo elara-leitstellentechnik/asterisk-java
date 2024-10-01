@@ -69,7 +69,7 @@ public class OriginateCauseTest extends AsteriskServerTestCase
                 {
                     public void propertyChange(PropertyChangeEvent evt)
                     {
-                        System.err.println("PropertyChange (" + ((AsteriskChannel) evt.getSource()).getName() + ") " + evt.getPropertyName() + ": " + evt.getOldValue() + " => " + evt.getNewValue());
+                        System.err.println("PropertyChange " + evt.getPropertyName() + ": " + evt.getOldValue() + " => " + evt.getNewValue());
                     }
                 });
                 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);

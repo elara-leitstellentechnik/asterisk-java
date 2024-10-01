@@ -57,9 +57,8 @@ public class LocalOptimizationEndEvent extends ManagerEvent
     private String localTwoUniqueid;
     private String localTwoLinkedid;
 
-    public LocalOptimizationEndEvent(Object source)
+    public LocalOptimizationEndEvent()
     {
-        super(source);
     }
 
     public Integer getId()

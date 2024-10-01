@@ -19,10 +19,10 @@ package org.asteriskjava.manager.event;
 import org.asteriskjava.util.AstState;
 import org.asteriskjava.util.ReflectionUtil;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
 
@@ -37,12 +37,12 @@ import java.util.Map;
  * @author srt
  * @version $Id$
  */
-public abstract class ManagerEvent extends EventObject
+public abstract class ManagerEvent implements Serializable
 {
     /**
      * Serializable version identifier.
      */
-    static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
     protected String connectedLineNum;
     protected String connectedLineName;
     protected Integer priority;
@@ -178,10 +178,8 @@ public abstract class ManagerEvent extends EventObject
     private String func;
     private Integer sequenceNumber;
 
-    public ManagerEvent(Object source)
+    public ManagerEvent()
     {
-        super(source);
-
     }
 
     /**
@@ -401,7 +399,7 @@ public abstract class ManagerEvent extends EventObject
     public final String toString()
     {
         final List<String> ignoredProperties = Arrays.asList("file", "func", "line", "sequenceNumber", "datereceived",
-                "privilege", "source", "class");
+                "privilege", "class");
         final StringBuilder sb = new StringBuilder(getClass().getName() + "[");
         appendPropertyIfNotNull(sb, "file", getFile());
         appendPropertyIfNotNull(sb, "func", getFunc());

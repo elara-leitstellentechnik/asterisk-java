@@ -90,9 +90,8 @@ public class DialEvent extends ManagerEvent
     private String dialString;
     private String dialStatus;
 
-    public DialEvent(Object source)
+    public DialEvent()
     {
-        super(source);
     }
 
     /**
@@ -148,7 +147,7 @@ public class DialEvent extends ManagerEvent
      * @deprecated as of 1.0.0, use {@link #getChannel()} instead.
      */
     @Deprecated
-    public String getSrc()
+    public String getSource()
     {
         return channel;
     }
@@ -159,11 +158,11 @@ public class DialEvent extends ManagerEvent
      * Asterisk versions up to 1.4 use the "Source" property instead of
      * "Channel".
      *
-     * @param src the name of the source channel.
+     * @param source the name of the source channel.
      */
-    public void setSrc(String src)
+    public void setSource(String source)
     {
-        this.channel = src;
+        this.channel = source;
     }
 
     /**

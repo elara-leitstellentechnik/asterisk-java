@@ -63,15 +63,14 @@ public class LocalBridgeEvent extends ManagerEvent
     private String localOneCalleridNum;
     private String localTwoConnectedLineName;
     private String localTwoConnectedLineNum;
-    
+
     private String localTwoLinkedid;
     private String localOneLinkedid;
     private String localOneAccountCode;
     private String localTwoAccountCode;
 
-    public LocalBridgeEvent(Object source)
+    public LocalBridgeEvent()
     {
-        super(source);
     }
 
     public String getUniqueId1() {

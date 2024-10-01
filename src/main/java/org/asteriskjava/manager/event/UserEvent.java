@@ -34,29 +34,29 @@ package org.asteriskjava.manager.event;
  * methods in your new class.
  * <p>
  * Example:
- * 
+ *
  * <pre>
  * public class VIPCallEvent extends UserEvent
  * {
  *     private String firstName;
- * 
- *     public VIPCallEvent(Object source)
+ *
+ *     public VIPCallEvent()
  *     {
- *         super(source);
+ *         super();
  *     }
- * 
+ *
  *     public String getFirstName()
  *     {
  *         return firstName;
  *     }
- * 
+ *
  *     public void setFirstName(String firstName)
  *     {
  *         this.firstName = firstName;
  *     }
  * }
  * </pre>
- * 
+ *
  * To send this event use <code>UserEvent(VIPCall|firstName: Jon)</code> in your
  * dialplan. Asterisk up to 1.2 (including) does only support one property in
  * the UserEvent so something like
@@ -67,7 +67,7 @@ package org.asteriskjava.manager.event;
  * <p>
  * Note that you must register your UserEvent with the ManagerConnection you are
  * using in order to be recognized.
- * 
+ *
  * @see org.asteriskjava.manager.ManagerConnection#registerUserEventClass(Class)
  * @author srt
  * @version $Id$
@@ -91,14 +91,13 @@ public abstract class UserEvent extends ManagerEvent
 
     private String actionId;
 
-    public UserEvent(Object source)
+    public UserEvent()
     {
-        super(source);
     }
 
     /**
      * Returns the name of the channel this event occured in.
-     * 
+     *
      * @return the name of the channel this event occured in.
      */
     public String getChannel()
@@ -108,7 +107,7 @@ public abstract class UserEvent extends ManagerEvent
 
     /**
      * Sets the name of the channel this event occured in.
-     * 
+     *
      * @param channel the name of the channel this event occured in.
      */
     public void setChannel(String channel)
@@ -118,7 +117,7 @@ public abstract class UserEvent extends ManagerEvent
 
     /**
      * Returns the unqiue id of the channel this event occured in.
-     * 
+     *
      * @return the unqiue id of the channel this event occured in.
      */
     public String getUniqueId()
@@ -128,7 +127,7 @@ public abstract class UserEvent extends ManagerEvent
 
     /**
      * Sets the unqiue id of the channel this event occured in.
-     * 
+     *
      * @param uniqueId the unqiue id of the channel this event occured in.
      */
     public void setUniqueId(String uniqueId)

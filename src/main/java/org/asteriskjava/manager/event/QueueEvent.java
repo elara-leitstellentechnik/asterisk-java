@@ -18,7 +18,7 @@ package org.asteriskjava.manager.event;
 
 /**
  * Abstract base class providing common properties for JoinEvent and LeaveEvent.
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -34,12 +34,8 @@ public abstract class QueueEvent extends ManagerEvent
     private String queue;
     private Integer count;
 
-    /**
-     * @param source
-     */
-    public QueueEvent(Object source)
+    public QueueEvent()
     {
-        super(source);
     }
 
     /**
@@ -47,7 +43,7 @@ public abstract class QueueEvent extends ManagerEvent
      * This property is only available since Asterisk 1.4. Up to Asterisk 1.2
      * this method always returns <code>null</code>.<p>
      * See Asterisk issues 6458 and 7002.
-     * 
+     *
      * @return the unique id of the channel that joines or leaves the queue or
      *         <code>null</code> if not supported by your Asterisk server.
      * @since 0.3
@@ -59,7 +55,7 @@ public abstract class QueueEvent extends ManagerEvent
 
     /**
      * Sets the unique id of the channel that joines or leaves the queue.
-     * 
+     *
      * @param uniqueId the unique id of the channel that joines or leaves the queue.
      * @since 0.3
      */

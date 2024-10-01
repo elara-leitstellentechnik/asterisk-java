@@ -37,9 +37,8 @@ public class SkypeLicenseEvent extends ResponseEvent
     private Integer channels;
     private String status;
 
-    public SkypeLicenseEvent(Object source)
+    public SkypeLicenseEvent()
     {
-        super(source);
     }
 
     /**

@@ -12,7 +12,7 @@ public class NewStateEventTest
     @Before
     public void setUp()
     {
-        newStateEvent = new NewStateEvent(this);
+        newStateEvent = new NewStateEvent();
     }
 
     @Test

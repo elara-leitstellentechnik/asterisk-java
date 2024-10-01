@@ -11,9 +11,8 @@ public abstract class AbstractConfbridgeEvent extends AbstractChannelEvent
     private String bridgeCreator;
     private String conference;
 
-    public AbstractConfbridgeEvent(Object source)
+    public AbstractConfbridgeEvent()
     {
-        super(source);
     }
 
     /**

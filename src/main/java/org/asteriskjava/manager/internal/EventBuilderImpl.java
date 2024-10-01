@@ -282,7 +282,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         try
         {
-            defaultConstructor = clazz.getConstructor(Object.class);
+            defaultConstructor = clazz.getConstructor();
         }
         catch (NoSuchMethodException ex)
         {
@@ -301,7 +301,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
     @Override
     @SuppressWarnings("unchecked")
-    public ManagerEvent buildEvent(Object source, Map<String, Object> attributes)
+    public ManagerEvent buildEvent(Map<String, Object> attributes)
     {
         ManagerEvent event;
         String eventType = null;
@@ -400,7 +400,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         try
         {
-            constructor = eventClass.getConstructor(Object.class);
+            constructor = eventClass.getConstructor();
         }
         catch (NoSuchMethodException ex)
         {
@@ -410,7 +410,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 
         try
         {
-            event = (ManagerEvent) constructor.newInstance(source);
+            event = (ManagerEvent) constructor.newInstance();
         }
         catch (Exception ex)
         {
@@ -426,7 +426,7 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             // being passed around.
             for (Map<String, Object> peerAttrs : (List<Map<String, Object>>) attributes.get("peersAttributes"))
             {
-                PeerEntryEvent peerEntryEvent = new PeerEntryEvent(source);
+                PeerEntryEvent peerEntryEvent = new PeerEntryEvent();
                 setAttributes(peerEntryEvent, peerAttrs, ignoredAttributes);
                 List<PeerEntryEvent> peerEntryEvents = peersEvent.getChildEvents();
                 if (peerEntryEvents == null)

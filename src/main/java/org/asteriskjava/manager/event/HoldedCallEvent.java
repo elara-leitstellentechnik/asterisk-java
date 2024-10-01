@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A HoldedCallEvent is triggered when a channel is put on hold.<p>
  * It is implemented in <code>res/res_features.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -34,12 +34,8 @@ public class HoldedCallEvent extends ManagerEvent
     private String channel1;
     private String channel2;
 
-    /**
-     * @param source
-     */
-    public HoldedCallEvent(Object source)
+    public HoldedCallEvent()
     {
-        super(source);
     }
 
     /**

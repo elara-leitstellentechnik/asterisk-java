@@ -26,7 +26,7 @@ public class ChanSpyStartEvent extends ManagerEvent
 
     private String spyeeChannel;
     private String spyerChannel;
-    
+
     private Integer spyeeChannelState;
     private String spyeeLinkedId;
     private String spyeeUniqueId;
@@ -41,26 +41,25 @@ public class ChanSpyStartEvent extends ManagerEvent
     private String spyeeAccountCode;
     private Integer spyeePriority;
     private String spyeeCallerIdName;
-    
-    
+
+
     private String spyerUniqueId;
     private String spyerLinkedId;
     private Integer spyerChannelState;
     private Integer spyerPriority;
-    private String spyerContext;    
+    private String spyerContext;
     private String spyerLanguage;
-    private String spyerChannelStateDesc;    
+    private String spyerChannelStateDesc;
     private String spyerExten;
     private String spyerCallerIdNum;
     private String spyerConnectedLineNum;
-    private String spyerConnectedLineName;    
+    private String spyerConnectedLineName;
     private String spyerCallerIdName;
-    
-    
 
-    public ChanSpyStartEvent(Object source)
+
+
+    public ChanSpyStartEvent()
     {
-        super(source);
     }
 
 
@@ -455,9 +454,9 @@ public class ChanSpyStartEvent extends ManagerEvent
         this.spyerCallerIdName = spyerCallerIdName;
     }
 
-   
- 
-    
-    
-    
+
+
+
+
+
 }

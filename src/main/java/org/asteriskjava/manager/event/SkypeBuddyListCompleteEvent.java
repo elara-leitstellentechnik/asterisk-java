@@ -33,9 +33,8 @@ public class SkypeBuddyListCompleteEvent extends ResponseEvent
     private static final long serialVersionUID = 1L;
     private Integer listItems;
 
-    public SkypeBuddyListCompleteEvent(Object source)
+    public SkypeBuddyListCompleteEvent()
     {
-        super(source);
     }
 
     /**

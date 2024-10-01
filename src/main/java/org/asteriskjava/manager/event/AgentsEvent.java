@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * An AgentsEvent is triggered for each agent in response to an AgentsAction.
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @see org.asteriskjava.manager.action.AgentsAction
  * @author srt
  * @version $Id$
@@ -61,12 +61,8 @@ public class AgentsEvent extends ResponseEvent
     private String talkingTo;
     private String talkingToChan;
 
-    /**
-     * @param source
-     */
-    public AgentsEvent(Object source)
+    public AgentsEvent()
     {
-        super(source);
     }
 
     /**
@@ -87,7 +83,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Returns the name of this agent.
-     * 
+     *
      * @return the name of this agent
      */
     public String getName()
@@ -97,7 +93,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Sets the name of this agent.
-     * 
+     *
      * @param name the name of this agent
      */
     public void setName(String name)
@@ -119,7 +115,7 @@ public class AgentsEvent extends ResponseEvent
      * <dt>"AGENT_UNKNOWN"</dt>
      * <dd>Don't know anything about agent. Shouldn't ever get this.</dd>
      * </dl>
-     * 
+     *
      * @return the status of this agent
      * @see #AGENT_STATUS_LOGGEDOFF
      * @see #AGENT_STATUS_IDLE
@@ -133,7 +129,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Sets the status of this agent.
-     * 
+     *
      * @param status the status of this agent
      */
     public void setStatus(String status)
@@ -143,7 +139,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Returns the name of channel this agent logged in from.
-     * 
+     *
      * @return the name of the channel this agent logged in from or "n/a" if the
      *         agent is not logged in.
      */
@@ -154,7 +150,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Sets the name of channel this agent logged in from.
-     * 
+     *
      * @param loggedInChan the name of channel this agent logged in from
      */
     public void setLoggedInChan(String loggedInChan)
@@ -164,7 +160,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Returns the time (in seconds since 01/01/1970) when the agent logged in.
-     * 
+     *
      * @return the time when the agent logged in or 0 if the user is not logged
      *         in.
      */
@@ -175,7 +171,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Sets the time when the agent logged in.
-     * 
+     *
      * @param loggedInTime the time when the agent logged in
      */
     public void setLoggedInTime(Long loggedInTime)
@@ -185,7 +181,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Returns the numerical Caller*ID of the channel this agent is talking to.
-     * 
+     *
      * @return the numerical Caller*ID of the channel this agent is talking to
      *         or "n/a" if this agent is talking to nobody.
      */
@@ -196,7 +192,7 @@ public class AgentsEvent extends ResponseEvent
 
     /**
      * Sets the numerical Caller*ID of the channel this agent is talking to.
-     * 
+     *
      * @param talkingTo the numerical Caller*ID of the channel this agent is
      *            talking to
      */
@@ -208,7 +204,7 @@ public class AgentsEvent extends ResponseEvent
     /**
      * Returns the name of the channel this agent is talking to.<p>
      * Available since Asterisk 1.6.
-     * 
+     *
      * @return the name of the channel this agent is talking to.
      * @since 1.0.0
      */

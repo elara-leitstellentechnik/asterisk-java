@@ -31,7 +31,7 @@ public class RegistrationsCompleteEvent extends ResponseEvent
 {
 
     /**
-    * 
+    *
     */
    private static final long serialVersionUID = 6269829662009989518L;
    private Integer listItems;
@@ -40,9 +40,8 @@ public class RegistrationsCompleteEvent extends ResponseEvent
     /**
      * Creates a new RegistrationsCompleteEvent.
      */
-    public RegistrationsCompleteEvent(Object source)
+    public RegistrationsCompleteEvent()
     {
-        super(source);
     }
 
     /**

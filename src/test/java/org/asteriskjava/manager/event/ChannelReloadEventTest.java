@@ -13,7 +13,7 @@ public class ChannelReloadEventTest
     @Before
     public void setUp()
     {
-        this.event = new ChannelReloadEvent(this);
+        this.event = new ChannelReloadEvent();
     }
 
     @Test

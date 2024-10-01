@@ -8,7 +8,7 @@ public class DAHDIChannelEvent extends ManagerEvent
 {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String dahdichannel;
@@ -56,9 +56,8 @@ public class DAHDIChannelEvent extends ManagerEvent
         this.channel = channel;
     }
 
-    public DAHDIChannelEvent(Object source)
+    public DAHDIChannelEvent()
     {
-        super(source);
     }
 
 }

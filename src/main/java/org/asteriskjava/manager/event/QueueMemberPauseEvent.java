@@ -16,9 +16,8 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
     Integer incall;
     String pausedreason;
 
-    public QueueMemberPauseEvent(Object source)
+    public QueueMemberPauseEvent()
     {
-        super(source);
         // TODO Auto-generated constructor stub
     }
 
@@ -166,12 +165,12 @@ public class QueueMemberPauseEvent extends QueueMemberPausedEvent
         this.incall = incall;
     }
 
-    public String getPausedreason() 
+    public String getPausedreason()
     {
         return pausedreason;
     }
 
-    public void setPausedreason(String pausedreason) 
+    public void setPausedreason(String pausedreason)
     {
         this.pausedreason = pausedreason;
     }

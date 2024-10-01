@@ -9,7 +9,7 @@ public class SkypeChatMessageEventTest
     @Test
     public void testGetDecodedMessage()
     {
-        final SkypeChatMessageEvent event = new SkypeChatMessageEvent(this);
+        final SkypeChatMessageEvent event = new SkypeChatMessageEvent();
         event.setMessage("aMO2w7bDtj8=");
         assertEquals("Inocrrectly decoded message", "h\u00F6\u00F6\u00F6?", event.getDecodedMessage());
     }

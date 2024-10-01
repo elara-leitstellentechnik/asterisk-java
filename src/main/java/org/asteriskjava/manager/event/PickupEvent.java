@@ -4,14 +4,13 @@ public class PickupEvent extends ManagerEvent
 {
     private String channel;
     private String targetchannel;
-    
-	public PickupEvent(Object source) 
+
+	public PickupEvent()
 	{
-		super(source);
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

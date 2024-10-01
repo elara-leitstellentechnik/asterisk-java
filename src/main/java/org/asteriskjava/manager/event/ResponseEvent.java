@@ -31,9 +31,8 @@ public abstract class ResponseEvent extends ManagerEvent
 	private String actionId;
     private String internalActionId;
 
-    public ResponseEvent(Object source)
+    public ResponseEvent()
     {
-        super(source);
     }
 
     /**

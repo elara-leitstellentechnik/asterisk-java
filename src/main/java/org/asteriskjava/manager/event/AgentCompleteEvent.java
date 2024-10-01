@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_queue.c</code>.
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -51,7 +51,7 @@ public class AgentCompleteEvent extends AbstractAgentEvent
     private String destChannel;
     private String destChannelState;
     private String iface;
-    
+
     private String destAccountCode;
     private String language;
     private String destLanguage;
@@ -59,14 +59,13 @@ public class AgentCompleteEvent extends AbstractAgentEvent
     private String destLinkedId;
     private String accountCode;
 
-    public AgentCompleteEvent(Object source)
+    public AgentCompleteEvent()
     {
-        super(source);
     }
 
     /**
      * Returns the amount of time the caller was on hold.
-     * 
+     *
      * @return the amount of time the caller was on hold in seconds.
      */
     public Long getHoldTime()
@@ -76,7 +75,7 @@ public class AgentCompleteEvent extends AbstractAgentEvent
 
     /**
      * Sets the amount of time the caller was on hold.
-     * 
+     *
      * @param holdtime the amount of time the caller was on hold in seconds.
      */
     public void setHoldTime(Long holdtime)
@@ -86,7 +85,7 @@ public class AgentCompleteEvent extends AbstractAgentEvent
 
     /**
      * Returns the amount of time the caller talked to the agent.
-     * 
+     *
      * @return the amount of time the caller talked to the agent in seconds.
      */
     public Long getTalkTime()
@@ -96,7 +95,7 @@ public class AgentCompleteEvent extends AbstractAgentEvent
 
     /**
      * Sets the amount of time the caller talked to the agent.
-     * 
+     *
      * @param talkTime the amount of time the caller talked to the agent in
      *            seconds.
      */
@@ -107,7 +106,7 @@ public class AgentCompleteEvent extends AbstractAgentEvent
 
     /**
      * Returns if the agent or the caller terminated the call.
-     * 
+     *
      * @return "agent" if the agent terminated the call, "caller" if the caller
      *         terminated the call.
      */
@@ -118,7 +117,7 @@ public class AgentCompleteEvent extends AbstractAgentEvent
 
     /**
      * Sets if the agent or the caller terminated the call.
-     * 
+     *
      * @param reason "agent" if the agent terminated the call, "caller" if the
      *            caller terminated the call.
      */

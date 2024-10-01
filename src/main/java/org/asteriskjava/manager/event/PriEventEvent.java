@@ -16,9 +16,8 @@ public class PriEventEvent extends ManagerEvent
     private String dChannel;
     private Integer span;
 
-    public PriEventEvent(Object source)
+    public PriEventEvent()
     {
-        super(source);
     }
 
     /**

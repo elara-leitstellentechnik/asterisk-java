@@ -71,9 +71,8 @@ public class LocalOptimizationBeginEvent extends ManagerEvent
     private String sourceUniqueid;
     private String sourceLinkedid;
 
-    public LocalOptimizationBeginEvent(Object source)
+    public LocalOptimizationBeginEvent()
     {
-        super(source);
     }
 
     public Integer getId()

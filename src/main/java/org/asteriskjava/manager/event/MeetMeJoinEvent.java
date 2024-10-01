@@ -34,11 +34,7 @@ public class MeetMeJoinEvent extends AbstractMeetMeEvent
      */
     private static final long serialVersionUID = 0L;
 
-    /**
-     * @param source
-     */
-    public MeetMeJoinEvent(Object source)
+    public MeetMeJoinEvent()
     {
-        super(source);
     }
 }

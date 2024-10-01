@@ -44,9 +44,8 @@ public abstract class AbstractChannelEvent extends ManagerEvent
 	private String linkedId;
 	private String language;
 
-    protected AbstractChannelEvent(Object source)
+    protected AbstractChannelEvent()
     {
-        super(source);
     }
 
     /**

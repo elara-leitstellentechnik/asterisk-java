@@ -33,23 +33,22 @@ public class ChanSpyStopEvent extends ManagerEvent
     private String spyerLinkedId;
     private Integer spyerChannelState;
     private Integer spyerPriority;
-    private String spyerContext;    
+    private String spyerContext;
     private String spyerLanguage;
-    private String spyerChannelStateDesc;    
+    private String spyerChannelStateDesc;
     private String spyerExten;
     private String spyerCallerIdNum;
     private String spyerConnectedLineNum;
-    private String spyerConnectedLineName;    
+    private String spyerConnectedLineName;
     private String spyerCallerIdName;
     private String spyerChannel;
-    
 
-    public ChanSpyStopEvent(Object source)
+
+    public ChanSpyStopEvent()
     {
-        super(source);
     }
 
-   
+
     public String getSpyeeChannel()
     {
         return spyeechannel;
@@ -228,6 +227,6 @@ public class ChanSpyStopEvent extends ManagerEvent
         this.spyerChannel = spyerChannel;
     }
 
-    
-    
+
+
 }

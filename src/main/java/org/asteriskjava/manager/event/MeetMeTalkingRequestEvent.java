@@ -36,12 +36,8 @@ public class MeetMeTalkingRequestEvent extends AbstractMeetMeEvent
 
     private Boolean status;
 
-    /**
-     * @param source
-     */
-    public MeetMeTalkingRequestEvent(Object source)
+    public MeetMeTalkingRequestEvent()
     {
-        super(source);
     }
 
     // see http://bugs.digium.com/view.php?id=9418

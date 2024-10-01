@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>res/res_features.c</code>
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -51,12 +51,8 @@ public class UnparkedCallEvent extends AbstractUnParkedEvent
     private String RetrieverPriority;
     private String RetrieverUniqueid;
 
-    /**
-     * @param source
-     */
-    public UnparkedCallEvent(Object source)
+    public UnparkedCallEvent()
     {
-        super(source);
     }
 
     public String getRetrieverChannel()

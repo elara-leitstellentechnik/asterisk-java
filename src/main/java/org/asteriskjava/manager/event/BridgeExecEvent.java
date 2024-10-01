@@ -40,9 +40,8 @@ public class BridgeExecEvent extends ManagerEvent
     private String channel1;
     private String channel2;
 
-    public BridgeExecEvent(Object source)
+    public BridgeExecEvent()
     {
-        super(source);
     }
 
     /**

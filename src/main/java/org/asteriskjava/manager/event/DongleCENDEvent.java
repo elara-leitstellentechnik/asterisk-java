@@ -8,12 +8,11 @@ public class DongleCENDEvent extends ManagerEvent
   private String cccause;
   private String duration;
   private String callidx;
-  
-  
 
-  public DongleCENDEvent(Object source)
+
+
+  public DongleCENDEvent()
   {
-    super(source);
   }
 
   public String getDevice() {
@@ -56,8 +55,8 @@ public class DongleCENDEvent extends ManagerEvent
         this.endstatus = endstatus;
     }
 
- 
 
-  
+
+
 
 }

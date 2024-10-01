@@ -6,7 +6,7 @@ package org.asteriskjava.manager.event;
 public abstract class AbstractBridgeEvent extends ManagerEvent
 {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String bridgeUniqueId;
@@ -17,9 +17,9 @@ public abstract class AbstractBridgeEvent extends ManagerEvent
     private String bridgeTechnology;
     private String accountCode;
 
-    AbstractBridgeEvent(Object source)
+    AbstractBridgeEvent()
     {
-        super(source);
+        super();
     }
 
     public String getBridgeUniqueId()

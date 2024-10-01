@@ -21,9 +21,8 @@ public class FullyBootedEvent extends ManagerEvent
     private String lastreload;
     private Integer uptime;
 
-    public FullyBootedEvent(Object source)
+    public FullyBootedEvent()
     {
-        super(source);
     }
 
     /**

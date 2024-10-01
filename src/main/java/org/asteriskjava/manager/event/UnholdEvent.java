@@ -38,16 +38,13 @@ public class UnholdEvent extends AbstractHoldEvent
      * Serializable version identifier.
      */
     static final long serialVersionUID = 1L;
-    
-    
+
+
     /**
      * Creates a new UnholdEvent.
-     *
-     * @param source
      */
-    public UnholdEvent(Object source)
+    public UnholdEvent()
     {
-        super(source);
         setStatus(false);
     }
 }

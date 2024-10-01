@@ -65,12 +65,7 @@ public class ManagerReaderImpl implements ManagerReader
 
     private final Map<String, Class< ? extends ManagerResponse>> expectedResponseClasses;
 
-    /**
-     * The source to use when creating {@link ManagerEvent}s.
-     */
-    private final Object source;
-
-    /**
+	/**
      * The socket to use for reading from the asterisk server.
      */
     private SocketConnectionFacade socket;
@@ -95,14 +90,12 @@ public class ManagerReaderImpl implements ManagerReader
      *
      * @param dispatcher the dispatcher to use for dispatching events and
      *            responses.
-     * @param source the source to use when creating {@link ManagerEvent}s
-     */
-    public ManagerReaderImpl(final Dispatcher dispatcher, Object source)
+	 */
+    public ManagerReaderImpl(final Dispatcher dispatcher)
     {
         this.dispatcher = dispatcher;
-        this.source = source;
 
-        this.eventBuilder = new EventBuilderImpl();
+		this.eventBuilder = new EventBuilderImpl();
         this.responseBuilder = new ResponseBuilderImpl();
         this.expectedResponseClasses = new ConcurrentHashMap<>();
     }
@@ -167,7 +160,7 @@ public class ManagerReaderImpl implements ManagerReader
                         || line.startsWith("CallWeaver Call Manager/"))
                 {
                     ProtocolIdentifierReceivedEvent protocolIdentifierReceivedEvent;
-                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent(source);
+                    protocolIdentifierReceivedEvent = new ProtocolIdentifierReceivedEvent();
                     protocolIdentifierReceivedEvent.setProtocolIdentifier(line);
                     protocolIdentifierReceivedEvent.setDateReceived(DateUtil.getDate());
                     dispatcher.dispatchEvent(protocolIdentifierReceivedEvent);
@@ -222,7 +215,7 @@ public class ManagerReaderImpl implements ManagerReader
                         // TODO tracing
                         // logger.debug("attempting to build event: " +
                         // buffer.get("event"));
-                        ManagerEvent event = buildEvent(source, buffer);
+                        ManagerEvent event = buildEvent(buffer);
                         if (event != null)
                         {
                             dispatcher.dispatchEvent(event);
@@ -266,7 +259,7 @@ public class ManagerReaderImpl implements ManagerReader
         {
             this.dead = true;
             // cleans resources and reconnects if needed
-            DisconnectEvent disconnectEvent = new DisconnectEvent(source);
+            DisconnectEvent disconnectEvent = new DisconnectEvent();
             disconnectEvent.setDateReceived(DateUtil.getDate());
             dispatcher.dispatchEvent(disconnectEvent);
         }
@@ -342,11 +335,11 @@ public class ManagerReaderImpl implements ManagerReader
         return response;
     }
 
-    private ManagerEvent buildEvent(Object source, Map<String, Object> buffer)
+    private ManagerEvent buildEvent(Map<String, Object> buffer)
     {
         ManagerEvent event;
 
-        event = eventBuilder.buildEvent(source, buffer);
+        event = eventBuilder.buildEvent(buffer);
 
         if (event != null)
         {

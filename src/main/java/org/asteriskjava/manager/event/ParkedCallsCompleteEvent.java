@@ -33,12 +33,8 @@ public class ParkedCallsCompleteEvent extends ResponseEvent {
 	private Integer listitems;
 	private String eventlist;
 
-    /**
-     * @param source
-     */
-    public ParkedCallsCompleteEvent(Object source)
+    public ParkedCallsCompleteEvent()
     {
-	    super(source);
     }
 
 	/**

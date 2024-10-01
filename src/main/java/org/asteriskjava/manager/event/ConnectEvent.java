@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A ConnectEvent is triggered after successful login to the Asterisk server.<p>
  * It is a pseudo event not directly related to an Asterisk generated event.
- * 
+ *
  * @author srt
  * @version $Id$
  * @see org.asteriskjava.manager.event.DisconnectEvent
@@ -36,24 +36,20 @@ public class ConnectEvent extends ManagerEvent
      */
     private String protocolIdentifier;
 
-    /**
-     * @param source
-     */
-    public ConnectEvent(Object source)
+        public ConnectEvent()
     {
-        super(source);
     }
-    
-    public ConnectEvent(Object source, String protocolIdentifier)
+
+    public ConnectEvent(String protocolIdentifier)
     {
-        this(source);
+        this();
         this.protocolIdentifier = protocolIdentifier;
     }
 
     /**
      * Returns the version of the protocol. For example "Asterisk Call Manager/1.0" for Asterisk up to 1.4 and
      * "Asterisk Call Manager/1.1" for Asterisk 1.6.
-     * 
+     *
      * @return the version of the protocol.
      */
     public String getProtocolIdentifier()
@@ -63,7 +59,7 @@ public class ConnectEvent extends ManagerEvent
 
     /**
      * Sets the version of the protocol.
-     * 
+     *
      * @param protocolIdentifier the version of the protocol.
      */
     public void setProtocolIdentifier(String protocolIdentifier)

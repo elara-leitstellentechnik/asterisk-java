@@ -6,17 +6,16 @@ package org.asteriskjava.manager.event;
 public class BridgeLeaveEvent extends AbstractBridgeEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String uniqueId;
 	private String channel;
 	private String language;
 	private String linkedId;
-	
-	public BridgeLeaveEvent(Object source)
+
+	public BridgeLeaveEvent()
 	{
-		super(source);
 	}
 
 	public String getLanguage()
@@ -59,5 +58,5 @@ public class BridgeLeaveEvent extends AbstractBridgeEvent
         this.linkedId = linkedId;
     }
 
-  
+
 }

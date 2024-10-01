@@ -38,8 +38,7 @@ public class BridgeListItemEvent extends ResponseEvent {
 	private String bridgeTechnology;
 	private String accountCode;
 
-	public BridgeListItemEvent(Object source) {
-		super(source);
+	public BridgeListItemEvent() {
 	}
 
 	public String getBridgeUniqueId() {

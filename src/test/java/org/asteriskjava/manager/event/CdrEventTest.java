@@ -16,7 +16,7 @@ public class CdrEventTest
     @Before
     public void setUp()
     {
-        cdrEvent = new CdrEvent(this);
+        cdrEvent = new CdrEvent();
         cdrEvent.setStartTime("2006-05-19 11:54:48");
         defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT"));

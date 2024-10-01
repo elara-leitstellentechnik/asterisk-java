@@ -39,12 +39,8 @@ public class QueueCallerJoinEvent extends QueueEvent
     private String language;
     private String accountcode;
 
-    /**
-     * @param source
-     */
-    public QueueCallerJoinEvent(Object source)
+    public QueueCallerJoinEvent()
     {
-        super(source);
     }
 
     /**
@@ -64,7 +60,7 @@ public class QueueCallerJoinEvent extends QueueEvent
         this.position = position;
     }
 
- 
+
     public String getLanguage()
     {
         return language;
@@ -94,5 +90,5 @@ public class QueueCallerJoinEvent extends QueueEvent
 	{
 		this.accountcode = accountcode;
 	}
-    
+
 }

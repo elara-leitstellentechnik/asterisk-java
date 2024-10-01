@@ -35,9 +35,8 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
     private Long rrCount;
     private String accountCode;
 
-    public RtpReceiverStatEvent(Object source)
+    public RtpReceiverStatEvent()
     {
-        super(source);
     }
 
     /**
@@ -89,6 +88,6 @@ public class RtpReceiverStatEvent extends AbstractRtpStatEvent
     {
         this.accountCode = accountCode;
     }
-    
-    
+
+
 }

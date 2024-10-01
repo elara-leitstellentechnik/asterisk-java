@@ -34,9 +34,8 @@ public class RtpSenderStatEvent extends AbstractRtpStatEvent
     private Long srCount;
     private Double rtt;
 
-    public RtpSenderStatEvent(Object source)
+    public RtpSenderStatEvent()
     {
-        super(source);
     }
 
     /**

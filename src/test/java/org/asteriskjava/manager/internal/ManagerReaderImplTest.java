@@ -56,7 +56,7 @@ public class ManagerReaderImplTest
         now = new Date();
         DateUtil.overrideCurrentDate(now);
         dispatcher = new MockedDispatcher();
-        managerReader = new ManagerReaderImpl(dispatcher, this);
+        managerReader = new ManagerReaderImpl(dispatcher);
 
         socketConnectionFacade = createMock(SocketConnectionFacade.class);
     }

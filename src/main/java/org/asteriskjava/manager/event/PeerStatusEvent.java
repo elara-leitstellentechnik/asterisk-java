@@ -47,12 +47,8 @@ public class PeerStatusEvent extends ManagerEvent
     private String address;
     private Integer port;
 
-    /**
-     * @param source
-     */
-    public PeerStatusEvent(Object source)
+        public PeerStatusEvent()
     {
-        super(source);
     }
 
     /**

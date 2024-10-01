@@ -7,9 +7,8 @@ public class DongleCallStateChangeEvent extends ManagerEvent
   private String callidx;
   private String newstate;
 
-  public DongleCallStateChangeEvent(Object source)
+  public DongleCallStateChangeEvent()
   {
-    super(source);
   }
 
   public String getDevice() {
@@ -36,6 +35,6 @@ public class DongleCallStateChangeEvent extends ManagerEvent
         this.newstate = newstate;
     }
 
-  
+
 
 }

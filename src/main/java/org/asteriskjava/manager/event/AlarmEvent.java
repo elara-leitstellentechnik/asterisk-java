@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * An AlarmEvent is triggered when a Zap channel enters or changes alarm state.<p>
  * It is implemented in <code>channels/chan_zap.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -32,12 +32,8 @@ public class AlarmEvent extends ManagerEvent
     private String alarm;
     private Integer channel;
 
-    /**
-     * @param source
-     */
-    public AlarmEvent(Object source)
+        public AlarmEvent()
     {
-        super(source);
     }
 
     /**

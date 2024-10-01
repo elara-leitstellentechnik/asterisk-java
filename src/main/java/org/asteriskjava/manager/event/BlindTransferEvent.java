@@ -6,7 +6,7 @@ package org.asteriskjava.manager.event;
 public class BlindTransferEvent extends AbstractBridgeEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String transfererUniqueId;
@@ -43,10 +43,9 @@ public class BlindTransferEvent extends AbstractBridgeEvent
 	private String transfererLinkedId;
     private String transfereeLanguage;
 
-	
-	public BlindTransferEvent(Object source)
+
+	public BlindTransferEvent()
 	{
-		super(source);
 	}
 
 	public String getTransfererUniqueId()
@@ -348,6 +347,6 @@ public class BlindTransferEvent extends AbstractBridgeEvent
     {
         this.transfereeLanguage = transfereeLanguage;
     }
-	
-	
+
+
 }

@@ -38,11 +38,8 @@ public class VoicemailUserEntryCompleteEvent extends ResponseEvent
 
     /**
      * Creates a new instance.
-     *
-     * @param source
      */
-    public VoicemailUserEntryCompleteEvent(Object source)
+    public VoicemailUserEntryCompleteEvent()
     {
-        super(source);
     }
 }

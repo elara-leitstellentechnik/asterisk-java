@@ -12,7 +12,7 @@ public class RtcpReceivedEventTest
     @Before
     public void setUp()
     {
-        rtcpReceivedEvent = new RtcpReceivedEvent(this);
+        rtcpReceivedEvent = new RtcpReceivedEvent();
     }
 
     @Test

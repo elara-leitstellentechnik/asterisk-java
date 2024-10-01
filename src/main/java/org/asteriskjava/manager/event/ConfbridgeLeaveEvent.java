@@ -12,9 +12,8 @@ public class ConfbridgeLeaveEvent extends AbstractConfbridgeEvent
      */
     private static final long serialVersionUID = 1L;
 
-    public ConfbridgeLeaveEvent(Object source)
+    public ConfbridgeLeaveEvent()
     {
-        super(source);
     }
 
 }

@@ -35,9 +35,8 @@ public class SkypeBuddyEntryEvent extends ResponseEvent
     private String status;
     private String fullname;
 
-    public SkypeBuddyEntryEvent(Object source)
+    public SkypeBuddyEntryEvent()
     {
-        super(source);
     }
 
     /**

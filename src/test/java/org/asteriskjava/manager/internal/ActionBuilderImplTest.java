@@ -124,7 +124,7 @@ public class ActionBuilderImplTest
         action = new UserEventAction();
 
         MyUserEvent event;
-        event = new MyUserEvent(this);
+        event = new MyUserEvent();
         action.setUserEvent(event);
 
         Map<String, String> mapMemberTest = new LinkedHashMap<String, String>();

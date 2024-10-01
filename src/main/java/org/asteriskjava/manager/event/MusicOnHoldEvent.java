@@ -42,9 +42,8 @@ public class MusicOnHoldEvent extends ManagerEvent
     private String linkedId;
     private String language;
 
-    public MusicOnHoldEvent(Object source)
+    public MusicOnHoldEvent()
     {
-        super(source);
     }
 
     /**
@@ -149,7 +148,7 @@ public class MusicOnHoldEvent extends ManagerEvent
     {
         this.accountCode = accountCode;
     }
-    
+
     public String getLinkedId()
     {
         return linkedId;
@@ -169,5 +168,5 @@ public class MusicOnHoldEvent extends ManagerEvent
     {
         this.language = language;
     }
-    
+
 }

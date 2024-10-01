@@ -6,7 +6,7 @@ package org.asteriskjava.manager.event;
 public class NewConnectedLineEvent extends ManagerEvent
 {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String channel;
@@ -15,9 +15,8 @@ public class NewConnectedLineEvent extends ManagerEvent
     private String accountCode;
     private String linkedId;
 
-    public NewConnectedLineEvent(Object source)
+    public NewConnectedLineEvent()
     {
-        super(source);
     }
 
     public String getLanguage()
@@ -70,5 +69,5 @@ public class NewConnectedLineEvent extends ManagerEvent
         this.linkedId = linkedId;
     }
 
- 
+
 }

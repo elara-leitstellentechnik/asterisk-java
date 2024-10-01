@@ -6,13 +6,12 @@ package org.asteriskjava.manager.event;
 public class MusicOnHoldStartEvent extends MusicOnHoldEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public MusicOnHoldStartEvent(Object source)
+	public MusicOnHoldStartEvent()
 	{
-		super(source);
 		setState(STATE_START);
 	}
 }

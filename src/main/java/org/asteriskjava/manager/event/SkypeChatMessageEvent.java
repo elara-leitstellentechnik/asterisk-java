@@ -38,9 +38,8 @@ public class SkypeChatMessageEvent extends ManagerEvent
     private String from;
     private String message;
 
-    public SkypeChatMessageEvent(Object source)
+    public SkypeChatMessageEvent()
     {
-        super(source);
     }
 
     /**

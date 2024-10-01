@@ -6,7 +6,7 @@ package org.asteriskjava.manager.event;
 public class ChallengeSentEvent extends ManagerEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String severity;
@@ -19,9 +19,9 @@ public class ChallengeSentEvent extends ManagerEvent
 	private String challenge;
 	private String sessionId;
 
-	public ChallengeSentEvent(Object source)
+	public ChallengeSentEvent()
 	{
-		super(source);
+		super();
 	}
 
 	public String getSeverity()

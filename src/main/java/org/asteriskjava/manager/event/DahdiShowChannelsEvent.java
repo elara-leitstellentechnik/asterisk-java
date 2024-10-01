@@ -19,9 +19,9 @@ package org.asteriskjava.manager.event;
 /**
  * A DahdiShowChannelsEvent is triggered in response to a DahdiShowChannelsAction and shows the state of
  * a Dahdi channel.
- * 
+ *
  * @see org.asteriskjava.manager.action.DahdiShowChannelsAction
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -81,17 +81,13 @@ public class DahdiShowChannelsEvent extends ResponseEvent
     }
 
 
-    
 
-    /**
-     * @param source
-     */
-    public DahdiShowChannelsEvent(Object source)
+
+    public DahdiShowChannelsEvent()
     {
-        super(source);
     }
 
-  
+
     /**
      * Returns the signalling of this Dahdi channel.<p>
      * Possible values are:
@@ -136,7 +132,7 @@ public class DahdiShowChannelsEvent extends ResponseEvent
 
     /**
      * Returns whether dnd (do not disturb) is enabled for this Dahdi channel.
-     * 
+     *
      * @return Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled,
      *         <code>null</code> if not set.
      * @since 0.3
@@ -148,7 +144,7 @@ public class DahdiShowChannelsEvent extends ResponseEvent
 
     /**
      * Sets whether dnd (do not disturb) is enabled for this Dahdi channel.
-     * 
+     *
      * @param dnd Boolean.TRUE if dnd is enabled, Boolean.FALSE if it is disabled.
      * @since 0.3
      */

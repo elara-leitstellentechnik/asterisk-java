@@ -52,9 +52,9 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
     private Long sequenceNumberCycles;
     private Double lastSr;
     private Double rtt;
-    
+
     private String channel;
-    private String language;    
+    private String language;
     private String report0SequenceNumberCycles;
     private String ssrc;
     private String linkedId;
@@ -74,11 +74,10 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
     private Integer sentPackets;
     private Long sentrtp;
     private String accountCode;
-    
 
-    public RtcpReceivedEvent(Object source)
+
+    public RtcpReceivedEvent()
     {
-        super(source);
     }
 
     /**
@@ -124,7 +123,7 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
         this.toAddress = stringToAddress(to);
         this.toPort = stringToPort(to);
     }
-    
+
     /**
      * Indicates the format of the payload, typical values are 200 for sender reports and
      * 201 for receiver reports.
@@ -248,7 +247,7 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
     {
         this.rtt = secStringToDouble(rttString);
     }
-    
+
     public Long getRttAsMillseconds()
     {
     	return (long) (rtt * 1000);
@@ -448,7 +447,7 @@ public class RtcpReceivedEvent extends AbstractRtcpEvent
     {
         this.accountCode = accountCode;
     }
-    
-    
-    
+
+
+
 }

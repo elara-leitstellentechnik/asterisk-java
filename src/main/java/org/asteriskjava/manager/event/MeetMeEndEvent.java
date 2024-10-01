@@ -30,12 +30,8 @@ public class MeetMeEndEvent extends ManagerEvent
     private static final long serialVersionUID = 510266716726148586L;
     private String meetMe;
 
-    /**
-     * @param source
-     */
-    public MeetMeEndEvent(Object source)
+        public MeetMeEndEvent()
     {
-        super(source);
     }
 
     /**

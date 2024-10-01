@@ -56,12 +56,10 @@ public class AgiExecEvent extends ManagerEvent
 
 	/**
 	 * Creates a new AgiExecEvent.
-	 *
-	 * @param source
 	 */
-	public AgiExecEvent(Object source)
+	public AgiExecEvent()
 	{
-		super(source);
+		super();
 	}
 
 	/**

@@ -35,8 +35,7 @@ public class BridgeListCompleteEvent extends ResponseEvent {
 	private Integer listItems;
 	private String eventList;
 
-	public BridgeListCompleteEvent(Object source) {
-		super(source);
+	public BridgeListCompleteEvent() {
 	}
 
 	/**

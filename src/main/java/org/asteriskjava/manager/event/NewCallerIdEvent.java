@@ -37,9 +37,8 @@ public class NewCallerIdEvent extends AbstractChannelEvent
     private Integer cidCallingPres;
     private String cidCallingPresTxt;
 
-    public NewCallerIdEvent(Object source)
+    public NewCallerIdEvent()
     {
-        super(source);
     }
 
     /**

@@ -6,12 +6,11 @@ package org.asteriskjava.manager.event;
 public class BridgeDestroyEvent extends AbstractBridgeEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public BridgeDestroyEvent(Object source)
+	public BridgeDestroyEvent()
 	{
-		super(source);
 	}
 }

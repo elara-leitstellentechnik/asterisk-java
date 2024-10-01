@@ -40,9 +40,8 @@ public class QueueMemberPausedEvent extends AbstractQueueMemberEvent
      */
     private String reason;
 
-    public QueueMemberPausedEvent(Object source)
+    public QueueMemberPausedEvent()
     {
-        super(source);
     }
 
     /**

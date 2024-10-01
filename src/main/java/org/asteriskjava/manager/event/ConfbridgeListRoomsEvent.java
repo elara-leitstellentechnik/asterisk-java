@@ -12,9 +12,8 @@ public class ConfbridgeListRoomsEvent extends ResponseEvent
     private Integer marked;
     private Boolean locked;
 
-    public ConfbridgeListRoomsEvent(Object source)
+    public ConfbridgeListRoomsEvent()
     {
-        super(source);
     }
 
     /**

@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * An OriginateSuccessEvent is triggered when the execution of an
  * OriginateAction succeeded.<p>
  * Deprecated since Asterisk 1.4.
- * 
+ *
  * @see org.asteriskjava.manager.action.OriginateAction
  * @see OriginateResponseEvent
  * @deprecated
@@ -34,12 +34,8 @@ package org.asteriskjava.manager.event;
      */
     private static final long serialVersionUID = -5086668438614692086L;
 
-    /**
-     * @param source
-     */
-    public OriginateSuccessEvent(Object source)
+    public OriginateSuccessEvent()
     {
-        super(source);
         setResponse("Success");
     }
 }

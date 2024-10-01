@@ -27,9 +27,8 @@ public class AbstractFaxEvent extends AbstractChannelEvent
     private static final long serialVersionUID = -1L;
     private Integer faxSession;
 
-    public AbstractFaxEvent(Object source)
+    public AbstractFaxEvent()
     {
-        super(source);
     }
 
 

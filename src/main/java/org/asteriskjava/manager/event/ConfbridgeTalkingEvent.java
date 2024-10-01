@@ -14,10 +14,9 @@ public class ConfbridgeTalkingEvent extends AbstractConfbridgeEvent
     private static final long serialVersionUID = 1L;
 
     private Boolean talkingStatus;
-    
-    public ConfbridgeTalkingEvent(Object source)
+
+    public ConfbridgeTalkingEvent()
     {
-        super(source);
     }
 
     /**
@@ -40,5 +39,5 @@ public class ConfbridgeTalkingEvent extends AbstractConfbridgeEvent
     {
         return talkingStatus;
     }
-    
+
 }

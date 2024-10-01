@@ -7,11 +7,10 @@ public class DongleNewSMSEvent extends ManagerEvent
   private String messageline0;
   private String device;
   private String linecount;
-  
 
-  public DongleNewSMSEvent(Object source)
+
+  public DongleNewSMSEvent()
   {
-    super(source);
   }
 
   public String getDevice() {

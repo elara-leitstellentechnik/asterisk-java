@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * to the queue announcement.<p>
  * It is implemented in <code>apps/app_queue.c</code>.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -33,8 +33,7 @@ public class AgentDumpEvent extends AbstractAgentEvent
      */
     private static final long serialVersionUID = 2108033737226142194L;
 
-    public AgentDumpEvent(Object source)
+    public AgentDumpEvent()
     {
-        super(source);
     }
 }

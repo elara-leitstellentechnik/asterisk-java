@@ -12,14 +12,14 @@ public class T38FaxStatusEventTest
     @Test
     public void testStripUnit()
     {
-        T38FaxStatusEvent event = new T38FaxStatusEvent(this);
+        T38FaxStatusEvent event = new T38FaxStatusEvent();
         assertEquals("0.022", event.stripUnit("0.022 sec."));
     }
 
     @Test
     public void testParseProperties()
     {
-        T38FaxStatusEvent event = new T38FaxStatusEvent(this);
+        T38FaxStatusEvent event = new T38FaxStatusEvent();
         event.setTotalLag("-9 ms");
         event.setMaxLag("4 ms");
         event.setT38SessionDuration("0.022 sec.");

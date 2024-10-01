@@ -4,7 +4,7 @@ public class DialBeginEvent extends DialEvent
 {
 
     /**
-	 * 
+	 *
 	 */
     private static final long serialVersionUID = 1L;
     private String language;
@@ -12,12 +12,11 @@ public class DialBeginEvent extends DialEvent
     private String destAccountCode;
     private String linkedId;
     private String destLinkedId;
-    
+
     private String accountcode;
 
-    public DialBeginEvent(Object source)
+    public DialBeginEvent()
     {
-        super(source);
         setSubEvent(SUBEVENT_BEGIN);
     }
 
@@ -90,5 +89,5 @@ public class DialBeginEvent extends DialEvent
 	{
 		this.accountcode = accountcode;
 	}
-    
+
 }

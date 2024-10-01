@@ -42,9 +42,8 @@ public class ContactStatusEvent extends ManagerEvent
     private String viaAddress;
     private String callID;
 
-    public ContactStatusEvent(Object source)
+    public ContactStatusEvent()
     {
-        super(source);
     }
 
     public String getUri()

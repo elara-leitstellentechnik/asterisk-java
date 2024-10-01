@@ -31,9 +31,8 @@ public class NewChannelEvent extends AbstractChannelStateEvent
      */
     static final long serialVersionUID = 1L;
 
-    public NewChannelEvent(Object source)
+    public NewChannelEvent()
     {
-        super(source);
     }
 
 }

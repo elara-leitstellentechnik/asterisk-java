@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A StatusCompleteEvent is triggered after the state of all channels has been
  * reported in response to a StatusAction.
- * 
+ *
  * @see org.asteriskjava.manager.action.StatusAction
  * @see org.asteriskjava.manager.event.StatusEvent
  * @author srt
@@ -36,9 +36,8 @@ public class StatusCompleteEvent extends ResponseEvent
     private Integer listItems;
     private String eventList;
 
-    public StatusCompleteEvent(Object source)
+    public StatusCompleteEvent()
     {
-        super(source);
     }
 
     /**
@@ -91,5 +90,5 @@ public class StatusCompleteEvent extends ResponseEvent
     {
         this.listItems = listItems;
     }
- 
+
 }

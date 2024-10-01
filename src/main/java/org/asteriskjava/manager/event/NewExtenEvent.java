@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * A NewExtenEvent is triggered when a channel is connected to a new extension.
  * <p>
  * It is implemented in <code>pbx.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -40,12 +40,8 @@ public class NewExtenEvent extends ManagerEvent
     private String accountCode;
     private String linkedId;
 
-    /**
-     * @param source
-     */
-    public NewExtenEvent(Object source)
+        public NewExtenEvent()
     {
-        super(source);
     }
 
     public String getLanguage()
@@ -158,5 +154,5 @@ public class NewExtenEvent extends ManagerEvent
     {
         this.linkedId = linkedId;
     }
-    
+
 }

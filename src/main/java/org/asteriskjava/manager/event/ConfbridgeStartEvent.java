@@ -13,9 +13,8 @@ public class ConfbridgeStartEvent extends AbstractConfbridgeEvent
      */
     private static final long serialVersionUID = 1L;
 
-    public ConfbridgeStartEvent(Object source)
+    public ConfbridgeStartEvent()
     {
-        super(source);
     }
 
 }

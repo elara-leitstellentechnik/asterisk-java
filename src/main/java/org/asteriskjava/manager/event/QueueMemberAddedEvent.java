@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * A QueueMemberAddedEvent is triggered when a queue member is added to a queue.<p>
  * It is implemented in <code>apps/app_queue.c</code>.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -38,19 +38,18 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
     private Long lastCall;
     private Integer status;
     private Boolean paused;
-    
+
     private String stateinterface;
     private String _interface;
     private Boolean ringinuse;
 
-    public QueueMemberAddedEvent(Object source)
+    public QueueMemberAddedEvent()
     {
-        super(source);
     }
 
     /**
      * Returns if the added member is a dynamic or static queue member.
-     * 
+     *
      * @return "dynamic" if the added member is a dynamic queue member, "static"
      *         if the added member is a static queue member.
      */
@@ -61,7 +60,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
 
     /**
      * Sets if the added member is a dynamic or static queue member.
-     * 
+     *
      * @param membership "dynamic" if the added member is a dynamic queue
      *            member, "static" if the added member is a static queue member.
      */
@@ -73,7 +72,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
     /**
      * Returns the penalty for the added member. When calls are distributed
      * members with higher penalties are considered last.
-     * 
+     *
      * @return the penalty for the added member.
      */
     public Integer getPenalty()
@@ -83,7 +82,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
 
     /**
      * Sets the penalty for this member.
-     * 
+     *
      * @param penalty the penalty for this member.
      */
     public void setPenalty(Integer penalty)
@@ -93,7 +92,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
 
     /**
      * Returns the number of calls answered by the member.
-     * 
+     *
      * @return the number of calls answered by the member.
      */
     public Integer getCallsTaken()
@@ -103,7 +102,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
 
     /**
      * Sets the number of calls answered by the added member.
-     * 
+     *
      * @param callsTaken the number of calls answered by the added member.
      */
     public void setCallsTaken(Integer callsTaken)
@@ -114,7 +113,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
     /**
      * Returns the time the last successful call answered by the added member
      * was hungup.
-     * 
+     *
      * @return the time (in seconds since 01/01/1970) the last successful call
      *         answered by the added member was hungup.
      */
@@ -126,7 +125,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
     /**
      * Sets the time the last successful call answered by this member was
      * hungup.
-     * 
+     *
      * @param lastCall the time (in seconds since 01/01/1970) the last
      *            successful call answered by the added member was hungup.
      */
@@ -152,7 +151,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
      * <dt>AST_DEVICE_UNAVAILABLE (5)</dt>
      * <dd>?</dd>
      * </dl>
-     * 
+     *
      * @return the status of this queue member.
      */
     public Integer getStatus()
@@ -162,7 +161,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
 
     /**
      * Sets the status of this queue member.
-     * 
+     *
      * @param status the status of this queue member
      */
     public void setStatus(Integer status)
@@ -172,7 +171,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
 
     /**
      * Returns if this queue member is paused (not accepting calls).<p>
-     * 
+     *
      * @return <code>Boolean.TRUE</code> if this member has been paused or
      *         <code>Boolean.FALSE</code> if not.
      */
@@ -183,7 +182,7 @@ public class QueueMemberAddedEvent extends AbstractQueueMemberEvent
 
     /**
      * Sets if this member is paused.
-     * 
+     *
      * @param paused <code>Boolean.TRUE</code> if this member has been paused
      *            or <code>Boolean.FALSE</code> if not.
      */

@@ -36,19 +36,16 @@ public class AbstractHoldEvent extends ManagerEvent
     private String uniqueId;
 
     private Boolean status;
-    
+
     private String linkedId;
     private String language;
-    
+
 
     /**
      * Creates a new HoldEvent.
-     *
-     * @param source
      */
-    public AbstractHoldEvent(Object source)
+    public AbstractHoldEvent()
     {
-        super(source);
     }
 
     /**

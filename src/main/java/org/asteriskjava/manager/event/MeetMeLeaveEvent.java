@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * 1.0.
  * <p>
  * It is implemented in <code>apps/app_meetme.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -36,19 +36,15 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
 
     private Long duration;
 
-    /**
-     * @param source
-     */
-    public MeetMeLeaveEvent(Object source)
+    public MeetMeLeaveEvent()
     {
-        super(source);
     }
 
     /**
      * Returns how long the user spent in the conference.
      * <p>
      * This property is available since Asterisk 1.4.
-     * 
+     *
      * @return the duration in seconds the user spent in the conference.
      */
     public Long getDuration()
@@ -58,7 +54,7 @@ public class MeetMeLeaveEvent extends AbstractMeetMeEvent
 
     /**
      * Sets how long the user spent in the conference.
-     * 
+     *
      * @param duration the duration in seconds the user spent in the conference.
      */
     public void setDuration(Long duration)

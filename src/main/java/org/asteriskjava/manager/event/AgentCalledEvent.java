@@ -33,7 +33,7 @@ public class AgentCalledEvent extends ManagerEvent
      * Serializable version identifier.
      */
     private static final long serialVersionUID = 2L;
-    
+
     private String queue;
     private String agentCalled;
     private String channelCalling;
@@ -56,22 +56,18 @@ public class AgentCalledEvent extends ManagerEvent
     private String destChannelState;
     private String iface;
     private String channel;
-    
+
     private String destAccountCode;
     private String language;
     private String destLanguage;
     private String linkedId;
     private String destLinkedId;
-    
-    private String accountcode;
-    
 
-    /**
-     * @param source
-     */
-    public AgentCalledEvent(Object source)
+    private String accountcode;
+
+
+        public AgentCalledEvent()
     {
-        super(source);
     }
 
     /**

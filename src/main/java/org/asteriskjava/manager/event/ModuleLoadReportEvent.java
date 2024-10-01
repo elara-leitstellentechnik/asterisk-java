@@ -40,9 +40,8 @@ public class ModuleLoadReportEvent extends ManagerEvent
     private String moduleSelection;
     private Integer moduleCount;
 
-    public ModuleLoadReportEvent(Object source)
+    public ModuleLoadReportEvent()
     {
-        super(source);
     }
 
     /**
@@ -63,7 +62,7 @@ public class ModuleLoadReportEvent extends ManagerEvent
 
     /**
      * Returns whether loading the pre-load modules has been completed or all modules
-     * have been loaded. 
+     * have been loaded.
      *
      * @return "Preload" or "All"
      * @see #MODULE_SELECTION_PRELOAD

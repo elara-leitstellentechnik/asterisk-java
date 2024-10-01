@@ -36,12 +36,8 @@ public class NewAccountCodeEvent extends ManagerEvent
     private String language;
     private String linkedId;
 
-    /**
-     * @param source
-     */
-    public NewAccountCodeEvent(Object source)
+    public NewAccountCodeEvent()
     {
-        super(source);
     }
 
     /**
@@ -123,6 +119,6 @@ public class NewAccountCodeEvent extends ManagerEvent
     {
         this.linkedId = linkedId;
     }
-    
-    
+
+
 }

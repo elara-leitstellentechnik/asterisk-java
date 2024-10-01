@@ -47,9 +47,8 @@ public class JitterBufStatsEvent extends ManagerEvent
     private Integer remoteooo;
     private Integer remoteReceived;
 
-    public JitterBufStatsEvent(Object source)
+    public JitterBufStatsEvent()
     {
-        super(source);
     }
 
     /**

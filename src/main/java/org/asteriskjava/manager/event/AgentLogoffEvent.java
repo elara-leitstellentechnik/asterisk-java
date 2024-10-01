@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * An AgentCallbackLogoffEvent is triggered when an agent that previously logged in using AgentLogin
  * is logged of.<p>
  * It is implemented in <code>channels/chan_agent.c</code>
- * 
+ *
  * @see org.asteriskjava.manager.event.AgentLoginEvent
  * @author srt
  * @version $Id$
@@ -39,17 +39,13 @@ public class AgentLogoffEvent extends ManagerEvent
     private String loginTime;
     private String uniqueId;
 
-    /**
-     * @param source
-     */
-    public AgentLogoffEvent(Object source)
+        public AgentLogoffEvent()
     {
-        super(source);
     }
 
     /**
      * Returns the name of the agent that logged off.
-     * 
+     *
      * @return the name of the agent that logged off.
      */
     public String getAgent()
@@ -59,7 +55,7 @@ public class AgentLogoffEvent extends ManagerEvent
 
     /**
      * Sets the name of the agent that logged off.
-     * 
+     *
      * @param agent the name of the agent that logged off.
      */
     public void setAgent(String agent)

@@ -22,8 +22,8 @@ public class A extends UserEvent
 {
     private static final long serialVersionUID = 3545240219457894199L;
 
-    public A(Object source)
+    public A()
     {
-        super(source);
+        super();
     }
 }

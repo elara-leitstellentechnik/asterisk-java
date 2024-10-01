@@ -35,9 +35,8 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
     private Double dlSr;
     private Double iaJitter;
 
-    public AbstractRtcpEvent(Object source)
+    public AbstractRtcpEvent()
     {
-        super(source);
     }
 
     /**
@@ -92,7 +91,7 @@ public abstract class AbstractRtcpEvent extends ManagerEvent
         {
             return null;
         }
-        
+
         //things like RTT can be float/double in the event message in newer asterisk versions
         if(s.contains("."))
         {

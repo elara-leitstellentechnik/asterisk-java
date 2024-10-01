@@ -68,9 +68,8 @@ public class BridgeEvent extends ManagerEvent
     private String callerId1;
     private String callerId2;
 
-    public BridgeEvent(Object source)
+    public BridgeEvent()
     {
-        super(source);
     }
 
     /**

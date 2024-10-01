@@ -1,6 +1,6 @@
 /*
  *  Copyright 2004-2006 Stefan Reuter
- *  
+ *
  *  amended 2010 Allan Wylie
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,8 @@ public class SkypeAccountStatusEvent extends ManagerEvent
     static final String STATUS_LOGGED_IN = "Logged In";
     static final String STATUS_LOGGED_OUT = "Logged Out";
 
-    public SkypeAccountStatusEvent(Object source)
+    public SkypeAccountStatusEvent()
     {
-        super(source);
     }
 
     /**

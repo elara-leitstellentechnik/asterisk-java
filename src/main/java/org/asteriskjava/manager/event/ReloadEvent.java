@@ -44,9 +44,8 @@ public class ReloadEvent extends ManagerEvent
     private String status;
     private String message;
 
-    public ReloadEvent(Object source)
+    public ReloadEvent()
     {
-        super(source);
     }
 
     /**

@@ -43,9 +43,8 @@ public class FaxReceivedEvent extends AbstractFaxEvent
     private Integer transferRate;
     private String filename;
 
-    public FaxReceivedEvent(Object source)
+    public FaxReceivedEvent()
     {
-        super(source);
     }
 
     /**

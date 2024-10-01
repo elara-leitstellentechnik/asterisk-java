@@ -6,7 +6,7 @@ package org.asteriskjava.manager.event;
 public class InvalidPasswordEvent extends ManagerEvent
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private String severity;
@@ -21,9 +21,9 @@ public class InvalidPasswordEvent extends ManagerEvent
 	private String remoteAddress;
 	private String challenge;
 
-	public InvalidPasswordEvent(Object source)
+	public InvalidPasswordEvent()
 	{
-		super(source);
+		super();
 	}
 
 	public String getSeverity()

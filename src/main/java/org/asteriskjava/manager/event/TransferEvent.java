@@ -45,9 +45,8 @@ public class TransferEvent extends ManagerEvent
     private String transferContext;
     private Boolean transfer2Parking;
 
-    public TransferEvent(Object source)
+    public TransferEvent()
     {
-        super(source);
     }
 
     /**

@@ -21,7 +21,7 @@ package org.asteriskjava.manager.event;
  * action id is set) and in response to a ParkedCallsAction.
  * <p>
  * It is implemented in <code>res/res_features.c</code>
- * 
+ *
  * @see org.asteriskjava.manager.action.ParkedCallsAction
  * @author srt
  * @version $Id$
@@ -38,12 +38,8 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
     private String connectedlinename;
     private String parkeelinkedid;
 
-    /**
-     * @param source
-     */
-    public ParkedCallEvent(Object source)
+    public ParkedCallEvent()
     {
-        super(source);
     }
 
     /**
@@ -74,7 +70,7 @@ public class ParkedCallEvent extends AbstractParkedCallEvent
         setUniqueId(unqiueId);
     }
 
-    
+
     public String getConnectedLinenum()
     {
         return connectedlinenum;

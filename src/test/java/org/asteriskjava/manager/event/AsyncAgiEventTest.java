@@ -11,7 +11,7 @@ public class AsyncAgiEventTest
     @Test
     public void testDecodeEnv()
     {
-        AsyncAgiEvent event = new AsyncAgiEvent(this);
+        AsyncAgiEvent event = new AsyncAgiEvent();
         List<String> env;
 
         event.setEnv("agi_request%3a%20async\n" +
@@ -43,7 +43,7 @@ public class AsyncAgiEventTest
     @Test
     public void testDecodeEnvWithMoreThanTwoDelimiters()
     {
-        AsyncAgiEvent event = new AsyncAgiEvent(this);
+        AsyncAgiEvent event = new AsyncAgiEvent();
         List<String> env;
 
         event.setEnv("agi_request%3a%20async%3a%20bla\n");

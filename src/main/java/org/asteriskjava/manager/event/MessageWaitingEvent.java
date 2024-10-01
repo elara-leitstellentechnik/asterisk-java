@@ -19,7 +19,7 @@ package org.asteriskjava.manager.event;
 /**
  * A MessageWaitingEvent is triggered when someone leaves voicemail.<p>
  * It is implemented in <code>apps/app_voicemail.c</code>
- * 
+ *
  * @author srt
  * @version $Id$
  */
@@ -34,19 +34,15 @@ public class MessageWaitingEvent extends ManagerEvent
     private Integer newMessages;
     private Integer oldMessages;
 
-    /**
-     * @param source
-     */
-    public MessageWaitingEvent(Object source)
+        public MessageWaitingEvent()
     {
-        super(source);
     }
 
     /**
      * Returns the name of the mailbox that has waiting messages.<p>
      * The name of the mailbox is of the form numberOfMailbox@context, e.g.
      * 1234@default.
-     * 
+     *
      * @return the name of the mailbox that has waiting messages
      */
     public String getMailbox()
@@ -56,7 +52,7 @@ public class MessageWaitingEvent extends ManagerEvent
 
     /**
      * Sets the name of the mailbox that has waiting messages.
-     * 
+     *
      * @param mailbox the name of the mailbox that has waiting messages
      */
     public void setMailbox(String mailbox)
@@ -66,7 +62,7 @@ public class MessageWaitingEvent extends ManagerEvent
 
     /**
      * Returns the number of new messages in the mailbox.
-     * 
+     *
      * @return the number of new messages in the mailbox
      */
     public Integer getWaiting()
@@ -76,7 +72,7 @@ public class MessageWaitingEvent extends ManagerEvent
 
     /**
      * Sets the number of new messages in the mailbox.
-     * 
+     *
      * @param waiting the number of new messages in the mailbox
      */
     public void setWaiting(Integer waiting)

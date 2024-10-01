@@ -55,19 +55,16 @@ public class DtmfEvent extends ManagerEvent
     private String direction;
     private Boolean begin;
     private Boolean end;
-    
+
     private String language;
     private String linkedId;
     private String accountCode;
 
     /**
      * Creates a new DtmfEvent.
-     *
-     * @param source
      */
-    public DtmfEvent(Object source)
+    public DtmfEvent()
     {
-        super(source);
     }
 
     /**
@@ -263,6 +260,6 @@ public class DtmfEvent extends ManagerEvent
     {
         this.accountCode = accountCode;
     }
-    
-    
+
+
 }

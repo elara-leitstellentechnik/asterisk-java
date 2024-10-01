@@ -32,9 +32,8 @@ public class JabberEventEvent extends ManagerEvent
     private String account;
     private String packet;
 
-    public JabberEventEvent(Object source)
+    public JabberEventEvent()
     {
-        super(source);
     }
 
     public String getAccount()

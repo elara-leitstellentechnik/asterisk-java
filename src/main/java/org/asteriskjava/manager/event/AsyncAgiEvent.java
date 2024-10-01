@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 
+ *
  * The following sub events are reported:
  * <ul>
  * <li>Start: A channel has started the AGI("agi:async") application and is awaiting Async AGI commands.</li>
@@ -52,12 +52,9 @@ public class AsyncAgiEvent extends ResponseEvent
 
     /**
      * Creates a new AsyncAgiEvent.
-     *
-     * @param source
      */
-    public AsyncAgiEvent(Object source)
+    public AsyncAgiEvent()
     {
-        super(source);
     }
 
     /**

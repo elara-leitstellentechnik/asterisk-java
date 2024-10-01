@@ -44,9 +44,8 @@ public class QueueParamsEvent extends ResponseEvent
     private Double serviceLevelPerf2;
     private Integer weight;
 
-    public QueueParamsEvent(Object source)
+    public QueueParamsEvent()
     {
-        super(source);
     }
 
 

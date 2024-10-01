@@ -6,7 +6,7 @@ package org.asteriskjava.manager.event;
 public class BridgeEnterEvent extends AbstractBridgeEvent
 {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 2L;
     private String uniqueId;
@@ -14,9 +14,8 @@ public class BridgeEnterEvent extends AbstractBridgeEvent
     private String language;
     private String linkedId;
 
-    public BridgeEnterEvent(Object source)
+    public BridgeEnterEvent()
     {
-        super(source);
     }
 
     public String getLanguage()
@@ -58,5 +57,5 @@ public class BridgeEnterEvent extends AbstractBridgeEvent
     {
         this.linkedId = linkedId;
     }
-    
+
 }

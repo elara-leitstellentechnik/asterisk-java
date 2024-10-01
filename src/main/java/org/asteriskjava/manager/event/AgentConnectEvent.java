@@ -22,7 +22,7 @@ package org.asteriskjava.manager.event;
  * It is implemented in <code>apps/app_queue.c</code>.
  * <p>
  * Available since Asterisk 1.2
- * 
+ *
  * @author srt
  * @version $Id$
  * @since 0.2
@@ -55,17 +55,16 @@ public class AgentConnectEvent extends AbstractAgentEvent
     private String destLinkedId;
     private String destLanguage;
     private String language;
-    
+
     private String accountcode;
 
-    public AgentConnectEvent(Object source)
+    public AgentConnectEvent()
     {
-        super(source);
     }
 
     /**
      * Returns the amount of time the caller was on hold.
-     * 
+     *
      * @return the amount of time the caller was on hold in seconds.
      */
     public Long getHoldTime()
@@ -75,7 +74,7 @@ public class AgentConnectEvent extends AbstractAgentEvent
 
     /**
      * Sets the amount of time the caller was on hold.
-     * 
+     *
      * @param holdtime the amount of time the caller was on hold in seconds.
      */
     public void setHoldTime(Long holdtime)
@@ -89,7 +88,7 @@ public class AgentConnectEvent extends AbstractAgentEvent
      * particular call from the queue.
      * <p>
      * Available since Asterisk 1.4.
-     * 
+     *
      * @return the unique ID of the queue member channel that is taking the
      *         call.
      */
@@ -100,7 +99,7 @@ public class AgentConnectEvent extends AbstractAgentEvent
 
     /**
      * Sets the unique ID of the queue member channel that is taking the call.
-     * 
+     *
      * @param bridgedChannel the unique ID of the queue member channel that is
      *            taking the call.
      */
@@ -320,7 +319,7 @@ public class AgentConnectEvent extends AbstractAgentEvent
     {
         this.iface = iface;
     }
-    
+
     public String getDestAccountCode()
     {
         return destAccountCode;
@@ -330,7 +329,7 @@ public class AgentConnectEvent extends AbstractAgentEvent
     {
         this.destAccountCode = destAccountCode;
     }
-  
+
     public String getLinkedId()
     {
         return linkedId;

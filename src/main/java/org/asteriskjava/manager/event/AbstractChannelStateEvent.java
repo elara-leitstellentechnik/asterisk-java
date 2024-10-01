@@ -30,9 +30,8 @@ public abstract class AbstractChannelStateEvent extends AbstractChannelEvent
      */
     static final long serialVersionUID = 0L;
 
-    protected AbstractChannelStateEvent(Object source)
+    protected AbstractChannelStateEvent()
     {
-        super(source);
     }
 
     /**

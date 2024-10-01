@@ -21,9 +21,8 @@ public class ShowDialplanCompleteEvent extends ResponseEvent
     private Integer listPriorities;
     private Integer listContexts;
 
-    public ShowDialplanCompleteEvent(Object source)
+    public ShowDialplanCompleteEvent()
     {
-        super(source);
     }
 
     /**

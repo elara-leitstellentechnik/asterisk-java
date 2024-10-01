@@ -20,7 +20,7 @@ package org.asteriskjava.manager.event;
  * A DBGetResponseEvent is sent in response to a DBGetAction and contains the
  * entry that was queried.<p>
  * Available since Asterisk 1.2
- * 
+ *
  * @see org.asteriskjava.manager.action.DbGetAction
  * @author srt
  * @version $Id$
@@ -37,17 +37,13 @@ public class DbGetResponseEvent extends ResponseEvent
      */
     private static final long serialVersionUID = -1177773673509373296L;
 
-    /**
-     * @param source
-     */
-    public DbGetResponseEvent(Object source)
+    public DbGetResponseEvent()
     {
-        super(source);
     }
 
     /**
      * Returns the family of the database entry that was queried.
-     * 
+     *
      * @return the family of the database entry that was queried.
      */
     public String getFamily()
@@ -57,7 +53,7 @@ public class DbGetResponseEvent extends ResponseEvent
 
     /**
      * Sets the family of the database entry that was queried.
-     * 
+     *
      * @param family the family of the database entry that was queried.
      */
     public void setFamily(String family)
@@ -67,7 +63,7 @@ public class DbGetResponseEvent extends ResponseEvent
 
     /**
      * Returns the key of the database entry that was queried.
-     * 
+     *
      * @return the key of the database entry that was queried.
      */
     public String getKey()
@@ -77,7 +73,7 @@ public class DbGetResponseEvent extends ResponseEvent
 
     /**
      * Sets the key of the database entry that was queried.
-     * 
+     *
      * @param key the key of the database entry that was queried.
      */
     public void setKey(String key)
@@ -87,7 +83,7 @@ public class DbGetResponseEvent extends ResponseEvent
 
     /**
      * Returns the value of the database entry that was queried.
-     * 
+     *
      * @return the value of the database entry that was queried.
      */
     public String getVal()
@@ -97,19 +93,19 @@ public class DbGetResponseEvent extends ResponseEvent
 
     /**
      * Sets the value of the database entry that was queried.
-     * 
+     *
      * @param val the value of the database entry that was queried.
      */
     public void setVal(String val)
     {
         this.val = val;
     }
-    
+
     /**
      * Sets the value of the database entry that was queried.
      * It seems that in ast 1.2 ( 1.2.9 +BRIStuff ? ) at least the key is
      * not val anymore but value.
-     * 
+     *
      * @param val the value of the database entry that was queried.
      */
     public void setValue(String val)

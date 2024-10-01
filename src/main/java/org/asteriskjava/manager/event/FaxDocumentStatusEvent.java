@@ -43,9 +43,8 @@ public class FaxDocumentStatusEvent extends AbstractFaxEvent
     private String remoteDis;
 
 
-    public FaxDocumentStatusEvent(Object source)
+    public FaxDocumentStatusEvent()
     {
-        super(source);
     }
 
 

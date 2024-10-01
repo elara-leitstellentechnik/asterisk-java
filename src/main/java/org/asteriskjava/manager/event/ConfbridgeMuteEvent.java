@@ -10,7 +10,6 @@ public class ConfbridgeMuteEvent extends AbstractConfbridgeEvent {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ConfbridgeMuteEvent(Object source) {
-		super(source);
+	public ConfbridgeMuteEvent() {
 	}
 }

@@ -32,12 +32,8 @@ public class QueueMemberStatusEvent extends QueueMemberEvent
     private String ringinuse;
     private String iface;
 
-    /**
-     * @param source
-     */
-    public QueueMemberStatusEvent(Object source)
+    public QueueMemberStatusEvent()
     {
-        super(source);
     }
 
     public String getInterface()

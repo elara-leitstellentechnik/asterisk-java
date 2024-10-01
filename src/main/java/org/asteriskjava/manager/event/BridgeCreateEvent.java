@@ -23,10 +23,9 @@ public class BridgeCreateEvent extends AbstractBridgeEvent
 
 	private static final long serialVersionUID = 1L;
 
-	public BridgeCreateEvent(Object source)
+	public BridgeCreateEvent()
 	{
-		super(source);
 	}
 
-	
+
 }

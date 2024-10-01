@@ -36,9 +36,8 @@ public class MasqueradeEvent extends ManagerEvent
     private String original;
     private String originalStateDesc;
 
-    public MasqueradeEvent(Object source)
+    public MasqueradeEvent()
     {
-        super(source);
     }
 
     /**

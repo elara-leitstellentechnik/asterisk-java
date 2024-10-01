@@ -7,9 +7,8 @@ public class DongleNewSMSBase64Event extends ManagerEvent
   private String message;
   private String device;
 
-  public DongleNewSMSBase64Event(Object source)
+  public DongleNewSMSBase64Event()
   {
-    super(source);
   }
 
   public String getDevice() {

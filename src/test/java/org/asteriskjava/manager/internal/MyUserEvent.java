@@ -27,9 +27,8 @@ public class MyUserEvent extends UserEvent
     private String stringMember;
     private Map<String,String> mapMember;
 
-    public MyUserEvent(Object source)
+    public MyUserEvent()
     {
-        super(source);
     }
 
     /**

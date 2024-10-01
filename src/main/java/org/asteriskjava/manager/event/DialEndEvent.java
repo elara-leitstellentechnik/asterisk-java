@@ -3,7 +3,7 @@ package org.asteriskjava.manager.event;
 public class DialEndEvent extends DialEvent
 {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private String language;
@@ -13,9 +13,8 @@ public class DialEndEvent extends DialEvent
     private String destLinkedId;
     private String linkedId;
 
-    public DialEndEvent(Object source)
+    public DialEndEvent()
     {
-        super(source);
         setSubEvent(SUBEVENT_END);
     }
 
@@ -80,6 +79,6 @@ public class DialEndEvent extends DialEvent
     }
 
 
-    
-    
+
+
 }

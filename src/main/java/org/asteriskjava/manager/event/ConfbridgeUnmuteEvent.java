@@ -11,7 +11,6 @@ public class ConfbridgeUnmuteEvent extends AbstractConfbridgeEvent {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ConfbridgeUnmuteEvent(Object source) {
-		super(source);
+	public ConfbridgeUnmuteEvent() {
 	}
 }

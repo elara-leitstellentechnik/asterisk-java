@@ -50,9 +50,8 @@ public class VarSetEvent extends ManagerEvent
         this.language = language;
     }
 
-    public VarSetEvent(Object source)
+    public VarSetEvent()
     {
-        super(source);
     }
 
     /**
@@ -138,5 +137,5 @@ public class VarSetEvent extends ManagerEvent
     {
         this.accountCode = accountCode;
     }
-    
+
 }
